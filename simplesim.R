@@ -19,8 +19,8 @@ write_transects(zz, "shapes/zig")
 
 # lots of effort in the west
 l <- data.frame(x = c(rep(0.1, 5),
-                      rep(0.2, 5),
-                      rep(0.3, 5)),
+                      rep(0.25, 5),
+                      rep(0.4, 5)),
                 y = rep(seq(0.2, 0.8, len=5),3),
                 leg = c(rep("1", 5),
                         rep("2", 5),

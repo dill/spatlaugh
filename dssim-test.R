@@ -87,11 +87,12 @@ test_dssim <- function(design_path, dsurf, n_grid){
 n_grid <- 100
 density.surface <- expand.grid(x = seq(0, 1, len=n_grid),
                                y = seq(0, 1, len=n_grid))
-
+# flat
+density.surface$density <- 1
 # top to bottom
 #density.surface$density <- density.surface$y
 # left-right
-density.surface$density <- density.surface$x
+#density.surface$density <- density.surface$x
 # diagonal
 #density.surface$density <- density.surface$y + density.surface$x
 
