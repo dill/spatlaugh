@@ -1,6 +1,6 @@
-test_dssim <- function(design_path, dsurf, n_grid){
+test_dssim <- function(design_path, dsurf, n_grid, region="shapes/region/data"){
   # get the "region"
-  region.shapefile <- read.shapefile("shapes/region/data")
+  region.shapefile <- read.shapefile(region)
   region <- make.region(region.name = "Survey Region", units = "m",
                         shapefile = region.shapefile)
 
