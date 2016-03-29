@@ -11,7 +11,9 @@ library(rgdal)
 # file   filename (well actually foldername) to write to
 write_transects <- function(transect, file){
 
-  legs <- list()
+  llist <- list()
+
+  Sample.Label <- c()
 
   # make each leg a different Line object
   for(this_leg in unique(transect$leg)){
@@ -19,20 +21,22 @@ write_transects <- function(transect, file){
     # get the transect bits for this leg
     tr <- transect[transect$leg==this_leg,]
 
-    llist <- list()
 
     for(i in 1:(nrow(tr)-1)){
+      this_label <- paste0(this_leg, "-", i)
       ll <- Line(tr[,c("x","y")][i:(i+1),])
-      llist <- c(llist, list(ll))
+      llist <- c(llist, Lines(ll, ID=this_label))
+      Sample.Label <- c(Sample.Label, this_label)
     }
-
-    legs <- c(legs, llist)
   }
 
-  ll <- Lines(unlist(legs, recursive=FALSE), ID=1)
 
-  ll <- SpatialLines(list(ll))
-  ll <- SpatialLinesDataFrame(ll, data=data.frame(a=1))
+  ll <- SpatialLines(llist)
+
+  dat <- data.frame(Sample.Label=Sample.Label)
+  rownames(dat) <- Sample.Label
+
+  ll <- SpatialLinesDataFrame(ll, data=dat)
 
   writeOGR(ll, file, "data", "ESRI Shapefile" )
 }

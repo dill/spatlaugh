@@ -1,4 +1,4 @@
-test_dssim <- function(design_path, dsurf, n_grid, region="shapes/region/data"){
+test_dssim <- function(design_path, dsurf, n_grid, n_pop=500, region="shapes/region/data"){
   # get the "region"
   region.shapefile <- read.shapefile(region)
   region <- make.region(region.name = "Survey Region", units = "m",
@@ -10,7 +10,7 @@ test_dssim <- function(design_path, dsurf, n_grid, region="shapes/region/data"){
 
   pop.description <- make.population.description(region.obj = region,
                                                  density.obj = pop.density,
-                                                 N = 500, fixed.N = TRUE)
+                                                 N = n_pop, fixed.N = TRUE)
 
   # build the detection function
   detect <- make.detectability(key.function = "hr",
