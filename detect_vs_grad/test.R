@@ -21,9 +21,14 @@ density.surface <- expand.grid(x = seq(0, 1, len=n_grid),
 density.surface$density[density.surface$x <= 0.5] <- 0.05
 density.surface$density[density.surface$x > 0.5] <- 0.95
 
+# setup the detection function for "good" conditions
+df <- list(key        = "hr",
+           scale      = 0.025,
+           shape      = 3,
+           truncation = 0.05)
 
 set.seed(3141)
-ss <- test_dssim("../shapes/manyzigzags", density.surface, n_grid, 200,
+ss <- test_dssim("../shapes/manyzigzags", density.surface, n_grid, 200, df,
                  region="../shapes/region/data")
 
 # check that looks good
