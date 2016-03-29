@@ -1,6 +1,15 @@
-test_dssim <- function(design_path, dsurf, n_grid, n_pop=500, region="shapes/region/data"){
-  # get the "region"
-  region.shapefile <- read.shapefile(region)
+# Create a survey
+#
+# design_path   - the path to the design shapefile
+# dsurf         - density surface
+# n_grid        - number of cells in each direction in dsurf (assumed square)
+# n_pop         - true population size
+# region_path   - path to region shapefile
+
+test_dssim <- function(design_path, dsurf, n_grid, n_pop=500,
+                       region_path="shapes/region/data"){
+  # get the study region
+  region.shapefile <- read.shapefile(region_path)
   region <- make.region(region.name = "Survey Region", units = "m",
                         shapefile = region.shapefile)
 
@@ -23,8 +32,8 @@ test_dssim <- function(design_path, dsurf, n_grid, n_pop=500, region="shapes/reg
                              path = design_path)
 
   ddf.analyses <- make.ddf.analysis.list(
-                                    dsmodel=list(~cds(key="hn", formula=~1)), #half-normal model
-  #~cds(key = "hr", formula = ~1)), #hazard rate model
+                                    dsmodel=list(~cds(key="hn", formula=~1)),
+                                                 ~cds(key="hr", formula=~1)),
   method = "ds", criteria = "AIC")
 
   my_simulation <- make.simulation(reps=10, single.transect.set=TRUE,
