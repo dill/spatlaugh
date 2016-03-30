@@ -8,6 +8,7 @@ author: David L Miller, Mark V Bravington
 
 - Multi-year repeated surveys -- what should you do?
 - School size spatial variation
+- How wrong is using quasi-Poisson?
 
 
 # Distance sampling
