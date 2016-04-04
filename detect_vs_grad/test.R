@@ -6,8 +6,11 @@
 # "in fog in the dark")
 
 library(DSsim)
-library(dsm)
+library(devtools)
+load_all("~/current/dsm")
 library(Distance)
+library(handy2)
+source("~/Dropbox/varprop/data/dsm.varprop.R")
 
 
 source("../check.sim.setup.R")
@@ -26,11 +29,11 @@ density.surface$density[density.surface$x > 0.5] <- 0.7
 
 # setup the detection function for "good" conditions
 df_good <- list(key        = "hr",
-                scale      = 0.025,
+                scale      = 0.03,
                 shape      = 3,
                 truncation = 0.05)
 df_bad <- list(key        = "hr",
-               scale      = 0.015,
+               scale      = 0.005,
                shape      = 3,
                truncation = 0.05)
 
@@ -43,8 +46,8 @@ ss_bad <- test_dssim("../shapes/manyzigzags", density.surface, n_grid, 200,
 #set.seed(3141)
 #check.sim.setup(ss_good)
 #dev.new()
-#set.seed(3142)
-#check.sim.setup(ss_bad)
+set.seed(3142)
+check.sim.setup(ss_bad)
 
 # okay now generate some data
 
@@ -65,12 +68,13 @@ mash <- function(survey1, survey2){
 
   labs <- 1:nrow(dat1$segs)
 #  pp <- plogis(labs, scale=10, location=5)
-  pp <- plogis(labs, scale=2, location=20)
+  pp <- plogis(labs, scale=3, location=30)
 
   picker <- as.logical(rbinom(length(labs), 1, pp))
   ones <- (1:nrow(segs))[picker]
   twos <- (1:nrow(segs))[!picker]
 
+  # get the data for each bit
   obs <- rbind(dat1$obs[dat1$obs$Sample.Label %in% ones,],
                dat2$obs[dat2$obs$Sample.Label %in% twos,])
 
@@ -81,6 +85,11 @@ mash <- function(survey1, survey2){
                     rep(1,sum(dat2$dist$Sample.Label %in% twos)))
   # remove duplicate observations, perfering data from "survey1"
   dist <- dist[!duplicated(dist$object),]
+
+  # add in the weather covariate to the segments
+  segs$weather <- 0
+  segs$weather[segs$Sample.Label %in% twos] <- 1
+
 
   return(list(dist=dist, obs=obs, segs=segs))
 }
@@ -97,25 +106,55 @@ segs <- dsm_data$segs
 ##! text(dist.data[,c("x","y")], lab=dist.data$weather)
 
 ## part 1 -- there _is_ a gradient
-hr.model <- ds(dist.data, key="hr")
-mod_grad <- dsm(Nhat~s(x,y), hr.model, segs, obs, family=tw())
+hr.model <- ds(dist.data, key="hr", adjustment=NULL)
+mod_grad <- dsm(count~s(x,y), hr.model, segs, obs, method="REML",
+#                   family=quasipoisson())
+                family=tw(a=1.2))
+#mod_grad_gcv <- dsm(Nhat~s(x,y), hr.model, segs, obs)#, family=tw())
 
+
+# what happens to tweedie ?
+#mod_grad_tw12 <- dsm(Nhat~s(x,y), hr.model, segs, obs, family=tw(theta=1.2), method="REML")
+#mod_grad_tw11 <- dsm(Nhat~s(x,y), hr.model, segs, obs, family=tw(theta=1.1), method="REML")
+#mod_grad_tw105 <- dsm(Nhat~s(x,y), hr.model, segs, obs, family=tw(theta=1.05), method="REML")
+#
+#f <- function(s){
+#  x <- dsm(Nhat~s(x,y), hr.model, segs, obs, family=tw(theta=s), method="ML")
+#  c(x$scale, sum(x$edf))
+#}
+#
+#ll <- sapply(seq(1.011, 1.2, by=0.01), f)
+#ll <- cbind(seq(1.011, 1.2, by=0.01), ll)
+
+
+##f <- function(s){
+##  x <- dsm(Nhat~s(x,y), hr.model, segs, obs, gamma=s)
+##  c(x$scale, sum(x$edf))
+##}
+##
+##ll <- sapply(seq(1, 10, by=1), f)
+##ll <- cbind(seq(1, 20, by=1), t(ll))
 
 ## part 2 -- it's all about detectability
 
 
 hr.model_w <- ds(dist.data, key="hr", formula=~as.factor(weather))
-mod_weather <- dsm(Nhat~s(x,y), hr.model_w, segs, obs, family=tw())
+mod_weather <- dsm(count~s(x,y), hr.model_w, segs, obs, method="REML",
+#                   family=quasipoisson())
+                   family=tw(a=1.2))
 
 
 
 
 ## predictions
 
-cell_side <- 0.1
+cell_side <- 0.05
 pred_dat1 <- expand.grid(x = seq(0, 1, by=cell_side),
                          y = seq(0, 1, by=cell_side))
+pred_dat1$off.set <- cell_side^2
 
+# save out some example data
+save(dist.data, segs, obs, pred_dat1, cell_side, file="ht-experiment.RData")
 
 pred_grad <- predict(mod_grad, pred_dat1, off.set=cell_side^2)
 pred_weather <- predict(mod_weather, pred_dat1, off.set=cell_side^2)
@@ -138,101 +177,61 @@ print(p)
 
 
 # uncertainty
-
-cv_grad <- dsm.var.gam(mod_grad, pred_dat1, off.set=cell_side^2)
-cv_weather <- dsm.var.gam(mod_weather, pred_dat1, off.set=cell_side^2)
-
-
-pred_dat$var <- c(dsm.var.gam(mod_grad, split(pred_dat1, 1:nrow(pred_dat1)),
-                             off.set=cell_side^2)$pred.var,
-                  dsm.var.gam(mod_weather, split(pred_dat1, 1:nrow(pred_dat1)),
-                              off.set=cell_side^2)$pred.var)
+pred_dat1$off.set <- cell_side^2
+cv_grad <- dsm.varprop(mod_grad, pred_dat1)
+cv_weather <- dsm.varprop(mod_weather, pred_dat1)
 
 
-combine_cv <- function(vargam,predgam, ddf){
-
-  ddf.summary <- summary(ddf)
-  cvp.sq <- (ddf.summary$average.p.se/ddf.summary$average.p)^2
-
-  cvgam.sq <- (sqrt(vargam)/predgam)^2
-  cv <- sqrt(cvp.sq + cvgam.sq)
-  return(cv)
-}
-
-pred_dat$cv <- c(combine_cv(pred_dat$var[1:nrow(pred_dat1)],
-                            pred_dat$N[1:nrow(pred_dat1)],
-                            hr.model$ddf),
-                 combine_cv(pred_dat$var[(nrow(pred_dat1)+1):nrow(pred_dat)],
-                            pred_dat$N[(nrow(pred_dat1)+1):nrow(pred_dat)],
-                            hr.model_w$ddf))
-
-
-#pred_dat$one <- sqrt(pred_dat$var) + 0*pred_dat$N
-#pred_dat$mone <- 0*pred_dat$N - sqrt(pred_dat$var)
 
 dev.new()
+pred_dat$se <- c(cv_grad$ses,
+                 cv_weather$ses)
 p <- ggplot(pred_dat, aes(x=x, y=y)) +
-      geom_tile(aes(fill=cv, width=cell_side, height=cell_side)) +
-      scale_fill_viridis() +
-#      scale_fill_viridis(limits=c(-20,20)) +
+      geom_tile(aes(fill=se, width=cell_side, height=cell_side)) +
+      scale_fill_viridis(option="B", direction=-1) +
       facet_wrap(~type) +
       geom_path(data=segs) +
-      #geom_point(data=obs)
       geom_text(data=dist.data, aes(label=weather))
       #geom_emoji(data=dist.data[dist.data$weather==0,], emoji="2600") +
       #geom_emoji(data=dist.data[dist.data$weather==1,], emoji="26a1")
 print(p)
 
 
-dev.new()
-pred_dat$se <- pred_dat$cv*pred_dat$N
-p <- ggplot(pred_dat, aes(x=x, y=y)) +
-      geom_tile(aes(fill=se, width=cell_side, height=cell_side)) +
+uci <- pred_dat
+uci$ci <- uci$N + 2*uci$se
+uci$cit <- "upper"
+lci <- pred_dat
+lci$ci <- lci$N - 2*lci$se
+lci$cit <- "lower"
+
+ci_dat <- rbind(uci, lci)
+
+
+pci <- ggplot(ci_dat, aes(x=x, y=y)) +
+      geom_tile(aes(fill=ci, width=cell_side, height=cell_side)) +
+      geom_contour(aes(z=ci)) +
       scale_fill_viridis() +
-#      scale_fill_viridis(limits=c(-20,20)) +
-      facet_wrap(~type) +
+      facet_grid(cit~type) +
       geom_path(data=segs) +
       #geom_point(data=obs)
-#      geom_text(data=dist.data, aes(label=weather))
-      geom_emoji(data=dist.data[dist.data$weather==0,], emoji="2600") +
-      geom_emoji(data=dist.data[dist.data$weather==1,], emoji="26a1")
-print(p)
+      geom_text(data=dist.data, aes(label=weather))
+      #geom_emoji(data=dist.data[dist.data$weather==0,], emoji="2600") +
+      #geom_emoji(data=dist.data[dist.data$weather==1,], emoji="26a1")
+print(pci)
 
-#pred_dat$ucl <- pred_dat$N + 2*pred_dat$se
-#p <- ggplot(pred_dat, aes(x=x, y=y)) +
-#      geom_tile(aes(fill=ucl, width=cell_side, height=cell_side)) +
-#      scale_fill_viridis() +
-##      scale_fill_viridis(limits=c(-20,20)) +
-#      facet_wrap(~type) +
-#      geom_path(data=segs) +
-#      #geom_point(data=obs)
-#      geom_text(data=dist.data, aes(label=weather))
-#      #geom_emoji(data=dist.data[dist.data$weather==0,], emoji="2600") +
-#      #geom_emoji(data=dist.data[dist.data$weather==1,], emoji="26a1")
-#print(p)
-#
-#dev.new()
-#pred_dat$lcl <- pred_dat$N - 2*pred_dat$se
-#p <- ggplot(pred_dat, aes(x=x, y=y)) +
-#      geom_tile(aes(fill=lcl, width=cell_side, height=cell_side)) +
-#      scale_fill_viridis() +
-##      scale_fill_viridis(limits=c(-20,20)) +
-#      facet_wrap(~type) +
-#      geom_path(data=segs) +
-#      #geom_point(data=obs)
-#      geom_text(data=dist.data, aes(label=weather))
-#      #geom_emoji(data=dist.data[dist.data$weather==0,], emoji="2600") +
-#      #geom_emoji(data=dist.data[dist.data$weather==1,], emoji="26a1")
-#print(p)
+##pred_dat$cv <- pred_dat$se/pred_dat$N
+##dev.new()
+##p <- ggplot(pred_dat, aes(x=x, y=y)) +
+##      geom_tile(aes(fill=cv, width=cell_side, height=cell_side)) +
+##      scale_fill_viridis() +
+###      scale_fill_viridis(limits=c(-20,20)) +
+##      facet_wrap(~type) +
+##      geom_path(data=segs) +
+##      #geom_point(data=obs)
+##      geom_text(data=dist.data, aes(label=weather))
+##      #geom_emoji(data=dist.data[dist.data$weather==0,], emoji="2600") +
+##      #geom_emoji(data=dist.data[dist.data$weather==1,], emoji="26a1")
+##print(p)
 
-
-#dev.new()
-#p <- ggplot(pred_dat, aes(x=x, y=y)) +
-#      geom_tile(aes(fill=mone, width=0.1, height=0.1)) +
-#      #scale_fill_viridis(limits=c(0,40)) +
-#      scale_fill_viridis(limits=c(-20,20)) +
-#      facet_wrap(~type) +
-#      geom_path(data=segs) + geom_point(data=obs)
-#print(p)
 
 
