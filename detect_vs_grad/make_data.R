@@ -23,9 +23,9 @@ make_data <- function(seed){
   density.surface <- expand.grid(x = seq(0, 1, len=n_grid),
                                  y = seq(0, 1, len=n_grid))
   # left-right
-  density.surface$density <- 1#00*density.surface$x
-#  density.surface$density[density.surface$x <= 0.5] <- 0.3
-#  density.surface$density[density.surface$x > 0.5] <- 0.7
+  #density.surface$density <- 100*density.surface$x
+  density.surface$density[density.surface$x <= 0.5] <- 0.3
+  density.surface$density[density.surface$x > 0.5] <- 0.7
   
   # setup the detection function for "good" conditions
   df_good <- list(key        = "hr",

@@ -50,17 +50,32 @@ l <- data.frame(x = c(rep(0.1, 5),
 write_transects(l, "shapes/leftie")
 
 
+## many zig-zags then a lone transect /\/\/    |
+
+zzl <- rbind.data.frame(mzz,
+                        data.frame(x   = rep(2.8, 10),
+                                   y   = seq(0, 1, len=10),
+                                   leg = rep(as.character(max(mzz$leg)), 10)))
+write_transects(zzl, "shapes/zzl")
+
 ### simple region shapefile
 region <- data.frame(x=c(0,0,1,1,0),
                      y=c(0,1,1,0,0))
 
-region <- region %>%
-            Polygon %>% list %>%
-            Polygons(ID="1") %>% list %>%
-            SpatialPolygons %>%
-            SpatialPolygonsDataFrame(data=data.frame(z=1))
-writeOGR(region, "shapes/region", "data", "ESRI Shapefile" )
+region2shp <- function(region, file){
+  region <- region %>%
+              Polygon %>% list %>%
+              Polygons(ID="1") %>% list %>%
+              SpatialPolygons %>%
+              SpatialPolygonsDataFrame(data=data.frame(z=1))
+  writeOGR(region, file, "data", "ESRI Shapefile" )
+}
 
+region2shp(region, "shapes/region")
 
+### simple region shapefile
+region2 <- data.frame(x=c(0,0,3,3,0),
+                      y=c(0,1,1,0,0))
+region2shp(region2, "shapes/region2")
 
 
