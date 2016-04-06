@@ -18,6 +18,7 @@ source("../dsmify.R")
 source("quick_dht.R")
 source("get_N_quantile.R")
 
+true_N <- 200
 
 n_grid_x <- 300
 n_grid_y <- 100
@@ -26,7 +27,9 @@ density.surface <- expand.grid(x = seq(0, 3, len=n_grid_x),
 # left-right
 #density.surface$density <- rev(density.surface$x)
 # right-left
-density.surface$density <- density.surface$x
+#density.surface$density <- density.surface$x
+# flat
+density.surface$density <- 1
 
 # setup the prediction grid
 cell_side_x <- 0.05
@@ -50,12 +53,12 @@ df_good <- list(key        = "hr",
 
 # build simulation setup
 ss <- test_dssim("../shapes/zzl", density.surface, n_grid_x=n_grid_x,
-                 n_grid_y=n_grid_y, n_pop=200, df=df_good,
+                 n_grid_y=n_grid_y, n_pop=true_N, df=df_good,
                  region="../shapes/region2/data")
-#check.sim.setup(ss)
+check.sim.setup(ss)
 
-#big_res <- c()
-nsim <- 1#500
+big_res <- c()
+nsim <- 500
 
 for(ii in 1:nsim){
 
@@ -111,7 +114,7 @@ for(ii in 1:nsim){
 
   # get the quantiles
   qs <- apply(all_res[,-1], 1,
-              function(x) get_N_quantile(N=200, Nhat=x[1], cv=x[2]))
+              function(x) get_N_quantile(N=true_N, Nhat=x[1], cv=x[2]))
 
   # build some storage for this set of results
   res <- data.frame(names    = all_res[,1],
@@ -123,7 +126,7 @@ for(ii in 1:nsim){
 }
 
 
-#library(ggplot2)
-#ggplot(big_res) + geom_histogram(aes(quantile)) + facet_wrap(~names)
+library(ggplot2)
+ggplot(big_res) + geom_histogram(aes(quantile)) + facet_wrap(~names)
 
 
