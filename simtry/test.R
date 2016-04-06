@@ -15,47 +15,33 @@ source("../check.sim.setup.R")
 source("../plot_df.R")
 source("../test_dssim.R")
 source("../dsmify.R")
+source("quick_dht.R")
+source("get_N_quantile.R")
 
-#quick_dht <- function(df, survey_res){
-#  aa <- dht(df$ddf, survey_res@region.table@region.table,
-#            survey_res@sample.table@sample.table, survey_res@obs.table@obs.table)
-#  return(aa$individuals$N[,c("Estimate","cv")])
-#}
-#
-## get the quantile that true N occurs at in the estimated
-## distribution of Nhat
-#get_N_quantile <- function(N, Nhat, cvN){
-#
-#  meantrans <- function(m, cv) log(m)-0.5*log(cv^2+1)
-#  setrans <- function(cv) sqrt(log(cv^2+1))
-#
-#  plnorm(N, meantrans(Nhat, cvN), setrans(cvN))
-#}
-#
-#
-#n_grid_x <- 300
-#n_grid_y <- 100
-#density.surface <- expand.grid(x = seq(0, 3, len=n_grid_x),
-#                               y = seq(0, 1, len=n_grid_y))
-## left-right
-#density.surface$density <- rev(density.surface$x)
-#
-#
-#df_good <- list(key        = "hr",
-#                scale      = 0.03,
-#                shape      = 3,
-#                truncation = 0.05)
-#
-#
-#ss <- test_dssim("../shapes/zzl", density.surface, n_grid_x=n_grid_x,
-#                 n_grid_y=n_grid_y, n_pop=200, df=df_good,
-#                 region="../shapes/region2/data")
-##check.sim.setup(ss)
-#
-##big_res <- c()
-#nsim <- 500
-#
-for(ii in 372:nsim){
+
+n_grid_x <- 300
+n_grid_y <- 100
+density.surface <- expand.grid(x = seq(0, 3, len=n_grid_x),
+                               y = seq(0, 1, len=n_grid_y))
+# left-right
+density.surface$density <- rev(density.surface$x)
+
+
+df_good <- list(key        = "hr",
+                scale      = 0.03,
+                shape      = 3,
+                truncation = 0.05)
+
+
+ss <- test_dssim("../shapes/zzl", density.surface, n_grid_x=n_grid_x,
+                 n_grid_y=n_grid_y, n_pop=200, df=df_good,
+                 region="../shapes/region2/data")
+#check.sim.setup(ss)
+
+#big_res <- c()
+nsim <- 500
+
+for(ii in 1:nsim){
 
   survey_res <- create.survey.results(ss, dht.tables=TRUE)
   dsm_data <- dsmify(survey_res)
