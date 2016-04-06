@@ -55,7 +55,7 @@ write_transects(l, "shapes/leftie")
 zzl <- rbind.data.frame(mzz,
                         data.frame(x   = rep(2.8, 10),
                                    y   = seq(0, 1, len=10),
-                                   leg = rep(as.character(max(mzz$leg)), 10)))
+                                   leg = rep(as.character(max(as.numeric(mzz$leg))+1), 10)))
 write_transects(zzl, "shapes/zzl")
 
 ### simple region shapefile

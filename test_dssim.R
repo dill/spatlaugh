@@ -7,8 +7,13 @@
 # region_path   - path to region shapefile
 # df            - detection function list (elements: key, scale, shape, truncation
 
-test_dssim <- function(design_path, dsurf, n_grid, n_pop=500, df,
-                       region_path="shapes/region/data"){
+test_dssim <- function(design_path, dsurf, n_grid=NULL, n_pop=500, df,
+                       region_path="shapes/region/data", n_grid_x=NULL, n_grid_y=NULL){
+
+  if(is.null(n_grid_x) | is.null(n_grid_y)){
+    n_grid_x <- n_grid_y <- n_grid
+  }
+
   # get the study region
   region.shapefile <- read.shapefile(region_path)
   region <- make.region(region.name = "Survey Region", units = "m",
@@ -16,7 +21,7 @@ test_dssim <- function(design_path, dsurf, n_grid, n_pop=500, df,
 
   # populate the region with the density
   pop.density <- make.density(region=region, density.surface=list(dsurf),
-                              x.space = 1/n_grid, y.space = 1/n_grid)
+                              x.space = 1/n_grid_x, y.space = 1/n_grid_y)
 
   pop.description <- make.population.description(region.obj = region,
                                                  density.obj = pop.density,
