@@ -1,0 +1,74 @@
+---
+title: "Results from spatial simulations"
+author: "David L Miller"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load-pkg}
+library(ggplot2)
+```
+
+# Simulation setup
+
+- No group size issues -- everything is group size 1
+- No issues with $\hat{g}(0)$
+
+
+
+## Detection functions
+
+## Spatial models
+
+- Isotropic smooths
+  - Thin plate spline (`bs="tp"`)
+  - Thin plate spline with shrinkage (`bs="ts"`)
+  - Duchon spline (`bs="ds", m=c(1, 0.5)`)
+  - Thin plate spline with rotated covariates (`bs="tp"`)
+- Tensor product smooths
+  - Thin plate spline (`bs="tp"`)
+  - Thin plate spline with rotated covariates (`bs="tp"`)
+
+## True distributions
+
+
+## Designs
+
+
+## Metrics
+
+Where does the truth lie in the distribution of the model?
+
+If we know $N_\text{truth}$ then at what quantile does it lie in the distribution implied by the model, so find $\mathbb{P}[N_\truth \leq \hat{N}]$. Here we assume log-normally distributed $\hat{N}$, so we can use `plnorm` in R to calculate the value we require. This summary statistic gives some idea of both bias and variance.
+
+If the distribution of the statistic is skewed to either end then we can infer under or over estimation of abundance. Flat distribution is good, a "dome" in the middle indicates a conservative estimate (CIs slightly too wide), which we like.
+
+# Results
+
+```{r load-and-plot-results, echo=FALSE}
+f_names <- c("f.RData", "lr.RData")#,"rl.RData")
+load(f_names[2])
+big_res$N <- big_res$V1
+big_res$CV <- big_res$V2
+big_res$V1 <- big_res$V2 <- NULL
+big_res$se <- big_res$CV*big_res$N
+
+p <- ggplot(big_res)+
+  geom_histogram(aes(quantile))+
+  facet_wrap(~names)
+
+mm <- melt(big_res, id=c("iter", "names"))
+p <- ggplot(mm)+
+  geom_histogram(aes(value))+
+  facet_wrap(variable~names, scales="free_x",ncol=7)#+
+  #geom_vline(aes(xintercept=200))
+print(p) 
+```
+
+
+
+
+
