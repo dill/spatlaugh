@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r load-pkg}
 library(ggplot2)
+library(reshape2)
 ```
 
 # Simulation setup
@@ -48,24 +49,42 @@ If the distribution of the statistic is skewed to either end then we can infer u
 
 # Results
 
-```{r load-and-plot-results, echo=FALSE}
-f_names <- c("f.RData", "lr.RData")#,"rl.RData")
-load(f_names[2])
-big_res$N <- big_res$V1
-big_res$CV <- big_res$V2
-big_res$V1 <- big_res$V2 <- NULL
-big_res$se <- big_res$CV*big_res$N
-
-p <- ggplot(big_res)+
-  geom_histogram(aes(quantile))+
-  facet_wrap(~names)
-
-mm <- melt(big_res, id=c("iter", "names"))
-p <- ggplot(mm)+
-  geom_histogram(aes(value))+
-  facet_wrap(variable~names, scales="free_x",ncol=7)#+
-  #geom_vline(aes(xintercept=200))
-print(p) 
+```{r load-and-plot-results, echo=FALSE, fig.width=12, fig.height=4}
+f_names <- c("f.RData", "lr.RData", "rl.RData")
+for(i in seq_along(f_names)){
+  load(f_names[i])
+  big_res$N <- big_res$V1
+  big_res$CV <- big_res$V2
+  big_res$V1 <- big_res$V2 <- NULL
+  big_res$se <- big_res$CV*big_res$N
+  
+  p <- ggplot(big_res)+
+    geom_histogram(aes(quantile))+
+    facet_wrap(~names, ncol=7)+
+    ggtitle(paste(f_names[i], "quantile diagnostic"))
+  print(p) 
+  
+  p <- ggplot(big_res)+
+    geom_histogram(aes(N))+
+    facet_wrap(~names, scales="free_x",ncol=7)+
+    ggtitle(paste(f_names[i], "N"))+
+    geom_vline(aes(xintercept=200))
+  print(p) 
+  
+  p <- ggplot(big_res)+
+    geom_histogram(aes(se))+
+    facet_wrap(~names, scales="free_x",ncol=7)+
+    ggtitle(paste(f_names[i], "se"))
+  print(p) 
+  
+  #mm <- melt(big_res, id=c("iter", "names"))
+  #p <- ggplot(mm)+
+  #  geom_histogram(aes(value))+
+  #  facet_wrap(variable~names, scales="free_x",ncol=7)+
+  #  #geom_vline(aes(xintercept=200))
+  #  ggtitle(f_names[i])
+  #print(p) 
+}
 ```
 
 
