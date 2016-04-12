@@ -17,7 +17,7 @@ library(reshape2)
 
 - No group size issues -- everything is group size 1
 - No issues with $\hat{g}(0)$
-
+- Ignoring the possibility of repeat surveys
 
 
 ## Detection functions
@@ -32,6 +32,15 @@ library(reshape2)
 - Tensor product smooths
   - Thin plate spline (`bs="tp"`)
   - Thin plate spline with rotated covariates (`bs="tp"`)
+
+In the rotated covariate case, the coordinates were rotated through 45$^o$ by the rotation matrix:
+$$
+R= \begin{pmatrix}
+   \cos(\pi/4) & -\sin(\pi/4)\\
+   \sin(\pi/4) & \cos(\pi/4)
+   \end{pmatrix}
+$$
+
 
 ## True distributions
 
@@ -50,7 +59,7 @@ If the distribution of the statistic is skewed to either end then we can infer u
 # Results
 
 ```{r load-and-plot-results, echo=FALSE, fig.width=12, fig.height=4}
-f_names <- c("f.RData", "lr.RData", "rl.RData")
+f_names <- c("f.RData", "lr.RData", "rl.RData", "rl_002.RData")#, "rl_001.RData")
 for(i in seq_along(f_names)){
   load(f_names[i])
   big_res$N <- big_res$V1
@@ -60,21 +69,32 @@ for(i in seq_along(f_names)){
   
   p <- ggplot(big_res)+
     geom_histogram(aes(quantile))+
-    facet_wrap(~names, ncol=7)+
+    facet_wrap(~names, nrow=2)+
     ggtitle(paste(f_names[i], "quantile diagnostic"))
   print(p) 
   
   p <- ggplot(big_res)+
     geom_histogram(aes(N))+
-    facet_wrap(~names, scales="free_x",ncol=7)+
+    facet_wrap(~names, scales="free_x",nrow=2)+
     ggtitle(paste(f_names[i], "N"))+
     geom_vline(aes(xintercept=200))
   print(p) 
   
   p <- ggplot(big_res)+
     geom_histogram(aes(se))+
-    facet_wrap(~names, scales="free_x",ncol=7)+
+    facet_wrap(~names, scales="free_x",nrow=2)+
     ggtitle(paste(f_names[i], "se"))
+  print(p) 
+  
+  p <- ggplot(big_res)+
+    geom_histogram(aes(sp1))+
+    facet_wrap(~names, scales="free_x",nrow=2)+
+    ggtitle(paste(f_names[i], "sp1"))
+  print(p) 
+  p <- ggplot(big_res)+
+    geom_histogram(aes(sp2))+
+    facet_wrap(~names, scales="free_x",nrow=2)+
+    ggtitle(paste(f_names[i], "sp2"))
   print(p) 
   
   #mm <- melt(big_res, id=c("iter", "names"))

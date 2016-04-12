@@ -7,7 +7,7 @@ library(devtools)
 load_all("~/current/dsm")
 library(Distance)
 library(handy2)
-source("~/Dropbox/varprop/data/dsm.varprop.R")
+source("~/current/varprop/data/dsm.varprop.R")
 library(plyr)
 
 
@@ -44,32 +44,58 @@ df_good <- list(key        = "hr",
                 scale      = 0.03,
                 shape      = 3,
                 truncation = 0.05)
-for(iii in 2){
-  if(iii==1){
-    # left-right
-    density.surface$density <- rev(density.surface$x)
-  }else if(iii==2){
-    # right-left
-    density.surface$density <- density.surface$x
-  }else if(iii==3){
-    # flat
-    density.surface$density <- 1
-  }
+df_good_002 <- list(key        = "hr",
+                    scale      = 0.02,
+                    shape      = 1.5,
+                    truncation = 0.02)
+df_good_001 <- list(key        = "hr",
+                    scale      = 0.01,
+                    shape      = 1.1,
+                    truncation = 0.01)
+
+scenarios <- list(list(density  = rev(density.surface$x),
+                       shape    = "../shapes/zzl",
+                       df       = df_good,
+                       filename = "lr.RData"),
+                  list(density  = density.surface$x,
+                       shape    = "../shapes/zzl",
+                       df       = df_good,
+                       filename = "rl.RData"),
+                  list(density  = 1,
+                       shape    = "../shapes/zzl",
+                       df       = df_good,
+                       filename = "f.RData"),
+                  list(density  = rev(density.surface$x),
+                       shape    = "../shapes/zzl",
+                       df       = df_good_002,
+                       filename = "rl_002.RData"),
+                  list(density  = rev(density.surface$x),
+                       shape    = "../shapes/zzl",
+                       df       = df_good_001,
+                       filename = "rl_001.RData"))
+#                  list(density  = 
+#                       filename = ),
+#                  list(density  = 
+#                       filename = ))
+#                  list(density  = 
+#                       filename = ),
+
+
+for(iii in seq_along(scenarios)){
+  this_set <- scenarios[[iii]]
+
+  # set the density
+  density.surface$density <- this_set$density
+
   # build simulation setup
-  ss <- test_dssim("../shapes/zzl", density.surface, n_grid_x=n_grid_x,
-                   n_grid_y=n_grid_y, n_pop=true_N, df=df_good,
+  ss <- test_dssim(this_set$shape, density.surface, n_grid_x=n_grid_x,
+                   n_grid_y=n_grid_y, n_pop=true_N, df=this_set$df,
                    region="../shapes/region2/data")
+#check.sim.setup(ss)
   source("test.R")
-  if(iii==1){
-    # left-right
-  save(big_res, file="lr.RData")
-  }else if(iii==2){
-    # right-left
-  save(big_res, file="rl.RData")
-  }else if(iii==3){
-    # flat
-  save(big_res, file="f.RData")
-  }
+
+  # write out the results
+#   save(big_res, file=this_set$filename)
 }
 
 

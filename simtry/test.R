@@ -1,61 +1,3 @@
-##
-
-
-
-#library(DSsim)
-#library(devtools)
-#load_all("~/current/dsm")
-#library(Distance)
-#library(handy2)
-#source("~/Dropbox/varprop/data/dsm.varprop.R")
-#library(plyr)
-#
-#
-#source("../check.sim.setup.R")
-#source("../plot_df.R")
-#source("../test_dssim.R")
-#source("../dsmify.R")
-#source("quick_dht.R")
-#source("get_N_quantile.R")
-#
-#true_N <- 200
-#nsim <- 500
-#
-#n_grid_x <- 300
-#n_grid_y <- 100
-#density.surface <- expand.grid(x = seq(0, 3, len=n_grid_x),
-#                               y = seq(0, 1, len=n_grid_y))
-## left-right
-##density.surface$density <- rev(density.surface$x)
-## right-left
-##density.surface$density <- density.surface$x
-## flat
-#density.surface$density <- 1
-#
-## setup the prediction grid
-#cell_side_x <- 0.05
-#cell_side_y <- 0.05/3
-#pred_dat1 <- expand.grid(x = seq(0, 3, by=cell_side_x),
-#                         y = seq(0, 1, by=cell_side_y))
-#pred_dat1$off.set <- cell_side_x*cell_side_y
-#
-#
-## rotation matrix
-#R <- matrix(c(cos(pi/4), sin(pi/4), -sin(pi/4), cos(pi/4)),2,2)
-## rotate predictions
-#pred_dat1[,c("xr","yr")] <- t(R %*% t(pred_dat1[,c("x","y")]))
-#
-#
-## setup detection function
-#df_good <- list(key        = "hr",
-#                scale      = 0.03,
-#                shape      = 3,
-#                truncation = 0.05)
-#
-## build simulation setup
-#ss <- test_dssim("../shapes/zzl", density.surface, n_grid_x=n_grid_x,
-#                 n_grid_y=n_grid_y, n_pop=true_N, df=df_good,
-#                 region="../shapes/region2/data")
 #check.sim.setup(ss)
 
 big_res <- c()
@@ -73,7 +15,8 @@ for(ii in 1:nsim){
   segs[,c("xr","yr")] <- t(R %*% t(segs[,c("x","y")]))
 
   # fit a detection function
-  hr.model <- ds(dist.data, key="hr", adjustment=NULL)
+  hr.model <- try(ds(dist.data, key="hr", adjustment=NULL))
+  if(class(hr.model) == "try-error") next
 
   # model list object
   ll <- list()
@@ -108,9 +51,15 @@ for(ii in 1:nsim){
 
   # get N and CVs for the HT model
   HT <- quick_dht(hr.model, survey_res)
+  HT_strat <- quick_dht_strat(hr.model, survey_res)
 
   # bind them together
-  all_res <- rbind.data.frame(all_res, c("HT", unname(HT)))
+  all_res <- rbind.data.frame(all_res,
+                              c("HT", unname(HT)),
+                              c("HT_strat", unname(HT_strat)))
+
+  all_res$V1 <- as.numeric(all_res$V1)
+  all_res$V2 <- as.numeric(all_res$V2)
 
   # get the quantiles
   qs <- apply(all_res[,-1], 1,
@@ -123,8 +72,26 @@ for(ii in 1:nsim){
 
   res <- cbind(res, all_res[,2:3])
 
+  ## save smoothing pars
+  # bind on the smoothing parameters
+  sps <- laply(ll, function(x) {
+                 xx <- c(sp1=NA, sp2=NA)
+                 xx[1:length(x$sp)] <- x$sp
+                 xx})
+  # no smoothing parameter for HT
+  sps <- rbind(sps, c(NA,NA), c(NA,NA))
+
+  ## save # samples
+  res$n <- nrow(dist.data)
+
+  res <- cbind(res, sps)
+
   # bind to the rest
   big_res <- rbind(big_res, res)
+
+
+save(big_res, file=this_set$filename)
+
 }
 
 
