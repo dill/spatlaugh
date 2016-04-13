@@ -82,6 +82,7 @@ scenarios <- list(list(density  = rev(density.surface$x),
 
 
 for(iii in seq_along(scenarios)){
+
   this_set <- scenarios[[iii]]
 
   # set the density
@@ -95,7 +96,7 @@ for(iii in seq_along(scenarios)){
   source("test.R")
 
   # write out the results
-#   save(big_res, file=this_set$filename)
+  save(big_res, file=this_set$filename)
 }
 
 

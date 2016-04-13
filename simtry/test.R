@@ -2,7 +2,7 @@
 
 big_res <- c()
 
-for(ii in 1:nsim){
+for(ii in (max(big_res$iter)+1):nsim){
 
   # generate a survey
   survey_res <- create.survey.results(ss, dht.tables=TRUE)
@@ -89,8 +89,6 @@ for(ii in 1:nsim){
   # bind to the rest
   big_res <- rbind(big_res, res)
 
-
-save(big_res, file=this_set$filename)
 
 }
 
