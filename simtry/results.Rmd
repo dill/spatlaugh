@@ -5,12 +5,13 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
 ```
 
 ```{r load-pkg}
 library(ggplot2)
 library(reshape2)
+library(plyr)
 ```
 
 # Simulation setup
@@ -41,6 +42,10 @@ R= \begin{pmatrix}
    \end{pmatrix}
 $$
 
+## Non-spatial models
+
+- Horvitz-Thompson
+- Horvitz-Thompson stratified with 2 strata: $x\leq 0.5$ and $x>0.5$.
 
 ## True distributions
 
@@ -52,20 +57,32 @@ $$
 
 Where does the truth lie in the distribution of the model?
 
-If we know $N_\text{truth}$ then at what quantile does it lie in the distribution implied by the model, so find $\mathbb{P}[N_\truth \leq \hat{N}]$. Here we assume log-normally distributed $\hat{N}$, so we can use `plnorm` in R to calculate the value we require. This summary statistic gives some idea of both bias and variance.
+If we know $N_\text{truth}$ then at what quantile does it lie in the distribution implied by the model, so find $\mathbb{P}[N_\text{truth} \leq \hat{N}]$. Here we assume log-normally distributed $\hat{N}$, so we can use `plnorm` in R to calculate the value we require. This summary statistic gives some idea of both bias and variance.
 
 If the distribution of the statistic is skewed to either end then we can infer under or over estimation of abundance. Flat distribution is good, a "dome" in the middle indicates a conservative estimate (CIs slightly too wide), which we like.
 
 # Results
 
-```{r load-and-plot-results, echo=FALSE, fig.width=12, fig.height=4}
-f_names <- c("f.RData", "lr.RData", "rl.RData", "rl_002.RData")#, "rl_001.RData")
+```{r load-and-plot-results, echo=FALSE, fig.width=12, fig.height=4, warning=FALSE, message=FALSE}
+f_names <- c("f.RData", "lr.RData", "rl.RData", "rl_002.RData", "rl_001.RData")
 for(i in seq_along(f_names)){
   load(f_names[i])
   big_res$N <- big_res$V1
   big_res$CV <- big_res$V2
   big_res$V1 <- big_res$V2 <- NULL
   big_res$se <- big_res$CV*big_res$N
+  big_res$sen <- big_res$se/sqrt(big_res$n)
+  
+  f_names[i] <- sub(".RData", "", f_names[i])
+  
+  reasonable_range <- function(x){
+    # 1 and 5 are whiskers
+    boxplot.stats(x)$stats[c(1,5)]
+  }
+  clipped_obs <- function(x, rr, name){
+    x <- x[[name]]
+    length(x[x<=rr[1] | x>=rr[2]])
+  }
   
   p <- ggplot(big_res)+
     geom_histogram(aes(quantile))+
@@ -73,28 +90,76 @@ for(i in seq_along(f_names)){
     ggtitle(paste(f_names[i], "quantile diagnostic"))
   print(p) 
   
+  ## N
+  rr <- reasonable_range(big_res$N)
+  # build a data.frame to count clipped observation
+  clipped_d <- ddply(big_res, .(names), clipped_obs, name="N", rr=rr)
+  
   p <- ggplot(big_res)+
     geom_histogram(aes(N))+
     facet_wrap(~names, scales="free_x",nrow=2)+
     ggtitle(paste(f_names[i], "N"))+
+    scale_x_continuous(limits = rr) +
+    geom_text(aes(label=V1, x=rr[1]+(rr[2]-rr[1]), y=50 ), data=clipped_d) +
     geom_vline(aes(xintercept=200))
   print(p) 
   
+  # bias boxplot
+  big_res$bias <- big_res$N-200
   p <- ggplot(big_res)+
-    geom_histogram(aes(se))+
-    facet_wrap(~names, scales="free_x",nrow=2)+
-    ggtitle(paste(f_names[i], "se"))
+    geom_boxplot(aes(names, bias)) +
+    #facet_wrap(~names, scales="free_x",nrow=2)+
+    ggtitle(paste(f_names[i], "bias"))+
+    coord_cartesian(ylim=c(-200,300)) +
+    geom_hline(aes(yintercept=0))
   print(p) 
   
+  
+  rr <- reasonable_range(big_res$sen)
+  # build a data.frame to count clipped observation
+  clipped_d <- ddply(big_res, .(names), clipped_obs, name="sen", rr=rr)
+  p <- ggplot(big_res)+
+    geom_histogram(aes(sen))+
+    facet_wrap(~names, scales="free_x",nrow=2)+
+    scale_x_continuous(limits = rr) +
+    geom_text(aes(label=V1, x=rr[1]+(rr[2]-rr[1]), y=50 ), data=clipped_d) +
+    ggtitle(paste(f_names[i], "se/sqrt(n)"))
+  print(p) 
+  
+  # smoothing parameters
+  rr <- reasonable_range(big_res$sp1)
+  # build a data.frame to count clipped observation
+  clipped_d <- ddply(big_res, .(names), clipped_obs, name="sp1", rr=rr)
   p <- ggplot(big_res)+
     geom_histogram(aes(sp1))+
     facet_wrap(~names, scales="free_x",nrow=2)+
+    scale_x_continuous(limits = rr) +
+    geom_text(aes(label=V1, x=rr[1]+(rr[2]-rr[1]), y=50 ), data=clipped_d) +
     ggtitle(paste(f_names[i], "sp1"))
   print(p) 
+  
+  rr <- reasonable_range(big_res$sp2)
+  # build a data.frame to count clipped observation
+  clipped_d <- ddply(big_res, .(names), clipped_obs, name="sp2", rr=rr)
   p <- ggplot(big_res)+
     geom_histogram(aes(sp2))+
     facet_wrap(~names, scales="free_x",nrow=2)+
+    scale_x_continuous(limits = rr) +
+    geom_text(aes(label=V1, x=rr[1]+(rr[2]-rr[1]), y=50 ), data=clipped_d) +
     ggtitle(paste(f_names[i], "sp2"))
+  print(p) 
+  
+  ## detections
+  #rr <- reasonable_range(big_res$sp2)
+  ## build a data.frame to count clipped observation
+  #clipped_d <- ddply(big_res, .(names), clipped_obs, name="sp2", rr=rr)
+  ndat <- big_res[big_res$name=="HT",]
+  p <- ggplot(ndat)+
+    geom_histogram(aes(n), binwidth=2)+
+    #facet_wrap(~names, scales="free_x",nrow=2)+
+    #scale_x_continuous(limits = rr) +
+    #geom_text(aes(label=V1, x=rr[1]+(rr[2]-rr[1]), y=50 ), data=clipped_d) +
+    ggtitle(paste(f_names[i], "detections"))
   print(p) 
   
   #mm <- melt(big_res, id=c("iter", "names"))
