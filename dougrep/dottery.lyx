@@ -170,7 +170,17 @@ not
 
 \begin_deeper
 \begin_layout Itemize
-The rationale for that IMO is: 
+The rationale for that IMO is: you can have a design that looks great ITO
+ even coverage, but if all the stuff on the RHS was done in the dark in
+ the fog, your effective effort over there is zero--- so you have no idea
+ what's going on the RHS.
+ A properly configured spatial model will figure this out--- 
+\emph on
+if
+\emph default
+ you use a weathr covariate in the det fun--- and warn you.
+ An HT won't.
+ 
 \end_layout
 
 \end_deeper
