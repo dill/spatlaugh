@@ -1,0 +1,480 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\notefontcolor #cf8a00
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.5cm
+\topmargin 3cm
+\rightmargin 1.5cm
+\bottommargin 2cm
+\secnumdepth 5
+\tocdepth 5
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes true
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Where are we at?
+\end_layout
+
+\begin_layout Section
+Basically...
+\end_layout
+
+\begin_layout Standard
+Spent a lot of time actually making sure that 
+\begin_inset Quotes eld
+\end_inset
+
+DSM
+\begin_inset Quotes erd
+\end_inset
+
+ is actually 
+\emph on
+working
+\emph default
+ as it's supposed to ;) and it is--- now ;).
+ Things like 
+\begin_inset Quotes eld
+\end_inset
+
+variance propagation
+\begin_inset Quotes erd
+\end_inset
+
+ are working properly.
+ You probably thought it all was anyway, so don't worry :)
+\end_layout
+
+\begin_layout Itemize
+Ignore 
+\begin_inset Formula $g_{0}$
+\end_inset
+
+ and School Size.
+ massively simplifies things
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+[ I do have some long-term reservations about that, in that in principle
+ 
+\emph on
+some
+\emph default
+ designs might seem OK subject to the above two, but really aren't; on the
+ other hand, really iffy designs will look bad anyway ]
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\series bold
+Require
+\series default
+ the existence of a 
+\begin_inset Quotes eld
+\end_inset
+
+weather
+\begin_inset Quotes erd
+\end_inset
+
+ covariate, even a crap one eg 2 levels 
+\begin_inset Quotes eld
+\end_inset
+
+good
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+bad
+\begin_inset Quotes erd
+\end_inset
+
+.
+ To apply at the segment level, and to be used in fitting detection functions.
+ Any design that does 
+\emph on
+not
+\emph default
+ supply this, cannot IMO be evaluated properly
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The rationale for that IMO is: 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Condition the analysis on:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+the achieved survey design (including the 
+\begin_inset Quotes eld
+\end_inset
+
+weather
+\begin_inset Quotes erd
+\end_inset
+
+ covariate)
+\end_layout
+
+\begin_layout Itemize
+number of groups seen--- but 
+\series bold
+not
+\series default
+ where they were seen
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The 
+\begin_inset Quotes eld
+\end_inset
+
+design-based
+\begin_inset Quotes erd
+\end_inset
+
+ reference analysis is taken to be a HT estimate allowing for covariate
+ and that can be stratified (incl.
+ post-stratified eg so that det fun is pooled across strata).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+We also try a range of spatial models (~6) corresponding to different mathematic
+al interpretations of the word 
+\begin_inset Quotes eld
+\end_inset
+
+smooth
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Spoiler alert: they can give appreciably different answers and show differing
+ biasses.
+ (But usually much less so than HT).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Software evaluates the bias and 
+\begin_inset Quotes eld
+\end_inset
+
+self-confidence
+\begin_inset Quotes erd
+\end_inset
+
+ (see below) from the HT and the spatial models (using a very simple and
+ generic covariate-including detection-function model) given the design
+ and the total number of sightings, for a 
+\emph on
+generic 
+\emph default
+suite of underlying density surfaces exhibiting 
+\begin_inset Quotes eld
+\end_inset
+
+reasonable spatial behaviours
+\begin_inset Quotes erd
+\end_inset
+
+--- eg a 20-fold gradient in density from LHS to RHS, ditto N-S, diagonal,
+ a bump in the middle, correlated with or anti-correlated with weather covariate.
+ Not dozens of these things (deffo < 10).
+ Selection of which-to-include is negotiable.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+NB these are 
+\emph on
+generic
+\emph default
+--- would an HT analysis of this particular design do OK across this suite
+ of density surfaces? Would spatial models do much better? We're not trying
+ to do a spat fit 
+\begin_inset Quotes eld
+\end_inset
+
+blind
+\begin_inset Quotes erd
+\end_inset
+
+ ourselves--- because 
+\series bold
+we do not think
+\series default
+ that a blind analysis is a good idea.
+ Phone an expert (Dave).
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+Self-confidence
+\begin_inset Quotes erd
+\end_inset
+
+: the worst kind of models are those that both get it wrong and overclaim
+ their certainty! (EG much too small a CV).
+ So we also show a statistic that says where the (simulated) truth actually
+ is relative to the model's Confidence Intervals (need picture).
+\end_layout
+
+\begin_layout Itemize
+Thing to consider: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+how to summarize these results?
+\end_layout
+
+\begin_layout Itemize
+should the simulations be constrained so that the 
+\begin_inset Quotes eld
+\end_inset
+
+observed numbers
+\begin_inset Quotes erd
+\end_inset
+
+ in each actually match the actual observed numbers? (to ensure 
+\begin_inset Quotes eld
+\end_inset
+
+relevance
+\begin_inset Quotes erd
+\end_inset
+
+ of results--- I think yes)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+would there be complications in doing that in the stratified models? theoretical
+ly yes, practically let's ignore that..?
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Data input: starting point is format used by existing spatial-model-software
+ (package 
+\family typewriter
+dsm
+\family default
+ is the standard--- related to what 
+\family typewriter
+DISTANCE
+\family default
+ uses).
+ 
+\emph on
+might
+\emph default
+ be negotiable to include something else.
+\end_layout
+
+\begin_layout Itemize
+So: [bloggette alert] what we are evaluating is the ability of 
+\begin_inset Quotes eld
+\end_inset
+
+design-based analysis
+\begin_inset Quotes erd
+\end_inset
+
+ to correctly capture the mean and variance 
+\emph on
+conditional on the design that was actually implemented
+\emph default
+.
+ It's a (semi-)Bayesian viewpoint that explicitly conditions on the data---
+ and a quite different line of argument from 
+\begin_inset Quotes eld
+\end_inset
+
+why design-based variance estimates would be OK if you do things the same
+ but randomly for 1000000 years
+\begin_inset Quotes erd
+\end_inset
+
+, and whether you really designed it randomly or cheated, and what it means
+ if you couldn't implement the design you planned--- and generally gets
+ you out of all sorts of philosophical trouble.
+ The question becomes: how reliable would 
+\emph on
+this
+\emph default
+ design-based analysis be in the context of a model which expects each point
+ estimate and associated CV to be what it purports to be? [NB Hans and Justin
+ have agreed with this basic point in RMP in the past--- I think when all
+ of us except Bill dlM were in agreement!]
+\end_layout
+
+\begin_layout Section
+Structure of report
+\end_layout
+
+\begin_layout Itemize
+Introduction: I suppose this needs to include a clear motivation and recap
+ of spatial model / Density-Surface-Modelling (the term used eg in 
+\family typewriter
+DISTANCE
+\family default
+).
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+appealing loosely to 
+\begin_inset Quotes eld
+\end_inset
+
+pooling robustness
+\begin_inset Quotes erd
+\end_inset
+
+ does 
+\emph on
+not
+\emph default
+ get you a free pass!!! Even when 
+\begin_inset Formula $g_{0}=1$
+\end_inset
+
+ (demo)
+\end_layout
+
+\begin_layout Itemize
+something about spatial models, eg that they can be good but they can be
+ tricky especially for 
+\begin_inset Quotes eld
+\end_inset
+
+extrapolation
+\begin_inset Quotes erd
+\end_inset
+
+ which is not well-defined, and they still require expert judgement.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Description of setup
+\end_layout
+
+\begin_layout Itemize
+Examples
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+some designs that are clearly iffy
+\end_layout
+
+\begin_layout Itemize
+something where the covariate matters
+\end_layout
+
+\begin_layout Itemize
+reasonable designs actually 
+\emph on
+will
+\emph default
+ pass the test
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Something about the software
+\end_layout
+
+\begin_layout Itemize
+Discussion (of things that are still negotiable to include post-Bled :)
+\end_layout
+
+\end_body
+\end_document
