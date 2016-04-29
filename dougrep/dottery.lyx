@@ -420,7 +420,7 @@ Structure of report
 
 \begin_layout Itemize
 Introduction: I suppose this needs to include a clear motivation and recap
- of spatial model / Density-Surface-Modelling (the term used eg in 
+ of spatial model / density surface modelling (the term used eg in 
 \family typewriter
 DISTANCE
 \family default
@@ -491,9 +491,31 @@ will
 
 \end_deeper
 \begin_layout Itemize
-Something about the software
+Software
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+Fitting was done in 
+\family typewriter
+Distance
+\family default
+ (R package version 0.9.6) and 
+\family typewriter
+dsm
+\family default
+ (R package version 2.2.12).
+\end_layout
+
+\begin_layout Itemize
+Simulations were generated using 
+\family typewriter
+DSsim
+\family default
+ (R package version 1.0.4).
+\end_layout
+
+\end_deeper
 \begin_layout Itemize
 Discussion (of things that are still negotiable to include post-Bled :)
 \end_layout

@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
 library(ggplot2)
 library(reshape2)
 library(plyr)
+library(viridis)
 ```
 
 # Simulation setup
@@ -20,8 +21,6 @@ library(plyr)
 - No issues with $\hat{g}(0)$
 - Ignoring the possibility of repeat surveys
 
-
-## Detection functions
 
 ## Spatial models
 
@@ -49,12 +48,45 @@ $$
 
 ## True distributions
 
-- "`f`"
-- "`lr`"
-- "`rl`"
-- "`rl_002`"
-- "`rl_001`"
+- "`f`": flat density, uniform distribution across the region.
+- "`lr`": left to right gradient, high on the left, decreasing as we go right.
+- "`rl`": right to left gradient, high on the right, decreasing as we go left.
+- "`rl_002`": right to left, but decreasing the detectability (i.e., decreasing teh effective strip width).
+- "`rl_001`": right to left, but severely decreasing the detectability (i.e., decreasing the effective strip width).
 
+
+```{r density-surfaces, fig.width=10, fig.height=2, echo=FALSE}
+
+par(mfrow=c(1,5))
+n_grid_x <- 300
+n_grid_y <- 100
+
+density.surface <- expand.grid(x = seq(0, 3, len=n_grid_x),
+                               y = seq(0, 1, len=n_grid_y))
+
+densities <- list(rep(1, length(density.surface$x)),
+                  rev(density.surface$x),
+                  density.surface$x,
+                  rev(density.surface$x),
+                  rev(density.surface$x))
+names <- list("f", "lr", "rl", "rl_002", "rl_001")
+  
+for(i in 1:5){
+  image(matrix(densities[[i]], n_grid_x, n_grid_y),
+        x=seq(0, 3, len=n_grid_x),
+        y= seq(0, 1, len=n_grid_y),
+        col = viridis(1000), main=names[[i]],
+        xlab="x", ylab="y")
+  
+}
+
+```
+
+## Detectability
+
+Detections were generated using a hazard-rate detection function with a scale parameter of 0.03 (except in the `rl_002` and `rl_001` cases, where it was set to 0.02 and 0.01, respectively) and a shape parameter of 3 (except in the `rl_002` and `rl_001` cases, where it was set to 1.5 and 1.1, respectively).
+
+Models were fitted assuming the form of the detection function (hazard-rate) was known, as well as the truncation distance (set as simulated from).
 
 ## Designs
 
