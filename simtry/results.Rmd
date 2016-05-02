@@ -1,7 +1,8 @@
 ---
 title: "Results from spatial simulations"
-author: "David L Miller"
+author: "David L Miller and Mark V Bravington"
 output: html_document
+number_sections: true
 ---
 
 ```{r setup, include=FALSE}
@@ -24,14 +25,14 @@ library(viridis)
 
 ## Spatial models
 
-- Isotropic smooths
-  - Thin plate spline (`bs="tp"`)
-  - Thin plate spline with shrinkage (`bs="ts"`)
-  - Duchon spline (`bs="ds", m=c(1, 0.5)`)
-  - Thin plate spline with rotated covariates (`bs="tp"`)
-- Tensor product smooths
-  - Thin plate spline (`bs="tp"`)
-  - Thin plate spline with rotated covariates (`bs="tp"`)
+* Isotropic smooths
+    * Thin plate spline (`bs="tp"`)
+    * Thin plate spline with shrinkage (`bs="ts"`)
+    * Duchon spline (`bs="ds", m=c(1, 0.5)`)
+    * Thin plate spline with rotated covariates (`bs="tp"`)
+* Tensor product smooths
+    * Thin plate spline (`bs="tp"`)
+    * Thin plate spline with rotated covariates (`bs="tp"`)
 
 In the rotated covariate case, the coordinates were rotated through 45$^o$ by the rotation matrix:
 $$
@@ -41,7 +42,7 @@ R= \begin{pmatrix}
    \end{pmatrix}
 $$
 
-## Non-spatial models
+## Non-spatially explicit models
 
 - Horvitz-Thompson
 - Horvitz-Thompson stratified with 2 strata: $x\leq 0.5$ and $x>0.5$.
@@ -55,9 +56,9 @@ $$
 - "`rl_001`": right to left, but severely decreasing the detectability (i.e., decreasing the effective strip width).
 
 
-```{r density-surfaces, fig.width=10, fig.height=2, echo=FALSE}
+```{r density-surfaces, fig.width=9, fig.height=3, echo=FALSE}
 
-par(mfrow=c(1,5))
+par(mfrow=c(1,3))
 n_grid_x <- 300
 n_grid_y <- 100
 
@@ -71,12 +72,12 @@ densities <- list(rep(1, length(density.surface$x)),
                   rev(density.surface$x))
 names <- list("f", "lr", "rl", "rl_002", "rl_001")
   
-for(i in 1:5){
+for(i in 1:3){
   image(matrix(densities[[i]], n_grid_x, n_grid_y),
         x=seq(0, 3, len=n_grid_x),
         y= seq(0, 1, len=n_grid_y),
         col = viridis(1000), main=names[[i]],
-        xlab="x", ylab="y")
+        xlab="x", ylab="y", asp=1)
   
 }
 
@@ -90,7 +91,11 @@ Models were fitted assuming the form of the detection function (hazard-rate) was
 
 ## Designs
 
-```{r designs, echo=FALSE, fig.width=4, fig.height=3}
+### Design 1 -- zig-zag with straight line
+
+This is supposed to mimic the situation in which a zig-zag design went well on the left side of the study area, but not realised in the middle of the survey (perhaps due to bad weather), then to the left we have a lonely transect (perhaps weather picked-up).
+
+```{r designs, echo=FALSE, fig.width=4, fig.height=4}
 n_segs <- 10
 
 zz <- data.frame(x   = c(seq(0, 0.5, len=n_segs),
@@ -120,15 +125,22 @@ zzl <- rbind.data.frame(mzz,
                                    y   = seq(0, 1, len=10),
                                    leg = rep(as.character(max(as.numeric(mzz$leg))+1), 10)))
 
-plot(c(0,3),c(0,1), type="n", xlab="x", ylab="y")
+plot(c(0,3),c(0,1), type="n", xlab="x", ylab="y", asp=1)
 for(i in unique(zzl$leg)){
   lines(zzl[,c("x","y")][zzl$leg==i,])
 }
+
+lines(c(0,3,3,0,0), c(0,0,1,1,0))
+
 ```
 
 ## Metrics
 
-Where does the truth lie in the distribution of the model?
+### Bias
+
+We can simply calculate the bias ($N_\text{truth} -\hat{N}$) and plot boxplots of these values, however this does not get to the uncertainty, which we're more intrested in...
+
+### Where does the truth lie in the distribution of the model?
 
 If we know $N_\text{truth}$ then at what quantile does it lie in the distribution implied by the model, so find $\mathbb{P}[N_\text{truth} \leq \hat{N}]$. Here we assume log-normally distributed $\hat{N}$, so we can use `plnorm` in R to calculate the value we require. This summary statistic gives some idea of both bias and variance.
 
@@ -136,36 +148,52 @@ If the distribution of the statistic is skewed to either end then we can infer u
 
 # Results
 
-```{r load-and-plot-results, echo=FALSE, fig.width=12, fig.height=4, warning=FALSE, message=FALSE}
-f_names <- c("f.RData", "lr.RData", "rl.RData", "rl_002.RData", "rl_001.RData")
+```{r load-and-plot-results, echo=FALSE, fig.width=11, fig.height=4.5, warning=FALSE, message=FALSE, results="asis"}
+# what are the filenames?
+# one for each distribution/detectability
+f_names <- c("f.RData", "lr.RData", "rl.RData",
+             "rl_002.RData", "rl_001.RData")
+
+# lookup for model names to short descriptions
+model_name_lookup <- list("HT" = "Horvitz-Thompson",
+                          "HT_strat" = "Horvitz-Thompson (stratified)",
+                          "m_xy_ds"  = "Duchon spline bivariate",
+                          "m_xy_te"  = "Thin plate tensor product",
+                          "m_xy_tp"  = "Thin plate bivariate",
+                          "m_xy_ts"  = "Thin plate with shrinkage bivariate",
+                          "m_xyr_tp"  = "Thin plate bivariate rotated",
+                          "m_xyr_te"  = "Thin plate tensor product rotated"
+                          )
+
+# helper functions
+reasonable_range <- function(x){
+  # 1 and 5 are whiskers
+  boxplot.stats(x)$stats[c(1,5)]
+}
+clipped_obs <- function(x, rr, name){
+  x <- x[[name]]
+  length(x[x<=rr[1] | x>=rr[2]])
+}
+
+# now loop over the files
 for(i in seq_along(f_names)){
+  
   load(f_names[i])
+  
+  # re-arrange column names
   big_res$N <- big_res$V1
   big_res$CV <- big_res$V2
   big_res$V1 <- big_res$V2 <- NULL
   big_res$se <- big_res$CV*big_res$N
   big_res$sen <- big_res$se/sqrt(big_res$n)
   
+  # does 1/smoothing parameter make more sense (no?)
   big_res$sp1 <- 1/big_res$sp1
   big_res$sp2 <- 1/big_res$sp2
   
+  # print the name of this scenario as the header
   f_names[i] <- sub(".RData", "", f_names[i])
-  
-  reasonable_range <- function(x){
-    # 1 and 5 are whiskers
-    boxplot.stats(x)$stats[c(1,5)]
-  }
-  clipped_obs <- function(x, rr, name){
-    x <- x[[name]]
-    length(x[x<=rr[1] | x>=rr[2]])
-  }
-  
-  p <- ggplot(big_res)+
-    geom_histogram(aes(quantile))+
-    facet_wrap(~names, nrow=2)+
-    ggtitle(paste(f_names[i], "quantile diagnostic")) +
-    theme_minimal()
-  print(p) 
+  cat("\n\n## ", f_names[i],"\n\n")
   
   ## N
   rr <- reasonable_range(big_res$N)
@@ -186,12 +214,20 @@ for(i in seq_along(f_names)){
   p <- ggplot(big_res)+
     geom_boxplot(aes(names, bias)) +
     #facet_wrap(~names, scales="free_x",nrow=2)+
-    ggtitle(paste(f_names[i], "bias"))+
+    ggtitle("Bias") +
+    labs(y="Bias") +
     coord_cartesian(ylim=c(-200,300)) +
-    theme_minimal()
-    geom_hline(aes(yintercept=0))
+    theme_minimal() +
+    geom_hline(aes(yintercept=0), colour="red")
   print(p) 
   
+  # Mark's fancy quantile diagnostic, described above
+  p <- ggplot(big_res)+
+    geom_histogram(aes(quantile))+
+    facet_wrap(~names, nrow=2)+
+    ggtitle("Quantile diagnostic") +
+    theme_minimal()
+  print(p) 
   
   #rr <- reasonable_range(big_res$sen)
   ## build a data.frame to count clipped observation
@@ -230,7 +266,9 @@ for(i in seq_along(f_names)){
 ```
 
 
-```{r detections, echo=FALSE, fig.width=12, fig.height=4, warning=FALSE, message=FALSE}
+## Number of detections per simulation
+
+```{r detections, echo=FALSE, fig.width=15, fig.height=4, warning=FALSE, message=FALSE}
 f_names <- c("f.RData", "lr.RData", "rl.RData", "rl_002.RData", "rl_001.RData")
 ndat <- c()
 for(i in seq_along(f_names)){

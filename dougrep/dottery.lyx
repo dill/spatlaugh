@@ -419,8 +419,13 @@ Structure of report
 \end_layout
 
 \begin_layout Itemize
-Introduction: I suppose this needs to include a clear motivation and recap
- of spatial model / density surface modelling (the term used eg in 
+Introduction 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+clear motivation and recap of spatial model / density surface modelling
+ (the term used eg in 
 \family typewriter
 DISTANCE
 \family default
@@ -428,7 +433,6 @@ DISTANCE
  
 \end_layout
 
-\begin_deeper
 \begin_layout Itemize
 appealing loosely to 
 \begin_inset Quotes eld
