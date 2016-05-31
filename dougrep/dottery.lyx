@@ -79,24 +79,33 @@
 Where are we at?
 \end_layout
 
+\begin_layout Author
+MVB, DLM: May 2016
+\end_layout
+
 \begin_layout Section
 Basically...
 \end_layout
 
 \begin_layout Standard
-Spent a lot of time actually making sure that 
-\begin_inset Quotes eld
-\end_inset
-
-DSM
-\begin_inset Quotes erd
-\end_inset
-
- is actually 
+When DLM visited MVB in March/April, we spent some time reconciling our
+ approaches: what we think a density surface model (DSM) 
+\shape italic
+should
+\shape default
+ be, versus what it 
+\shape italic
+actually
+\shape default
+ does and making sure that the 
+\family typewriter
+dsm
+\family default
+ package is actually 
 \emph on
 working
 \emph default
- as it's supposed to ;) and it is--- now ;).
+ as it's supposed.
  Things like 
 \begin_inset Quotes eld
 \end_inset
@@ -105,8 +114,33 @@ variance propagation
 \begin_inset Quotes erd
 \end_inset
 
- are working properly.
- You probably thought it all was anyway, so don't worry :)
+ required some changes but are now working.
+ This means that a range of spatial models 
+\emph on
+can
+\emph default
+ now be fitted 
+\begin_inset Quotes eld
+\end_inset
+
+painlessly
+\begin_inset Quotes erd
+\end_inset
+
+ to stripped-down realized survey designs (not actually true before that
+ visit).
+\end_layout
+
+\begin_layout Standard
+We got software sorted, and got some way towards starting a report--- then
+ both of us disappeared onto other things for some weeks.
+ This is a recap of roughly where it's at, for our own benefit and Doug's.
+ DLM is now (says MVB, hopefully..?) in a position to tidy things up for a
+ draft report in time for IWC.
+\end_layout
+
+\begin_layout Section
+Reasonable scenarios for simulation exercise
 \end_layout
 
 \begin_layout Itemize
@@ -114,19 +148,22 @@ Ignore
 \begin_inset Formula $g_{0}$
 \end_inset
 
- and School Size.
- massively simplifies things
+ and school size, which massively simplifies things
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-[ I do have some long-term reservations about that, in that in principle
- 
-\emph on
-some
-\emph default
- designs might seem OK subject to the above two, but really aren't; on the
- other hand, really iffy designs will look bad anyway ]
+This is a bit 
+\begin_inset Quotes eld
+\end_inset
+
+generous
+\begin_inset Quotes erd
+\end_inset
+
+, in that you could have designs that are OK if-and-only-if g0=1 and there
+ is no spatial-school-size patterns.
+ But, really iffy designs will look bad anyway.
 \end_layout
 
 \end_deeper
@@ -143,7 +180,8 @@ weather
 \begin_inset Quotes erd
 \end_inset
 
- covariate, even a crap one eg 2 levels 
+ covariate.
+ We used the most basic: 2 levels, 
 \begin_inset Quotes eld
 \end_inset
 
@@ -160,27 +198,41 @@ bad
 \end_inset
 
 .
- To apply at the segment level, and to be used in fitting detection functions.
- Any design that does 
-\emph on
-not
-\emph default
- supply this, cannot IMO be evaluated properly
+ Weather varied at the segment level only, and was used as a covariate in
+ the detection function.
+ 
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-The rationale for that IMO is: you can have a design that looks great ITO
- even coverage, but if all the stuff on the RHS was done in the dark in
- the fog, your effective effort over there is zero--- so you have no idea
- what's going on the RHS.
+The rationale for that is: you can have a design that looks like even coverage,
+ but if all the effort in the East was done in the dark in the fog, your
+ effective effort over there is zero--- so you have no idea what's going
+ in the East.
  A properly configured spatial model will figure this out--- 
 \emph on
 if
 \emph default
- you use a weathr covariate in the det fun--- and warn you.
- An HT won't.
- 
+ you use a weather covariate in the detection function--- and warn you.
+ A HT model won't.
+ And 
+\begin_inset Quotes eld
+\end_inset
+
+pooling robustness
+\begin_inset Quotes erd
+\end_inset
+
+ doesn't cover this.
+\end_layout
+
+\begin_layout Itemize
+If no weather covariate provided, then our view is that the dataset automaticall
+y 
+\series bold
+fails the test
+\series default
+ (of IWC-worthiness).
 \end_layout
 
 \end_deeper
@@ -198,7 +250,8 @@ weather
 \begin_inset Quotes erd
 \end_inset
 
- covariate)
+ covariate) --- i.e., the actual effort that got spent, not the design that
+ was generated.
 \end_layout
 
 \begin_layout Itemize
@@ -209,6 +262,70 @@ not
  where they were seen
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+One could argue that this is all about 
+\begin_inset Quotes eld
+\end_inset
+
+asymptotic
+\begin_inset Quotes erd
+\end_inset
+
+ bias (if one surveyed the same transects many many times), and thus that
+ the actual number of groups seen is irrelevant.
+ The asymptotic bias of HT in However, there are two arguments for conditioning
+ it to an actual 
+\begin_inset Quotes eld
+\end_inset
+
+sample size
+\begin_inset Quotes erd
+\end_inset
+
+ (here misused to mean 
+\begin_inset Quotes eld
+\end_inset
+
+number of observed groups
+\begin_inset Quotes erd
+\end_inset
+
+):
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+the wiggliness of any spatial-model alternative to HT will certainly be
+ affected by sample size, and this affects reasonableness of alternatives
+ to HT;
+\end_layout
+
+\begin_layout Itemize
+bias is arguably only relevant when it approaches the CV in magnitude.
+ Even a 100% bias is no biggie if the data is so rubbish that the CV is
+ 300%! (Because the model is effectively saying 
+\begin_inset Quotes eld
+\end_inset
+
+I have no idea
+\begin_inset Quotes erd
+\end_inset
+
+).
+ And this is highly dependent on 
+\begin_inset Quotes eld
+\end_inset
+
+sample size
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\end_deeper
 \end_deeper
 \begin_layout Itemize
 The 
@@ -219,9 +336,9 @@ design-based
 \begin_inset Quotes erd
 \end_inset
 
- reference analysis is taken to be a HT estimate allowing for covariate
- and that can be stratified (incl.
- post-stratified eg so that det fun is pooled across strata).
+ reference analysis is taken to be a Horvtiz-Thompson (HT) estimate allowing
+ for covariate and that can be stratified (including post-stratification:
+ e.g, the detection function is pooled across strata).
 \end_layout
 
 \begin_deeper
@@ -243,6 +360,34 @@ smooth
 
 \end_deeper
 \begin_layout Itemize
+Data input: starting point is format used by existing spatial-model-software
+ (package 
+\family typewriter
+dsm
+\family default
+ is the standard--- related to what 
+\family typewriter
+DISTANCE
+\family default
+ uses).
+ 
+\emph on
+Might
+\emph default
+ be negotiable to include something else.
+ [MVB: I'm not sure exactly what 
+\family typewriter
+dsm
+\family default
+ requires, nor how it's related to 
+\family typewriter
+DISTANCE
+\family default
+--- DLM tells me there are big differences, but my eyes always glaze over...]
+ 
+\end_layout
+
+\begin_layout Itemize
 Software evaluates the bias and 
 \begin_inset Quotes eld
 \end_inset
@@ -252,7 +397,7 @@ self-confidence
 \end_inset
 
  (see below) from the HT and the spatial models (using a very simple and
- generic covariate-including detection-function model) given the design
+ generic covariate-including detection function model) given the design
  and the total number of sightings, for a 
 \emph on
 generic 
@@ -267,8 +412,8 @@ reasonable spatial behaviours
 
 --- eg a 20-fold gradient in density from LHS to RHS, ditto N-S, diagonal,
  a bump in the middle, correlated with or anti-correlated with weather covariate.
- Not dozens of these things (deffo < 10).
- Selection of which-to-include is negotiable.
+ Not dozens of these things (certainly < 10).
+ Selection of whicHTo-include is negotiable.
 \end_layout
 
 \begin_deeper
@@ -277,7 +422,7 @@ NB these are
 \emph on
 generic
 \emph default
---- would an HT analysis of this particular design do OK across this suite
+--- would an HT analysis of this particular design do okay across this suite
  of density surfaces? Would spatial models do much better? We're not trying
  to do a spat fit 
 \begin_inset Quotes eld
@@ -291,8 +436,7 @@ blind
 \series bold
 we do not think
 \series default
- that a blind analysis is a good idea.
- Phone an expert (Dave).
+ that a blind or automated analysis is a good idea.
 \end_layout
 
 \begin_layout Itemize
@@ -304,9 +448,69 @@ Self-confidence
 \end_inset
 
 : the worst kind of models are those that both get it wrong and overclaim
- their certainty! (EG much too small a CV).
+ their certainty! (e.g., much too small a CV).
  So we also show a statistic that says where the (simulated) truth actually
- is relative to the model's Confidence Intervals (need picture).
+ is relative to the model's confidence intervals.
+ If the model is doing a good job, then the quantile of the truth within
+ the 
+\begin_inset Quotes eld
+\end_inset
+
+posterior distro
+\begin_inset Quotes erd
+\end_inset
+
+ given the data should be uniform on [0,1].
+ Bias, overconfidence, and underconfidence are all clearly obvious
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Example of 
+\begin_inset Quotes eld
+\end_inset
+
+self-confidence
+\begin_inset Quotes erd
+\end_inset
+
+ plots
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename self-conf-eg.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
@@ -340,33 +544,19 @@ relevance
 
 \begin_deeper
 \begin_layout Itemize
-would there be complications in doing that in the stratified models? theoretical
+would there be complications in doing that in the stratified models? Theoretical
 ly yes, practically let's ignore that..?
 \end_layout
 
 \end_deeper
 \end_deeper
 \end_deeper
-\begin_layout Itemize
-Data input: starting point is format used by existing spatial-model-software
- (package 
-\family typewriter
-dsm
-\family default
- is the standard--- related to what 
-\family typewriter
-DISTANCE
-\family default
- uses).
- 
-\emph on
-might
-\emph default
- be negotiable to include something else.
+\begin_layout Subsection
+Warning: philosophy ahead!
 \end_layout
 
-\begin_layout Itemize
-So: [bloggette alert] what we are evaluating is the ability of 
+\begin_layout Standard
+What we are evaluating is the ability of 
 \begin_inset Quotes eld
 \end_inset
 
@@ -374,23 +564,26 @@ design-based analysis
 \begin_inset Quotes erd
 \end_inset
 
- to correctly capture the mean and variance 
+ (in effect, HT) to correctly capture the mean and variance 
 \emph on
 conditional on the design that was actually implemented
 \emph default
 .
- It's a (semi-)Bayesian viewpoint that explicitly conditions on the data---
- and a quite different line of argument from 
+ It's a (semi-)Bayesian viewpoint that explicitly conditions on the data.
+ And it's a quite different line of argument from 
 \begin_inset Quotes eld
 \end_inset
 
 why design-based variance estimates would be OK if you do things the same
- but randomly for 1000000 years
+ but randomly for 1000000 years and the whales are actually rocks that don't
+ move
 \begin_inset Quotes erd
 \end_inset
 
 , and whether you really designed it randomly or cheated, and what it means
- if you couldn't implement the design you planned--- and generally gets
+ if you couldn't implement the design you planned--- which has got more
+ to do with counting angels on pinheads than whales in the sea.
+ Taking the fairly-Bayesian post-hoc inquisitorial viewpoint generally gets
  you out of all sorts of philosophical trouble.
  The question becomes: how reliable would 
 \emph on
@@ -407,8 +600,39 @@ Structure of report
 \end_layout
 
 \begin_layout Itemize
-Introduction: I suppose this needs to include a clear motivation and recap
- of spatial model / Density-Surface-Modelling (the term used eg in 
+Introduction 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+motivation 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+vague appeals to 
+\begin_inset Quotes eld
+\end_inset
+
+pooling robustness
+\begin_inset Quotes erd
+\end_inset
+
+ do 
+\emph on
+not
+\emph default
+ legitimize crap surveys!!! Even when 
+\begin_inset Formula $g_{0}=1$
+\end_inset
+
+ (demo)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+recap of spatial model / density surface modelling (the term used eg in
+ 
 \family typewriter
 DISTANCE
 \family default
@@ -418,28 +642,7 @@ DISTANCE
 
 \begin_deeper
 \begin_layout Itemize
-appealing loosely to 
-\begin_inset Quotes eld
-\end_inset
-
-pooling robustness
-\begin_inset Quotes erd
-\end_inset
-
- does 
-\emph on
-not
-\emph default
- get you a free pass!!! Even when 
-\begin_inset Formula $g_{0}=1$
-\end_inset
-
- (demo)
-\end_layout
-
-\begin_layout Itemize
-something about spatial models, eg that they can be good but they can be
- tricky especially for 
+they can be good but they can be tricky especially for 
 \begin_inset Quotes eld
 \end_inset
 
@@ -451,6 +654,7 @@ extrapolation
  
 \end_layout
 
+\end_deeper
 \end_deeper
 \begin_layout Itemize
 Description of setup
@@ -479,9 +683,31 @@ will
 
 \end_deeper
 \begin_layout Itemize
-Something about the software
+Software
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+Fitting was done in 
+\family typewriter
+Distance
+\family default
+ (R package version 0.9.6) and 
+\family typewriter
+dsm
+\family default
+ (R package version 2.2.12).
+\end_layout
+
+\begin_layout Itemize
+Simulations were generated using 
+\family typewriter
+DSsim
+\family default
+ (R package version 1.0.4).
+\end_layout
+
+\end_deeper
 \begin_layout Itemize
 Discussion (of things that are still negotiable to include post-Bled :)
 \end_layout
