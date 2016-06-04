@@ -375,16 +375,7 @@ DISTANCE
 Might
 \emph default
  be negotiable to include something else.
- [MVB: I'm not sure exactly what 
-\family typewriter
-dsm
-\family default
- requires, nor how it's related to 
-\family typewriter
-DISTANCE
-\family default
---- DLM tells me there are big differences, but my eyes always glaze over...]
- 
+ Appendix below gives details (from the dsm help files) on the data format.
 \end_layout
 
 \begin_layout Itemize
@@ -710,6 +701,143 @@ DSsim
 \end_deeper
 \begin_layout Itemize
 Discussion (of things that are still negotiable to include post-Bled :)
+\end_layout
+
+\begin_layout Section
+Appendix: data format
+\end_layout
+
+\begin_layout Standard
+Two 
+\family typewriter
+data.frame
+\family default
+s must be provided to 
+\family typewriter
+dsm
+\family default
+.
+ They are referred to as 
+\family typewriter
+observation.data
+\family default
+ and 
+\family typewriter
+segment.data
+\family default
+.
+ The 
+\family typewriter
+segment.data
+\family default
+ table has the sample identifiers which define the segments, the corresponding
+ effort (line length) expended and the environmental covariates that will
+ be used to model abundance/density.
+ 
+\family typewriter
+observation.data
+\family default
+ provides a link table between the observations used in the detection function
+ and the samples (segments), so that we can aggregate the observations to
+ the segments (i.e.
+ 
+\family typewriter
+observation.data
+\family default
+ is a "look-up table" between the observations and the segments).
+\end_layout
+
+\begin_layout Subsection*
+
+\family typewriter
+observation.data
+\end_layout
+
+\begin_layout Standard
+The observation 
+\family typewriter
+data.frame
+\family default
+ must have (at least) the following columns: 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+object
+\family default
+ unique object identifier
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Sample.Label
+\family default
+ the identifier for the segment that the observation occurred in 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+size
+\family default
+ the size of each observed group (e.g 1 if all animals occurred individually)
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+distance
+\family default
+ distance to observation
+\end_layout
+
+\begin_layout Standard
+One can often also use 
+\family typewriter
+observation.data
+\family default
+ to fit a detection function (so additional columns for detection function
+ covariates are allowed in this table).
+\end_layout
+
+\begin_layout Subsection*
+
+\family typewriter
+segment.data
+\end_layout
+
+\begin_layout Standard
+The segment 
+\family typewriter
+data.frame
+\family default
+ must have (at least) the following columns:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Effort
+\family default
+ the effort (in terms of length of the segment) 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Sample.Label
+\family default
+ identifier for the segment (unique!) 
+\end_layout
+
+\begin_layout Itemize
+??? environmental covariates, for example location (projected latitude and
+ longitude), and other relevant covariates (sea surface temperature, foliage
+ type, altitude, bathymetry etc).
+ 
 \end_layout
 
 \end_body
