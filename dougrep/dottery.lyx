@@ -404,7 +404,7 @@ reasonable spatial behaviours
 --- eg a 20-fold gradient in density from LHS to RHS, ditto N-S, diagonal,
  a bump in the middle, correlated with or anti-correlated with weather covariate.
  Not dozens of these things (certainly < 10).
- Selection of whicHTo-include is negotiable.
+ Selection of which-to-include is negotiable.
 \end_layout
 
 \begin_deeper
