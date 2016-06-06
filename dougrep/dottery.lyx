@@ -161,8 +161,11 @@ generous
 \begin_inset Quotes erd
 \end_inset
 
-, in that you could have designs that are OK if-and-only-if g0=1 and there
- is no spatial-school-size patterns.
+, in that you could have designs that are OK if-and-only-if 
+\begin_inset Formula $g_{0}=1$
+\end_inset
+
+ and there is no spatial-school-size patterns.
  But, really iffy designs will look bad anyway.
 \end_layout
 
@@ -401,7 +404,7 @@ reasonable spatial behaviours
 \begin_inset Quotes erd
 \end_inset
 
---- eg a 20-fold gradient in density from LHS to RHS, ditto N-S, diagonal,
+--- e.g., a 20-fold gradient in density from LHS to RHS, ditto N-S, diagonal,
  a bump in the middle, correlated with or anti-correlated with weather covariate.
  Not dozens of these things (certainly < 10).
  Selection of which-to-include is negotiable.
@@ -704,7 +707,11 @@ Discussion (of things that are still negotiable to include post-Bled :)
 \end_layout
 
 \begin_layout Section
-Appendix: data format
+Appendix: 
+\family typewriter
+dsm
+\family default
+ data format
 \end_layout
 
 \begin_layout Standard
@@ -834,9 +841,9 @@ Sample.Label
 \end_layout
 
 \begin_layout Itemize
-??? environmental covariates, for example location (projected latitude and
- longitude), and other relevant covariates (sea surface temperature, foliage
- type, altitude, bathymetry etc).
+??? environmental covariates, for example: location (projected latitude
+ and longitude), and other relevant covariates (sea surface temperature,
+ bathymetry etc).
  
 \end_layout
 
