@@ -1,0 +1,539 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Shortcomings of Horvitz-Thompson-based estimates of abundance for large-scale
+ cetacean abundance estimation
+\end_layout
+
+\begin_layout Author
+David L.
+ Miller and Mark V.
+ Bravington
+\end_layout
+
+\begin_layout Address
+Integrated Statistics, Woods Hole, MA & Centre for Research into Ecological
+ and Environmental Modelling, St Andrews, Scotland
+\end_layout
+
+\begin_layout Address
+Commonwealth Scientific and Industrial Research Organization, Hobart, TAS
+\end_layout
+
+\begin_layout Section
+Introduction 
+\end_layout
+
+\begin_layout Standard
+A great deal of time and money is spent on large-scale cetacean surveys.
+ Though sophisticated statistical methods have been developed to deal with
+ the complications of complex spatial data, it can be the case that investigator
+s opt for an overly simplistic analysis based on randomization principles
+ which are not appropriate for the data in question.
+ An example of a potential issue of this type is the use of 
+\begin_inset Quotes eld
+\end_inset
+
+vanilla
+\begin_inset Quotes erd
+\end_inset
+
+ Horvitz-Thompson estimators of abundance from line transect surveys when
+ the underlying distribution of the study species in fact varies in space.
+ In this paper we show by simulation when such analyses are inappropriate
+ in simple situations -- appealing to the line of reasoning that if an estimator
+ shows poor properties in a simple situation, then when the distribution,
+ availability or detectability is more complex in nature then the estimator
+ will perform even more poorly.
+\end_layout
+
+\begin_layout Standard
+In this paper we are interested in two methodologies for estimating abundance
+ from line transect distance sampling surveys.
+ We assume in both cases that the usual assumptions regarding distance sampling
+ surveys have been met (see e.g., Buckland et al 2001, 2004, 2015).
+ We also assume that distances are recorded for each observation (along
+ with the size of each group of animals, without error).
+ Each 
+\shape italic
+realized
+\shape default
+ transect position is recorded (for example using an automated waypoint
+ function on a GPS unit), i.e., the transect lines are recorded as they were
+ visited, rather than as they were designed.
+ As transects were recorded, an covariate that gives some indication of
+ sighting conditions should also be recorded (we simply refer to this as
+ 
+\begin_inset Quotes eld
+\end_inset
+
+weather
+\begin_inset Quotes erd
+\end_inset
+
+ but it could be Beaufort Sea State or some other omnibus measure of visual
+ conditions).
+ We now describe the two ways in which one could analyze this data, as used
+ in this paper.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Say something here about how we assume that the detectability is estimated
+ already.
+\end_layout
+
+\begin_layout Standard
+We first describe the 
+\begin_inset Quotes eld
+\end_inset
+
+Horvitz-Thompson-like
+\begin_inset Quotes erd
+\end_inset
+
+ estimator (henceforth HT) first described in (
+\series bold
+blah, CITE
+\series default
+).
+ In its simplest version, the HT estimator is
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\hat{N}=\frac{A}{a}\sum_{i=1}^{n}\frac{s_{i}}{\hat{p}_{i}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $n$
+\end_inset
+
+ is the number of observations, index by 
+\begin_inset Formula $i$
+\end_inset
+
+, 
+\begin_inset Formula $s_{i}$
+\end_inset
+
+ is the size of the 
+\begin_inset Formula $i^{\text{th}}$
+\end_inset
+
+ group and 
+\begin_inset Formula $\hat{p}_{i}$
+\end_inset
+
+ is the detectability estimated for the 
+\begin_inset Formula $i^{\text{th}}$
+\end_inset
+
+ group, which will be a function of the corresponding covariates for that
+ observation.
+ The total area surveyed (
+\shape italic
+covered area
+\shape default
+) is 
+\begin_inset Formula $a$
+\end_inset
+
+, which is the product of the line lengths and their corresponding strip
+ widths (if the strips were all the same length then 
+\begin_inset Formula $a=2wL$
+\end_inset
+
+, where 
+\begin_inset Formula $w$
+\end_inset
+
+ is the strip half-width as in Buckland et al 2001, and 
+\begin_inset Formula $L$
+\end_inset
+
+ is the sum of all the lines' lengths).
+ Finally, 
+\begin_inset Formula $A$
+\end_inset
+
+ is the area that we wish to estimate abundance for.
+ Intuitively, we take the group sizes, correct them for detectability and
+ sum to get an estimate of abundance in the covered area, we then rescale
+ this according to the proportion of the covered area that the study region
+ is.
+ The HT estimator assumes that animal density is constant within the study
+ area.
+ This assumption may be justifiable in some situations, but seems very unlikely
+ in a dynamic environment such as an ocean.
+\end_layout
+
+\begin_layout Standard
+In order to circumvent this shortcoming, we can perform pre or post hoc
+ stratification, slicing-up the study area into smaller polygons and estimating
+ abundance for each of these.
+ These may be geographically defined (
+\begin_inset Quotes eld
+\end_inset
+
+near vs.
+ far from shore
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+east/west of some longitude
+\begin_inset Quotes erd
+\end_inset
+
+, etc), based on conditions at sea (
+\begin_inset Quotes eld
+\end_inset
+
+dense vs.
+ non-dense ice
+\begin_inset Quotes erd
+\end_inset
+
+) or based on oceanographic features (
+\begin_inset Quotes eld
+\end_inset
+
+deep or shallow water
+\begin_inset Quotes erd
+\end_inset
+
+).
+ In some sense these estimates reflect a crude, 
+\begin_inset Quotes eld
+\end_inset
+
+blocky
+\begin_inset Quotes erd
+\end_inset
+
+ spatial model, which try to address the deeper drivers of distribution
+ in a given species.
+\end_layout
+
+\begin_layout Standard
+We now describe one approach to distance sampling line transect surveys
+ using an explicit spatial model, which we refer to as density surface models
+ (
+\series bold
+Hedley, Miller etc
+\series default
+).
+ These are similar to the HT estimators above, as they assume that the detection
+ function has already been adequately fitted to the distance data and estimates
+ of probability of detection are available for the spatial model to use.
+ The spatial part of the odel uses the generalized additive modelling framework
+ (
+\series bold
+wood, carrol etc
+\series default
+) to build smooth, spatially explicit terms describing the distribution
+ of the species and their response to other biological/physical variables
+ (though in this paper we only consider models that include smooths of location).
+ Rather than dealing with whole transects (which are generally long and
+ can include large changes in animal density along their length, as well
+ as covariate values), we cut the transects into smaller pieces, which we
+ call 
+\shape italic
+segments
+\shape default
+.
+ The mean response of the model can be written as:,
+\begin_inset Formula 
+\[
+\mathbb{E}(n_{j})=A_{j}\hat{p}_{j}\exp(\beta_{0}+\sum_{k}f_{k}(z_{kj})),
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $j$
+\end_inset
+
+ indexes the segments, each of which have area 
+\begin_inset Formula $A_{j}$
+\end_inset
+
+ and all observations in that segment have a probability of detection of
+ 
+\begin_inset Formula $\hat{p}_{j}$
+\end_inset
+
+.
+ The response, 
+\begin_inset Formula $n_{j}$
+\end_inset
+
+, is distributed according to some count distribution for which 
+\begin_inset Formula $\exp$
+\end_inset
+
+ is the link function.
+ The model intercept is 
+\begin_inset Formula $\beta_{0}$
+\end_inset
+
+.
+ The 
+\begin_inset Formula $f_{k}$
+\end_inset
+
+ are usually splines (
+\series bold
+some papers
+\series default
+): smooth functions of one or more covariates (denoted 
+\begin_inset Formula $z_{jk}$
+\end_inset
+
+), though could be more exotic things like random effects, tensor products,
+ smooth-factor interactions and so forth (
+\series bold
+cite Simon doubly general paper
+\series default
+).
+ The exact form of each 
+\begin_inset Formula $f_{k}$
+\end_inset
+
+ depends on the nature of the effect we wish to model, for smooths of location
+ there are quite a few options, some of which are enumerated and described
+ below.
+\end_layout
+
+\begin_layout Section
+motivation 
+\end_layout
+
+\begin_layout Itemize
+vague appeals to 
+\begin_inset Quotes eld
+\end_inset
+
+pooling robustness
+\begin_inset Quotes erd
+\end_inset
+
+ do 
+\emph on
+not
+\emph default
+ legitimize crap surveys!!! Even when 
+\begin_inset Formula $g_{0}=1$
+\end_inset
+
+ (demo)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+recap of spatial model / density surface modelling (the term used eg in
+ 
+\family typewriter
+DISTANCE
+\family default
+).
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+they can be good but they can be tricky especially for 
+\begin_inset Quotes eld
+\end_inset
+
+extrapolation
+\begin_inset Quotes erd
+\end_inset
+
+ which is not well-defined, and they still require expert judgement.
+ 
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Section
+Description of setup
+\end_layout
+
+\begin_layout Section
+Examples
+\end_layout
+
+\begin_layout Itemize
+some designs that are clearly iffy
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+something where the covariate matters
+\end_layout
+
+\begin_layout Itemize
+reasonable designs actually 
+\emph on
+will
+\emph default
+ pass the test
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Software
+\end_layout
+
+\begin_layout Itemize
+Fitting was done in 
+\family typewriter
+Distance
+\family default
+ (R package version 0.9.6) and 
+\family typewriter
+dsm
+\family default
+ (R package version 2.2.12).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Simulations were generated using 
+\family typewriter
+DSsim
+\family default
+ (R package version 1.0.4).
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Discussion 
+\end_layout
+
+\begin_layout Standard
+(of things that are still negotiable to include post-Bled :)
+\end_layout
+
+\begin_layout Itemize
+note that we only need consider these simple gradients not multiples, as
+ we can consider each as a stratified version of a 
+\begin_inset Quotes eld
+\end_inset
+
+multiple ripple
+\begin_inset Quotes erd
+\end_inset
+
+ setup (I think this makes sense)
+\end_layout
+
+\begin_layout Part*
+Appendices
+\end_layout
+
+\begin_layout Section*
+Appendix 1 - Mathematical equivalence between HT and DSM
+\end_layout
+
+\begin_layout Standard
+This should go somewhere, why not here?
+\end_layout
+
+\begin_layout Section*
+Appendix 2 - Data format for 
+\family typewriter
+Distance
+\family default
+ and 
+\family typewriter
+dsm
+\end_layout
+
+\end_body
+\end_document
