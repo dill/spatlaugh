@@ -117,7 +117,8 @@ vanilla
 
 \begin_layout Standard
 In this paper we are interested in two methodologies for estimating abundance
- from line transect distance sampling surveys.
+ from line transect distance sampling surveys, one is a design-based estimate,
+ the other is a model-based estimate.
  We assume in both cases that the usual assumptions regarding distance sampling
  surveys have been met (see e.g., Buckland et al 2001, 2004, 2015).
  We also assume that distances are recorded for each observation (along
@@ -533,6 +534,258 @@ Distance
  and 
 \family typewriter
 dsm
+\end_layout
+
+\begin_layout Standard
+In this appendix we describe the data format required for the two packages
+ used above.
+ The text below is adapted from their respective manuals.
+\end_layout
+
+\begin_layout Subsection*
+
+\family typewriter
+Distance
+\end_layout
+
+\begin_layout Standard
+A single 
+\family typewriter
+data.frame 
+\family default
+should be provided to
+\family typewriter
+ Distance
+\family default
+ to fit a detection function, or to estimate abundance using the HT estimator.
+ To simply fit a detection function we require the following columns in
+ our data:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+distance
+\family default
+ observed perpendicular distance to observation from the line
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+object
+\family default
+ an unique identifier for the observation
+\end_layout
+
+\begin_layout Standard
+If one wishes to estimate abundance, the following columns are also required:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Sample.Label
+\family default
+ Identifier for the sample (transect) 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Effort
+\family default
+ effort for this transect (transect length) 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Region.Label
+\family default
+ label for a given stratum
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Area
+\family default
+ area of the strata
+\end_layout
+
+\begin_layout Standard
+Each row corresponds to one observation.
+ In some cases a given transect or even stratum may contain zero observations.
+ In this case the transect(s) are still included, along with their effort,
+ but their corresponding 
+\family typewriter
+object
+\family default
+ and 
+\family typewriter
+distance
+\family default
+ fields are set to 
+\begin_inset Quotes eld
+\end_inset
+
+not available
+\begin_inset Quotes erd
+\end_inset
+
+ (in R 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family typewriter
+NA
+\family default
+
+\begin_inset Quotes erd
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Subsection*
+
+\family typewriter
+dsm
+\end_layout
+
+\begin_layout Standard
+Two 
+\family typewriter
+data.frame
+\family default
+s must be provided to 
+\family typewriter
+dsm
+\family default
+.
+ They are referred to as 
+\family typewriter
+observation.data
+\family default
+ and 
+\family typewriter
+segment.data
+\family default
+.
+ The 
+\family typewriter
+segment.data
+\family default
+ table has the sample identifiers which define the segments, the corresponding
+ effort (line length) expended and the environmental covariates that will
+ be used to model abundance/density.
+ 
+\family typewriter
+observation.data
+\family default
+ provides a link table between the observations used in the detection function
+ and the samples (segments), so that we can aggregate the observations to
+ the segments (i.e.
+ 
+\family typewriter
+observation.data
+\family default
+ is a "look-up table" between the observations and the segments).
+\end_layout
+
+\begin_layout Subsection*
+
+\family typewriter
+observation.data
+\end_layout
+
+\begin_layout Standard
+The observation 
+\family typewriter
+data.frame
+\family default
+ must have (at least) the following columns: 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+object
+\family default
+ unique object identifier
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Sample.Label
+\family default
+ the identifier for the segment that the observation occurred in 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+size
+\family default
+ the size of each observed group (e.g 1 if all animals occurred individually)
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+distance
+\family default
+ distance to observation
+\end_layout
+
+\begin_layout Standard
+One can often also use 
+\family typewriter
+observation.data
+\family default
+ to fit a detection function (so additional columns for detection function
+ covariates are allowed in this table).
+\end_layout
+
+\begin_layout Subsection*
+
+\family typewriter
+segment.data
+\end_layout
+
+\begin_layout Standard
+The segment 
+\family typewriter
+data.frame
+\family default
+ must have (at least) the following columns:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Effort
+\family default
+ the effort (in terms of length of the segment) 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Sample.Label
+\family default
+ identifier for the segment (unique!) 
+\end_layout
+
+\begin_layout Itemize
+??? environmental covariates, for example: location (projected latitude
+ and longitude), and other relevant covariates (sea surface temperature,
+ bathymetry etc).
+ 
 \end_layout
 
 \end_body
