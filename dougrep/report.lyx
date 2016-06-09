@@ -298,8 +298,11 @@ blocky
 
 \begin_layout Standard
 We now describe one approach to distance sampling line transect surveys
- using an explicit spatial model, which we refer to as density surface models
- (
+ using an explicit spatial model, which we refer to as 
+\shape italic
+density surface models
+\shape default
+ (DSMs; 
 \series bold
 Hedley, Miller etc
 \series default
@@ -391,11 +394,15 @@ cite Simon doubly general paper
 \end_layout
 
 \begin_layout Section
-motivation 
+Motivation
 \end_layout
 
-\begin_layout Itemize
-vague appeals to 
+\begin_layout Standard
+The DSM approach is more complex as we explicitly model the spatial and
+ environmental covariate effects, but this explicit modelling is the only
+ way to deal with the heterogeneity in spatial distribution of the study
+ species.
+ We note that an appeal to 
 \begin_inset Quotes eld
 \end_inset
 
@@ -403,44 +410,164 @@ pooling robustness
 \begin_inset Quotes erd
 \end_inset
 
- do 
-\emph on
-not
-\emph default
- legitimize crap surveys!!! Even when 
-\begin_inset Formula $g_{0}=1$
+ (Buckland 2004, section 11.12) does not get around this issue.
+ Before explaining why, we first define and explain pooling robustness in
+ a distance sampling context.
+
+\shape italic
+ 
+\shape default
+From Burnham et al.
+ (1980):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+n\hat{f}(0)=\sum_{j=1}^{r}n_{j}\hat{f}_{j}(0)
+\]
+
 \end_inset
 
- (demo)
+
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-recap of spatial model / density surface modelling (the term used eg in
- 
-\family typewriter
-DISTANCE
-\family default
-).
- 
+\begin_layout Standard
+where there are 
+\begin_inset Formula $r$
+\end_inset
+
+ strata chosen to minimize heterogeneity, 
+\begin_inset Formula $n$
+\end_inset
+
+ is the total number of observations, 
+\begin_inset Formula $n_{j}$
+\end_inset
+
+ is the number of observations in stratum 
+\begin_inset Formula $j$
+\end_inset
+
+ and 
+\begin_inset Formula $\hat{f}(0)$
+\end_inset
+
+ and 
+\begin_inset Formula $\hat{f}_{j}(0)$
+\end_inset
+
+ are the pdfs of distances evaluated at zero distance for the whole sample
+ and by stratum, respectively.
+ Equivalently we can write:
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-they can be good but they can be tricky especially for 
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{n}{\hat{p}}=\sum_{j=1}^{r}\frac{n_{j}}{\hat{p}_{j}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Intuitively, we say that pooling robustness holds, the estimates from a
+ stratified analysis would be the same as those for an unstratified analysis.
+ Buckland et al (2004, section 11.12) state: 
 \begin_inset Quotes eld
 \end_inset
 
-extrapolation
+if only an overall abundance estimate is required, standard methods without
+ covariates are satisfactory under rather mild conditions, provided heterogeneit
+y in detectability is not too extreme.
 \begin_inset Quotes erd
 \end_inset
 
- which is not well-defined, and they still require expert judgement.
- 
+ But note that this is a statement essentially about Horvitz-Thompson estimation
+ in the presence of detectability heterogeneity and does not say anything
+ about the case where density varies within strata -- in this case the effect
+ of detectability and distribution are confounded, unless data on observation
+ conditions (e.g., a weather covariate) and spatial distribution (e.g., location
+ of transects) is recorded and modeled.
+ A spatial model that includes data on the location of the observations
+ and the sighting conditions will be able to tease apart these effects and
+ attribute appropriate uncertainty.
 \end_layout
 
-\end_deeper
-\end_deeper
+\begin_layout Standard
+Again this is all when 
+\begin_inset Formula $g(0)=1$
+\end_inset
+
+ and only gets more complicated once we start thinking about double observer
+ methods.
+ Buckland et al (2004) say: 
+\begin_inset Quotes eld
+\end_inset
+
+If 
+\begin_inset Formula $g(0,z)$
+\end_inset
+
+ is a function of 
+\begin_inset Formula $z$
+\end_inset
+
+, then the model robustness criterion fails, and we must model the heterogeneity
+ to avoid bias
+\begin_inset Quotes erd
+\end_inset
+
+, so if we do expect that the probability of detection at zero distance
+ is influenced by covariates (which it almost surely will be), pooling robustnes
+s doesn't apply anyway.
+\end_layout
+
+\begin_layout Standard
+Pooling robustness is implicitly conditioned on having a 
+\begin_inset Quotes eld
+\end_inset
+
+reasonable
+\begin_inset Quotes erd
+\end_inset
+
+design, so appeals to it should only be made in the case where the realised
+ design has (approximately) even coverage.
+\end_layout
+
+\begin_layout Standard
+Given the above, there is a temptation then to fit a 
+\begin_inset Quotes eld
+\end_inset
+
+dumb
+\begin_inset Quotes erd
+\end_inset
+
+ spatial model and hope for the best.
+ This is not the case and properly configuring a spatial model is a time-consumi
+ng process requiring some 
+\begin_inset Quotes eld
+\end_inset
+
+expert
+\begin_inset Quotes erd
+\end_inset
+
+ judgement.
+ As well as formulating, fitting and selecting between models, the investigator
+ also needs to select an appropriate prediction grid, ensuring that unreasonable
+ extrapolations are not made (
+\series bold
+maybe cite Mannocci and Conn papers here?
+\series default
+).
+\end_layout
+
 \begin_layout Section
 Description of setup
 \end_layout
