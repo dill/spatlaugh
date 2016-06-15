@@ -33,6 +33,7 @@ mzz$leg[ind+2*nrow(zz)] <- mzz$leg[ind+2*nrow(zz)]+4
 mzz$leg <- as.character(mzz$leg)
 
 # stretch out over 0,3
+mzz2 <- mzz
 mzz2$x <- mzz$x*3
 
 #plot(mzz[,c("x","y")], type="l", asp=1)
@@ -73,11 +74,11 @@ w <- data.frame(x   = c(zz$x*0.5, zz$x*0.5+0.5)+0.75,
                 leg = rep(2, 2*length(zz$x)))
 
 ce <- data.frame(x   = c(seq(2.8, 2.5, len=5),
-                         seq(2.5, 2.2, len=5), seq(2.2, 2.5, len=5),
+                         seq(2.5, 2.3, len=5), seq(2.3, 2.5, len=5),
                          seq(2.5, 2.8, len=5)),
-                 y   = c(rep(0, 5),
-                         seq(0, 1, len=10),
-                         rep(1, 5)),
+                 y   = c(rep(0.02, 5),
+                         seq(0.02, 0.98, len=10),
+                         rep(0.98, 5)),
                  leg = rep(3, 20))
 
 iwc <- rbind.data.frame(i, w, ce)
