@@ -58,6 +58,32 @@ zzl <- rbind.data.frame(mzz,
                                    leg = rep(as.character(max(as.numeric(mzz$leg))+1), 10)))
 write_transects(zzl, "shapes/zzl")
 
+#                _
+# IWC    | \/\/ |_
+
+
+
+i <- data.frame(x   = rep(0.25, 10),
+                y   = seq(0, 1, len=10),
+                leg = rep(1, 10))
+
+w <- data.frame(x   = c(zz$x*0.5, zz$x*0.5+0.5)+0.75,
+                y   = 1-c(zz$y, zz$y),
+                leg = rep(2, 2*length(zz$x)))
+
+ce <- data.frame(x   = c(seq(2.8, 2.5, len=5),
+                         seq(2.5, 2.2, len=5), seq(2.2, 2.5, len=5),
+                         seq(2.5, 2.8, len=5)),
+                 y   = c(rep(0, 5),
+                         seq(0, 1, len=10),
+                         rep(1, 5)),
+                 leg = rep(3, 20))
+
+iwc <- rbind.data.frame(i, w, ce)
+
+write_transects(iwc, "shapes/iwc")
+
+
 ### simple region shapefile
 region <- data.frame(x=c(0,0,1,1,0),
                      y=c(0,1,1,0,0))
