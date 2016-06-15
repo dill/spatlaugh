@@ -32,7 +32,8 @@ mzz$leg[ind+nrow(zz)] <- mzz$leg[ind+nrow(zz)]+2
 mzz$leg[ind+2*nrow(zz)] <- mzz$leg[ind+2*nrow(zz)]+4
 mzz$leg <- as.character(mzz$leg)
 
-
+# stretch out over 0,3
+mzz$x <- mzz$x*3
 
 #plot(mzz[,c("x","y")], type="l", asp=1)
 write_transects(mzz, "shapes/manyzigzags")
