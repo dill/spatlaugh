@@ -33,10 +33,10 @@ mzz$leg[ind+2*nrow(zz)] <- mzz$leg[ind+2*nrow(zz)]+4
 mzz$leg <- as.character(mzz$leg)
 
 # stretch out over 0,3
-mzz$x <- mzz$x*3
+mzz2$x <- mzz$x*3
 
 #plot(mzz[,c("x","y")], type="l", asp=1)
-write_transects(mzz, "shapes/manyzigzags")
+write_transects(mzz2, "shapes/manyzigzags")
 
 # lots of effort in the west
 l <- data.frame(x = c(rep(0.1, 5),
