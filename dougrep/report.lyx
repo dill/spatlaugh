@@ -8,7 +8,7 @@
 knitr
 \end_modules
 \maintain_unincluded_children false
-\language english
+\language british
 \language_package default
 \inputencoding auto
 \fontencoding global
@@ -100,7 +100,7 @@ Introduction
 A great deal of time and money is spent on large-scale cetacean surveys.
  Though sophisticated statistical methods have been developed to deal with
  the complications of complex spatial data, it can be the case that investigator
-s opt for an overly simplistic analysis based on randomization principles
+s opt for an overly simplistic analysis based on randomisation principles
  which are not appropriate for the data in question.
  An example of a potential issue of this type is the use of 
 \begin_inset Quotes eld
@@ -129,7 +129,7 @@ In this paper we are interested in two methodologies for estimating abundance
  with the size of each group of animals, without error).
  Each 
 \shape italic
-realized
+realised
 \shape default
  transect position is recorded (for example using an automated waypoint
  function on a GPS unit), i.e., the transect lines are recorded as they were
@@ -146,15 +146,26 @@ weather
 
  but it could be Beaufort Sea State or some other omnibus measure of visual
  conditions).
- We now describe the two ways in which one could analyze this data, as used
+ We now describe the two ways in which one could analyse this data, as used
  in this paper.
 \end_layout
 
 \begin_layout Standard
+We do not spend time here describing fitting the detection function to the
+ distance data and refer readers to Buckland et al (2001, 2004, 2015) for
+ information on model formulation and selection.
+ Assuming a fitted detection function (which we will denote 
+\begin_inset Formula $g$
+\end_inset
 
-\series bold
-Say something here about how we assume that the detectability is estimated
- already.
+, a function of distance, observed detection-related covariates and estimated
+ parameters), we can calculate the average (over distance) probability of
+ detection for an individual (conditional on observed covariate values)
+ by integrating out distance, to obtain 
+\begin_inset Formula $\hat{p}_{i}$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -176,9 +187,9 @@ blah, CITE
 
 \begin_layout Standard
 \begin_inset Formula 
-\[
-\hat{N}=\frac{A}{a}\sum_{i=1}^{n}\frac{s_{i}}{\hat{p}_{i}}
-\]
+\begin{equation}
+\hat{N}=\frac{A}{a}\sum_{i=1}^{n}\frac{s_{i}}{\hat{p}_{i}}\label{eq:HT}
+\end{equation}
 
 \end_inset
 
@@ -210,8 +221,7 @@ where
 \begin_inset Formula $i^{\text{th}}$
 \end_inset
 
- group, which will be a function of the corresponding covariates for that
- observation.
+ group, which will be a function of the covariates for that observation.
  The total area surveyed (
 \shape italic
 covered area
@@ -314,7 +324,7 @@ Hedley, Miller etc
  These are similar to the HT estimators above, as they assume that the detection
  function has already been adequately fitted to the distance data and estimates
  of probability of detection are available for the spatial model to use.
- The spatial part of the odel uses the generalized additive modelling framework
+ The spatial part of the model uses the generalized additive modelling framework
  (
 \series bold
 wood, carrol etc
@@ -441,7 +451,7 @@ where there are
 \begin_inset Formula $r$
 \end_inset
 
- strata chosen to minimize heterogeneity, 
+ strata chosen to minimise heterogeneity, 
 \begin_inset Formula $n$
 \end_inset
 
@@ -495,7 +505,7 @@ y in detectability is not too extreme.
  about the case where density varies within strata -- in this case the effect
  of detectability and distribution are confounded, unless data on observation
  conditions (e.g., a weather covariate) and spatial distribution (e.g., location
- of transects) is recorded and modeled.
+ of transects) is recorded and modelled.
  A spatial model that includes data on the location of the observations
  and the sighting conditions will be able to tease apart these effects and
  attribute appropriate uncertainty.
@@ -573,7 +583,7 @@ maybe cite Mannocci and Conn papers here?
 \end_layout
 
 \begin_layout Section
-Description of setup
+Simulation setup
 \end_layout
 
 \begin_layout Subsection
@@ -606,7 +616,14 @@ We used a series of simple density surfaces to test for differences between
 \end_layout
 
 \begin_layout Standard
-These are shown in figure (blah).
+These are shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:densities"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -730,7 +747,10 @@ for(i in 1:3){
 
 \begin_layout Plain Layout
 The proposed density surfaces.
-\end_layout
+ From left to right: flat, left-right gradient, right-left gradient.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:densities"
 
 \end_inset
 
@@ -742,73 +762,437 @@ The proposed density surfaces.
 
 \end_layout
 
-\begin_layout Itemize
-Isotropic smooths 
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-Thin plate spline (bs="tp")
-\end_layout
-
-\begin_layout Itemize
-Thin plate spline with shrinkage (bs="ts")
-\end_layout
-
-\begin_layout Itemize
-Duchon spline (bs="ds", m=c(1, 0.5))
-\end_layout
-
-\begin_layout Itemize
-Thin plate spline with rotated covariates (bs="tp") 
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-Tensor product smooths
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-Thin plate spline (bs="tp") 
-\end_layout
-
-\begin_layout Itemize
-Thin plate spline with rotated covariates (bs="tp")
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-Non-spatially explicit models
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-Horvitz-Thompson 
-\end_layout
-
-\begin_layout Itemize
-Horvitz-Thompson stratified with 2 strata: 
-\begin_inset Formula $x≤0.5$
 \end_inset
 
- and 
-\begin_inset Formula $x>0.5$
+
+\end_layout
+
+\begin_layout Subsection
+Detectability
+\end_layout
+
+\begin_layout Standard
+Detectability in the survey was set at three levels, by varying the parameters
+ of a hazard rate detection function.
+ Plots of the detection functions used to simulate the data are shown in
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:dfs"
+
+\end_inset
+
+and a table of the parameters of the detection functions is given in Table
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:df-pars"
+
 \end_inset
 
 .
 \end_layout
 
-\end_deeper
 \begin_layout Standard
-In the rotated covariate case, the coordinates were rotated through 45º
- by the rotation matrix: 
-\begin_inset Formula 
-\[
-R=\begin{pmatrix}cos(\pi/4) & -sin(\pi/4)\\
-sin(\pi/4) & cos(\pi/4)
-\end{pmatrix}
-\]
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="4">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Detection function
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Scale
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Shape
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Truncation
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.03
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.05
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.02
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.02
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.01
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.01
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Parameters for the detection functions used in the simulations.
+ Moving down the table gives progressively more challenging sighting conditions.
+ Plots of the detection functions are shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:dfs"
+
+\end_inset
+
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:df-pars"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<detfct, fig.width=10, fig.height=4, echo=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+par(mfrow=c(1,3))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# parameters
+\end_layout
+
+\begin_layout Plain Layout
+
+df_good <- list(key        = "hr",
+\end_layout
+
+\begin_layout Plain Layout
+
+                scale      = 0.03,
+\end_layout
+
+\begin_layout Plain Layout
+
+                shape      = 3,
+\end_layout
+
+\begin_layout Plain Layout
+
+                truncation = 0.05) 
+\end_layout
+
+\begin_layout Plain Layout
+
+df_good_002 <- list(key        = "hr",
+\end_layout
+
+\begin_layout Plain Layout
+
+                    scale      = 0.02,
+\end_layout
+
+\begin_layout Plain Layout
+
+                    shape      = 1.5,
+\end_layout
+
+\begin_layout Plain Layout
+
+                    truncation = 0.02) 
+\end_layout
+
+\begin_layout Plain Layout
+
+df_good_001 <- list(key        = "hr",
+\end_layout
+
+\begin_layout Plain Layout
+
+                    scale      = 0.01,
+\end_layout
+
+\begin_layout Plain Layout
+
+                    shape      = 1.1,
+\end_layout
+
+\begin_layout Plain Layout
+
+                    truncation = 0.01)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# plotter
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_df <- function(df){
+\end_layout
+
+\begin_layout Plain Layout
+
+  distance <- seq(0, 0.06, len=1000)
+\end_layout
+
+\begin_layout Plain Layout
+
+  f <- 1 - exp( - (distance/df$scale)^( - df$shape))
+\end_layout
+
+\begin_layout Plain Layout
+
+  plot(distance, f, type="l", ylim=c(0,1),
+\end_layout
+
+\begin_layout Plain Layout
+
+       xlab="Distance", ylab="Probability of detection")
+\end_layout
+
+\begin_layout Plain Layout
+
+  abline(v=df$truncation, lty=2)
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# actually make some plots
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_df(df_good)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_df(df_good_002)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_df(df_good_001)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Detection functions used in the simulations.
+ Dashed line indicates the truncation distance used.
+ Left to right have the parameters given top to bottom in Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:df-pars"
+
+\end_inset
+
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:dfs"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -816,23 +1200,38 @@ sin(\pi/4) & cos(\pi/4)
 \end_layout
 
 \begin_layout Subsection
-Detection functions
-\end_layout
-
-\begin_layout Itemize
-“rl_002”: right to left, but decreasing the detectability (i.e., decreasing
- the effective strip width).
- 
-\end_layout
-
-\begin_layout Itemize
-“rl_001”: right to left, but severely decreasing the detectability (i.e.,
- decreasing the effective strip width).
- 
-\end_layout
-
-\begin_layout Subsection
 Designs
+\end_layout
+
+\begin_layout Standard
+We experimented with three designs: one bad design with a large gap between
+ each contiguous section of realised effort, one 
+\begin_inset Quotes eld
+\end_inset
+
+iffy
+\begin_inset Quotes erd
+\end_inset
+
+ design where there are gaps between 
+\begin_inset Quotes eld
+\end_inset
+
+chunks
+\begin_inset Quotes erd
+\end_inset
+
+ of effort and one good design with good realised coverage across the whole
+ study area (to confirm that what we consider to be a good design gives
+ us the results we expect from our metrics).
+ The designs are shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:designs"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -844,13 +1243,56 @@ This is supposed to mimic the situation in which a zig-zag design went well
  on the left side of the study area, but not realised in the middle of the
  survey (perhaps due to bad weather), then to the left we have a lonely
  transect (perhaps weather picked-up).
+ Shown in the left panel of Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:designs"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Design 2: IWC
+\end_layout
+
+\begin_layout Standard
+This design illustrates the case where conditions were more amenable than
+ in the first example, but coverage is still quite patchy with some gaps
+ in coverage.
+ Shown in the middle panel of Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:designs"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Design 3: zig-zag with good coverage
+\end_layout
+
+\begin_layout Standard
+The final design has good coverage over the whole study area and would be
+ the ideal realised design.
+ Shown in the right panel of Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:designs"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -858,7 +1300,73 @@ status open
 
 \begin_layout Plain Layout
 
-<<designs, echo=FALSE, fig.width=4, fig.height=4>>=
+<<designs, echo=FALSE, fig.width=10, fig.height=4>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+par(mfrow=c(1,3))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# function to make the plots
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_shape <- function(shape, main){
+\end_layout
+
+\begin_layout Plain Layout
+
+  plot(c(0,3), c(0,1), type="n", xlab="x", ylab="y", asp=1, main=main) 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  for(i in unique(shape$leg)){ 
+\end_layout
+
+\begin_layout Plain Layout
+
+    lines(shape[,c("x","y")][shape$leg==i,]) 
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  lines(c(0,3,3,0,0), c(0,0,1,1,0))
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# make a zig (or is it a zag?)
 \end_layout
 
 \begin_layout Plain Layout
@@ -879,6 +1387,10 @@ zz <- data.frame(x = c(seq(0, 0.5, len=n_segs), seq(0.5, 1, len=n_segs)),
 \begin_layout Plain Layout
 
                  leg = c(rep("1", n_segs), rep("2", n_segs)))
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \begin_layout Plain Layout
@@ -933,6 +1445,29 @@ mzz$leg <- as.character(mzz$leg)
 
 \begin_layout Plain Layout
 
+\end_layout
+
+\begin_layout Plain Layout
+
+mzz2 <- mzz
+\end_layout
+
+\begin_layout Plain Layout
+
+mzz2$x <- mzz$x*3
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# zig zag then line
+\end_layout
+
+\begin_layout Plain Layout
+
 zzl <- rbind.data.frame(mzz, 
 \end_layout
 
@@ -958,7 +1493,77 @@ zzl <- rbind.data.frame(mzz,
 
 \begin_layout Plain Layout
 
-plot(c(0,3),c(0,1), type="n", xlab="x", ylab="y", asp=1) 
+# iwc
+\end_layout
+
+\begin_layout Plain Layout
+
+i <- data.frame(x   = rep(0.25, 10),
+\end_layout
+
+\begin_layout Plain Layout
+
+                y   = seq(0, 1, len=10),
+\end_layout
+
+\begin_layout Plain Layout
+
+                leg = rep(1, 10))
+\end_layout
+
+\begin_layout Plain Layout
+
+w <- data.frame(x   = c(zz$x*0.5, zz$x*0.5+0.5)+0.75,
+\end_layout
+
+\begin_layout Plain Layout
+
+                y   = 1-c(zz$y, zz$y),
+\end_layout
+
+\begin_layout Plain Layout
+
+                leg = rep(2, 2*length(zz$x)))
+\end_layout
+
+\begin_layout Plain Layout
+
+ce <- data.frame(x   = c(seq(2.8, 2.5, len=5),
+\end_layout
+
+\begin_layout Plain Layout
+
+                         seq(2.5, 2.3, len=5), seq(2.3, 2.5, len=5),
+\end_layout
+
+\begin_layout Plain Layout
+
+                         seq(2.5, 2.8, len=5)),
+\end_layout
+
+\begin_layout Plain Layout
+
+                 y   = c(rep(0.02, 5),
+\end_layout
+
+\begin_layout Plain Layout
+
+                         seq(0.02, 1, len=10),
+\end_layout
+
+\begin_layout Plain Layout
+
+                         rep(0.98, 5)),
+\end_layout
+
+\begin_layout Plain Layout
+
+                 leg = rep(3, 20))
+\end_layout
+
+\begin_layout Plain Layout
+
+iwc <- rbind.data.frame(i, w, ce)
 \end_layout
 
 \begin_layout Plain Layout
@@ -967,22 +1572,17 @@ plot(c(0,3),c(0,1), type="n", xlab="x", ylab="y", asp=1)
 
 \begin_layout Plain Layout
 
-for(i in unique(zzl$leg)){ 
+plot_shape(zzl, "bad")
 \end_layout
 
 \begin_layout Plain Layout
 
-  lines(zzl[,c("x","y")][zzl$leg==i,]) 
+plot_shape(iwc, "iffy")
 \end_layout
 
 \begin_layout Plain Layout
 
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-lines(c(0,3,3,0,0), c(0,0,1,1,0))
+plot_shape(mzz2, "good")
 \end_layout
 
 \begin_layout Plain Layout
@@ -999,7 +1599,27 @@ lines(c(0,3,3,0,0), c(0,0,1,1,0))
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Realised effort for design 1: zig-zag with straight line.
+Realised effort for the designs used in the simulations.
+ From left to right: the bad design, with most of the effort on the left
+ of the design; the 
+\begin_inset Quotes eld
+\end_inset
+
+iffy
+\begin_inset Quotes erd
+\end_inset
+
+ design where effort is more sporadically allocated; the good design with
+ even coverage.
+ In each case the black box around the designs indicates the limits of the
+ study area.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:designs"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1007,17 +1627,150 @@ Realised effort for design 1: zig-zag with straight line.
 
 \end_layout
 
-\begin_layout Plain Layout
+\end_inset
+
 
 \end_layout
+
+\begin_layout Subsection
+Models
+\end_layout
+
+\begin_layout Standard
+Both spatially explicit models and HT methods were used to estimate abundance
+ for each simulation.
+ These are enumerated below.
+ Since we only include spatial terms in our simulations and we believe that
+ in general our spatial effects can be estimated by bivariate smooths (even
+ if in this example the underlying densities are better suited to univariate
+ smooths, we never know this 
+\shape italic
+a priori
+\shape default
+).
+ The spatial models are separated into two classes: those which have the
+ isotropy property (that a unit change in one direction is considered to
+ be equivalent to a unit change in an orthogonal direction, sometimes referred
+ to as 
+\shape italic
+rotational invariance
+\shape default
+) and those which do not; these are constructed by a 
+\shape italic
+tensor product
+\shape default
+ of univariate splines.
+ We also test that the setup of the smoother isn't unduly advantageous to
+ a particular model by rotating the coordinates system by 45º using the
+ rotation matrix: 
+\begin_inset Formula 
+\[
+R=\begin{pmatrix}cos(\pi/4) & -sin(\pi/4)\\
+sin(\pi/4) & cos(\pi/4)
+\end{pmatrix}
+\]
 
 \end_inset
 
 
 \end_layout
 
+\begin_layout Itemize
+Isotropic smooths 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Thin plate spline (
+\family typewriter
+bs="tp"
+\family default
+; Wood, 2003)
+\end_layout
+
+\begin_layout Itemize
+Thin plate spline with shrinkage (
+\family typewriter
+bs="ts"
+\family default
+; Marra and Wood, 2011)
+\end_layout
+
+\begin_layout Itemize
+Duchon spline (
+\family typewriter
+bs="ds", m=c(1, 0.5)
+\family default
+; Miller and Wood, 2014)
+\end_layout
+
+\begin_layout Itemize
+Thin plate spline with rotated covariates (
+\family typewriter
+bs="tp"
+\family default
+) 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Tensor product smooths (smooths listed below were used in both directions)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Thin plate spline (
+\family typewriter
+bs="tp"
+\family default
+) 
+\end_layout
+
+\begin_layout Itemize
+Thin plate spline with rotated covariates (
+\family typewriter
+bs="tp"
+\family default
+)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Non-spatially explicit models
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Horvitz-Thompson (assuming one stratum, using 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:HT"
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+Horvitz-Thompson with 2 strata: 
+\begin_inset Formula $x\leq0.5$
+\end_inset
+
+ and 
+\begin_inset Formula $x>0.5$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
 \begin_layout Section
 Metrics
+\end_layout
+
+\begin_layout Standard
+In order to assess the performance of the abundance estimates, we use two
+ graphical methods.
 \end_layout
 
 \begin_layout Subsection
@@ -1030,7 +1783,7 @@ We can simply calculate the bias (
 \end_inset
 
 ) and plot boxplots of these values, however this does not get to the uncertaint
-y, which we're more interested in...
+y, which we're more interested in.
 \end_layout
 
 \begin_layout Subsection
@@ -1038,38 +1791,45 @@ Where does the truth lie in the distribution of the model?
 \end_layout
 
 \begin_layout Standard
-If we know 
+If we know the true abundance in our simulation (
 \begin_inset Formula $N_{\text{truth}}$
 \end_inset
 
- then at what quantile does it lie in the distribution implied by the model,
- so find 
+), then we can derive a useful diagnostic measure by asking at what quantile
+ does 
+\begin_inset Formula $N_{\text{truth}}$
+\end_inset
+
+ lie in the distribution implied by the model (i.e., find 
 \begin_inset Formula $\mathbb{P}[N_{\text{truth}}\leq\hat{N}]$
 \end_inset
 
-.
+).
  Here we assume log-normally distributed 
 \begin_inset Formula $\hat{N}$
 \end_inset
 
-, so we can use 
-\family typewriter
-plnorm
-\family default
- in R to calculate the value we require.
+, so use the usual formulae to find the resulting quantiles.
  This summary statistic gives some idea of both bias and variance.
 \end_layout
 
 \begin_layout Standard
-If the distribution of the statistic is skewed to either end then we can
- infer under or over estimation of abundance.
- Flat distribution is good, a "dome" in the middle indicates a conservative
- estimate (CIs slightly too wide), which we like.
- 
-\end_layout
+Obtaining the quantile for each simulation, if the distribution of the statistic
+ is skewed to either end then we can infer under or over estimation of abundance
+ for a particular estimator.
+ A flat distribution shows good performance, whereas a "dome" in the middle
+ indicates a conservative estimate in the sense that confidence intervals
+ are slightly too wide.
+ This more conservative behaviour seems desirable, since we probably have
+ no accounted for all of the sources of uncertainty in our model.
+ An example of plots of this statistic is given in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:self-confidence"
 
-\begin_layout Standard
-An example of plots of this statistic is given in Figure...
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -1311,15 +2071,19 @@ conservative
 \begin_inset Quotes erd
 \end_inset
 
- shows behaviour where the confidence intervals are rather larger than 
-\end_layout
+ shows behaviour where the confidence intervals are slightly too wide, which
+ we might prefer (see main text).
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:self-confidence"
 
 \end_inset
 
 
 \end_layout
 
-\begin_layout Plain Layout
+\end_inset
+
 
 \end_layout
 
@@ -1332,50 +2096,40 @@ conservative
 Examples
 \end_layout
 
-\begin_layout Itemize
-some designs that are clearly iffy
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-something where the covariate matters
-\end_layout
-
-\begin_layout Itemize
-reasonable designs actually 
-\emph on
-will
-\emph default
- pass the test
-\end_layout
-
-\end_deeper
 \begin_layout Section
 Software
 \end_layout
 
-\begin_layout Itemize
-Fitting was done in 
-\family typewriter
-Distance
-\family default
- (R package version 0.9.6) and 
-\family typewriter
-dsm
-\family default
- (R package version 2.2.12).
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-Simulations were generated using 
+\begin_layout Standard
+All simulations were generated using 
 \family typewriter
 DSsim
 \family default
- (R package version 1.0.4).
+ (R package version 1.0.4), with a wrapper scripts used to generate data that
+ could be easily analysed.
+ Detection functions were fitted in 
+\family typewriter
+Distance
+\family default
+ (R package version 0.9.6) and spatial models were fitted using
+\family typewriter
+ dsm
+\family default
+ (R package version 2.2.12).
+ Code for the simulations and this paper is available at 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://github.com/dill/spatlaugh
 \end_layout
 
-\end_deeper
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Section
 Discussion 
 \end_layout
@@ -1634,7 +2388,7 @@ observation.data
  covariates are allowed in this table).
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Subsubsection*
 
 \family typewriter
 segment.data
