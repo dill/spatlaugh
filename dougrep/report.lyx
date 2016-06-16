@@ -1857,7 +1857,8 @@ status open
 
 \begin_layout Plain Layout
 
-<<fig.width=9, fig.height=3, echo=FALSE, message=FALSE, warning=FALSE>>=
+<<self-confidence, fig.width=9, fig.height=3, echo=FALSE, message=FALSE, warning=F
+ALSE>>=
 \end_layout
 
 \begin_layout Plain Layout
