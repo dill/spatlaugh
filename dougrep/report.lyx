@@ -1305,7 +1305,7 @@ reference "fig:designs"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -1332,7 +1332,7 @@ par(mfrow=c(1,3))
 
 \begin_layout Plain Layout
 
-plot_shape <- function(shape, main){
+plot_shape <- function(shape, main, strat=NULL){
 \end_layout
 
 \begin_layout Plain Layout
@@ -1362,6 +1362,35 @@ plot_shape <- function(shape, main){
 \begin_layout Plain Layout
 
   lines(c(0,3,3,0,0), c(0,0,1,1,0))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  if(!is.null(strat)){
+\end_layout
+
+\begin_layout Plain Layout
+
+    for(i in 1:length(strat)){
+\end_layout
+
+\begin_layout Plain Layout
+
+      lines(x=rep(strat[i], 2), y=0:1, lty=2, col="red")
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
 \end_layout
 
 \begin_layout Plain Layout
@@ -1472,6 +1501,11 @@ mzz2$x <- mzz$x*3
 
 \begin_layout Plain Layout
 
+strat_mzz <- c(1,2)
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \begin_layout Plain Layout
@@ -1498,6 +1532,11 @@ zzl <- rbind.data.frame(mzz,
 
                               leg = rep(as.character(max(as.numeric(mzz$leg))+1),
  10)))
+\end_layout
+
+\begin_layout Plain Layout
+
+strat_zzl <- 1.5
 \end_layout
 
 \begin_layout Plain Layout
@@ -1561,7 +1600,7 @@ ce <- data.frame(x   = c(seq(2.8, 2.5, len=5),
 
 \begin_layout Plain Layout
 
-                         seq(0.02, 1, len=10),
+                         seq(0.02, 0.98, len=10),
 \end_layout
 
 \begin_layout Plain Layout
@@ -1581,21 +1620,26 @@ iwc <- rbind.data.frame(i, w, ce)
 
 \begin_layout Plain Layout
 
+strat_iwc <- c(0.5, 2)
 \end_layout
 
 \begin_layout Plain Layout
 
-plot_shape(zzl, "bad")
 \end_layout
 
 \begin_layout Plain Layout
 
-plot_shape(iwc, "iffy")
+plot_shape(zzl, "bad", strat_zzl)
 \end_layout
 
 \begin_layout Plain Layout
 
-plot_shape(mzz2, "good")
+plot_shape(iwc, "iffy", strat_iwc)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_shape(mzz2, "good", strat_mzz)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1626,6 +1670,16 @@ iffy
  even coverage.
  In each case the black box around the designs indicates the limits of the
  study area.
+ Red dashed lines indicate the boundaries of the strata used with the stratified
+ Horvitz-Thompson estimator (see 
+\begin_inset Quotes eld
+\end_inset
+
+Models
+\begin_inset Quotes erd
+\end_inset
+
+).
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:designs"
@@ -1765,15 +1819,14 @@ reference "eq:HT"
 \end_layout
 
 \begin_layout Itemize
-Horvitz-Thompson with 2 strata: 
-\begin_inset Formula $x\leq0.5$
+stratified Horvitz-Thompson using strata as shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:designs"
+
 \end_inset
 
- and 
-\begin_inset Formula $x>0.5$
-\end_inset
-
-
+.
 \end_layout
 
 \end_deeper
