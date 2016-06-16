@@ -82,6 +82,7 @@ ce <- data.frame(x   = c(seq(2.8, 2.5, len=5),
                  leg = rep(3, 20))
 
 iwc <- rbind.data.frame(i, w, ce)
+iwc <- unique(iwc)
 
 write_transects(iwc, "shapes/iwc")
 
