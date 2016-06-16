@@ -630,7 +630,7 @@ reference "fig:densities"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -638,7 +638,8 @@ status open
 
 \begin_layout Plain Layout
 
-<<fig.width=9, fig.height=3, echo=FALSE, message=FALSE, warning=FALSE>>=
+<<densities, fig.width=9, fig.height=3, echo=FALSE, message=FALSE, warning=FALSE>>
+=
 \end_layout
 
 \begin_layout Plain Layout
@@ -772,6 +773,12 @@ Detectability
 \end_layout
 
 \begin_layout Standard
+
+\series bold
+REWRITE!!!
+\end_layout
+
+\begin_layout Standard
 Detectability in the survey was set at three levels, by varying the parameters
  of a hazard rate detection function.
  Plots of the detection functions used to simulate the data are shown in
@@ -782,7 +789,7 @@ reference "fig:dfs"
 
 \end_inset
 
-and a table of the parameters of the detection functions is given in Table
+ and a table of the parameters of the detection functions is given in Table
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1003,7 +1010,7 @@ name "tab:df-pars"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -1199,6 +1206,12 @@ name "fig:dfs"
 
 \end_layout
 
+\begin_layout Standard
+
+\series bold
+REWRITE!!!
+\end_layout
+
 \begin_layout Subsection
 Designs
 \end_layout
@@ -1292,7 +1305,7 @@ reference "fig:designs"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -2094,6 +2107,18 @@ name "fig:self-confidence"
 
 \begin_layout Section
 Examples
+\end_layout
+
+\begin_layout Standard
+For each of the designs illustrated above, we applied each of the three
+ densities along with each of a low, high and changing detectability (both
+ left-right and right-left) leaving us with 
+\begin_inset Formula $3\times3\times4$
+\end_inset
+
+ simulation scenarios.
+ In each of these scenarios we tested all of the modelling options listed
+ above and recorded the metrics from the previous section.
 \end_layout
 
 \begin_layout Section
