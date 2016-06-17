@@ -2,7 +2,7 @@
 
 big_res <- c()
 
-for(ii in (max(big_res$iter)+1):nsim){
+for(ii in 1:nsim){
 
   # generate a survey
   survey_res <- create.survey.results(ss, dht.tables=TRUE)
@@ -21,37 +21,55 @@ for(ii in (max(big_res$iter)+1):nsim){
   # model list object
   ll <- list()
 
+  # function that times out so our fits don't go on for ever
+  timer <- function(x){
+    x <- substitute(x)
+    setTimeLimit(elapsed=300) # 5 mins?
+    on.exit(setTimeLimit(elapsed=Inf))
+    model <- try(eval(x))
+    if(class(model)=="try-error"){
+      return(NULL)
+    }else{
+      return(model)
+    }
+  }
+
   # thin plate
-  ll[["m_xy_tp"]] <- dsm(count~s(x, y, bs="tp"), hr.model, segs, obs,
-                         method="REML", family=tw(a=1.2))
+  ll[["m_xy_tp"]] <- timer(dsm(count~s(x, y, bs="tp"), hr.model, segs, obs,
+                         method="REML", family=tw(a=1.2)))
   # thin plate te
-  ll[["m_xy_te"]] <- dsm(count~te(x, y, bs="tp"), hr.model, segs, obs,
-                         method="REML", family=tw(a=1.2))
+  ll[["m_xy_te"]] <- timer(dsm(count~te(x, y, bs="tp"), hr.model, segs, obs,
+                         method="REML", family=tw(a=1.2)))
   # thin plate te
-  ll[["m_xyr_te"]] <- dsm(count~te(xr, yr, bs="tp"), hr.model, segs, obs,
-                          method="REML", family=tw(a=1.2))
+  ll[["m_xyr_te"]] <- timer(dsm(count~te(xr, yr, bs="tp"), hr.model, segs, obs,
+                          method="REML", family=tw(a=1.2)))
   # thin plate rotation
-  ll[["m_xyr_tp"]] <- dsm(count~s(xr, yr, bs="tp"), hr.model, segs, obs,
-                          method="REML", family=tw(a=1.2))
+  ll[["m_xyr_tp"]] <- timer(dsm(count~s(xr, yr, bs="tp"), hr.model, segs, obs,
+                          method="REML", family=tw(a=1.2)))
   # thin plate w/ shrinkage
-  ll[["m_xy_ts"]] <- dsm(count~s(x, y, bs="ts"), hr.model, segs, obs,
-                         method="REML", family=tw(a=1.2))
+  ll[["m_xy_ts"]] <- timer(dsm(count~s(x, y, bs="ts"), hr.model, segs, obs,
+                         method="REML", family=tw(a=1.2)))
   # Duchon
-  ll[["m_xy_ds"]] <- dsm(count~s(x, y, bs="ds", m=c(1, 0.5)), hr.model, segs, obs,
-                         method="REML", family=tw(a=1.2))
+  ll[["m_xy_ds"]] <- timer(dsm(count~s(x, y, bs="ds", m=c(1, 0.5)), hr.model, segs, obs,
+                         method="REML", family=tw(a=1.2)))
 
 
   # process -- get N and CVs for the spatial models
   all_res <- ldply(ll, function(x){
-    xx <- dsm.varprop(x, pred_dat1)
-    N <- sum(xx$pred)
-    cv <- sqrt(xx$var[1,1])/N
-    return(c(N, cv))
+    if(x$converged){
+      xx <- dsm_varprop(x, pred_dat1)
+      N <- sum(xx$pred)
+      cv <- sqrt(xx$var[1,1])/N
+      return(c(N, cv))
+    }else{
+      return(c(NA, NA))
+    }
   })
 
   # get N and CVs for the HT model
   HT <- quick_dht(hr.model, survey_res)
-  HT_strat <- quick_dht_strat(hr.model, survey_res)
+  HT_strat <- quick_dht_strat(hr.model, survey_res,
+                              stratification[[this_set$design]])
 
   # bind them together
   all_res <- rbind.data.frame(all_res,

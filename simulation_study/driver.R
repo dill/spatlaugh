@@ -7,7 +7,6 @@ library(devtools)
 load_all("~/current/dsm")
 library(Distance)
 library(handy2)
-source("~/current/varprop/data/dsm.varprop.R")
 library(plyr)
 
 
@@ -40,63 +39,55 @@ pred_dat1[,c("xr","yr")] <- t(R %*% t(pred_dat1[,c("x","y")]))
 
 
 # setup detection function
-df_good <- list(key        = "hr",
-                scale      = 0.03,
-                shape      = 3,
-                truncation = 0.05)
-df_good_002 <- list(key        = "hr",
-                    scale      = 0.02,
-                    shape      = 1.5,
-                    truncation = 0.02)
-df_good_001 <- list(key        = "hr",
+df <- list()
+df[["good"]] <- list(key        = "hr",
+                     scale      = 0.03,
+                     shape      = 3,
+                     truncation = 0.05)
+df[["bad"]] <- list(key        = "hr",
                     scale      = 0.01,
                     shape      = 1.1,
-                    truncation = 0.01)
-
-scenarios <- list(list(density  = rev(density.surface$x),
-                       shape    = "../shapes/zzl",
-                       df       = df_good,
-                       filename = "lr.RData"),
-                  list(density  = density.surface$x,
-                       shape    = "../shapes/zzl",
-                       df       = df_good,
-                       filename = "rl.RData"),
-                  list(density  = 1,
-                       shape    = "../shapes/zzl",
-                       df       = df_good,
-                       filename = "f.RData"),
-                  list(density  = rev(density.surface$x),
-                       shape    = "../shapes/zzl",
-                       df       = df_good_002,
-                       filename = "rl_002.RData"),
-                  list(density  = rev(density.surface$x),
-                       shape    = "../shapes/zzl",
-                       df       = df_good_001,
-                       filename = "rl_001.RData"))
-#                  list(density  = 
-#                       filename = ),
-#                  list(density  = 
-#                       filename = ))
-#                  list(density  = 
-#                       filename = ),
+                    truncation = 0.02)
 
 
-for(iii in seq_along(scenarios)){
+# setup densities
+densities <- list()
+densities[["f"]] <- 1
+densities[["lr"]] <- density.surface$x
+densities[["rl"]] <- rev(density.surface$x)
 
-  this_set <- scenarios[[iii]]
+# stratification schemes
+stratification <- list()
+stratification[["zzl"]] <- 1.5
+stratification[["manyzigzags"]] <- c(1, 2)
+stratification[["iwc"]] <- c(0.5, 2)
+
+## build the simulation scenarios
+scenarios <- expand.grid(density = c("lr","rl","f"),
+                         design  = c("zzl","manyzigzags","iwc"),
+                         df      = c("good","bad"))#,"lr","rl"))
+
+for(iii in 1:nrow(scenarios)){
+
+  this_set <- scenarios[iii,,drop=FALSE]
 
   # set the density
-  density.surface$density <- this_set$density
+  density.surface$density <- densities[[this_set$density]]
 
   # build simulation setup
-  ss <- test_dssim(this_set$shape, density.surface, n_grid_x=n_grid_x,
-                   n_grid_y=n_grid_y, n_pop=true_N, df=this_set$df,
+  ss <- test_dssim(paste0("../shapes/", this_set$design),
+                   density.surface,
+                   n_grid_x=n_grid_x, n_grid_y=n_grid_y,
+                   n_pop=true_N, df=df[[this_set$df]],
                    region="../shapes/region2/data")
 #check.sim.setup(ss)
   source("test.R")
 
   # write out the results
-  save(big_res, file=this_set$filename)
+  # getting the filename here is ludicrous
+  save(big_res, file=paste0(paste(apply(this_set, 2, as.character),
+                                  collapse="-"),
+                            ".RData"))
 }
 
 

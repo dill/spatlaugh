@@ -1,22 +1,36 @@
 # get Horvitz-Thompson estimate of N and CV(N)
 quick_dht <- function(df, survey_res){
   aa <- dht(df$ddf, survey_res@region.table@region.table,
-            survey_res@sample.table@sample.table, survey_res@obs.table@obs.table)
+            survey_res@sample.table@sample.table,
+            survey_res@obs.table@obs.table)
   return(as.vector(aa$individuals$N[,c("Estimate","cv")][1,]))
 }
 
 # with stratification about x=1.5
-quick_dht_strat <- function(df, survey_res){
+quick_dht_strat <- function(df, survey_res, strat){
 
   # setup the region
   region <- survey_res@region.table@region.table
-  region <- rbind(region,region)
-  region$Region.Label <- c(1,2)
-  region$Area <- region$Area/2
+  region <- region[rep(seq(nrow(region)),length(strat)+1),]
+  region$Region.Label <- 1:(length(strat)+1)
+  region$Area <- diff(c(0, strat, 3))
 
-  samplet <- survey_res@sample.table@sample.table
-  samplet$Region.Label <- 2
-  samplet$Region.Label[samplet$Sample.Label %in% 1:54] <- 1
+  # merge the sample table onto the transect locations to
+  # get the end of the transects to do stratification
+  samplet <- merge(survey_res@sample.table@sample.table,
+                   survey_res@transects@sampler.info,
+                   by.x="Sample.Label",by.y="ID")
+
+  # build the stratum data
+  begin_stratum <- c(0,strat)
+  end_stratum   <- c(strat,3)
+  region.labs <- rep(NA, nrow(samplet))
+  for(i_strat in 1:length(begin_stratum)){
+    ind <- samplet$end.X <= end_stratum[i_strat] &
+           samplet$end.X > begin_stratum[i_strat]
+    region.labs[ind] <- i_strat
+  }
+  samplet$Region.Label <- region.labs
 
   obst <- survey_res@obs.table@obs.table
   obst$Region.Label <- NULL
@@ -24,6 +38,6 @@ quick_dht_strat <- function(df, survey_res){
                 by="Sample.Label")
   aa <- dht(df$ddf, region,
             samplet, obst)
-  return(apply(aa$individuals$N[,c("Estimate","cv")][3,],2, sum))
+  return(aa$individuals$N[,c("Estimate","cv")][nrow(aa$individuals$N),])
 }
 
