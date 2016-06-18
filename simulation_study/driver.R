@@ -68,9 +68,16 @@ scenarios <- expand.grid(density = c("lr","rl","f"),
                          df      = c("good","bad"),#"lr","rl"),
                          stringsAsFactors=FALSE)
 
+
 for(iii in 1:nrow(scenarios)){
 
+
   this_set <- scenarios[iii,,drop=FALSE]
+
+  # print scenario name
+  scenario_name <- paste(apply(this_set, 2, as.character), collapse="-")
+
+  cat("Scenario:", scenario_name, "\n")
 
   # set the density
   density.surface$density <- densities[[this_set$density]]
@@ -81,14 +88,12 @@ for(iii in 1:nrow(scenarios)){
                    n_grid_x=n_grid_x, n_grid_y=n_grid_y,
                    n_pop=true_N, df=df[[this_set$df]],
                    region="../shapes/region2/data")
-check.sim.setup(ss)
+#check.sim.setup(ss)
   source("test.R")
 
   # write out the results
   # getting the filename here is ludicrous
-#  save(big_res, file=paste0(paste(apply(this_set, 2, as.character),
-#                                  collapse="-"),
-#                            ".RData"))
+  save(big_res, file=paste0(scenario_name, ".RData"))
 }
 
 

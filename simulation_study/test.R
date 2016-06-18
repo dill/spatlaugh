@@ -2,6 +2,8 @@
 
 big_res <- c()
 
+pb <- txtProgressBar(min=1, max=nsim, style=3)
+
 for(ii in 1:nsim){
 
   # generate a survey
@@ -15,9 +17,9 @@ for(ii in 1:nsim){
   segs[,c("xr","yr")] <- t(R %*% t(segs[,c("x","y")]))
 
   # fit a detection function
-  hr.model <- try(ds(dist.data, key="hr", adjustment=NULL))
+  hr.model <- suppressMessages(try(ds(dist.data, key="hr", adjustment=NULL)))
 
-  if(class(hr.model) == "try-error" || abs(hr.model$ddf$par[1])<1e-6) next
+  if(any(class(hr.model) == "try-error") || abs(hr.model$ddf$par[1])<1e-6) next
 
   # model list object
   ll <- list()
@@ -28,7 +30,7 @@ for(ii in 1:nsim){
     setTimeLimit(elapsed=300) # 5 mins?
     on.exit(setTimeLimit(elapsed=Inf))
     model <- try(eval(x))
-    if(class(model)=="try-error"){
+    if(any(class(model)=="try-error")){
       return(NULL)
     }else{
       return(model)
@@ -108,6 +110,7 @@ for(ii in 1:nsim){
   # bind to the rest
   big_res <- rbind(big_res, res)
 
+  setTxtProgressBar(pb, ii)
 
 }
 
