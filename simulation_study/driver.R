@@ -65,7 +65,8 @@ stratification[["iwc"]] <- c(0.5, 2)
 ## build the simulation scenarios
 scenarios <- expand.grid(density = c("lr","rl","f"),
                          design  = c("zzl","manyzigzags","iwc"),
-                         df      = c("good","bad"))#,"lr","rl"))
+                         df      = c("good","bad"),#"lr","rl"),
+                         stringsAsFactors=FALSE)
 
 for(iii in 1:nrow(scenarios)){
 
@@ -80,14 +81,14 @@ for(iii in 1:nrow(scenarios)){
                    n_grid_x=n_grid_x, n_grid_y=n_grid_y,
                    n_pop=true_N, df=df[[this_set$df]],
                    region="../shapes/region2/data")
-#check.sim.setup(ss)
+check.sim.setup(ss)
   source("test.R")
 
   # write out the results
   # getting the filename here is ludicrous
-  save(big_res, file=paste0(paste(apply(this_set, 2, as.character),
-                                  collapse="-"),
-                            ".RData"))
+#  save(big_res, file=paste0(paste(apply(this_set, 2, as.character),
+#                                  collapse="-"),
+#                            ".RData"))
 }
 
 

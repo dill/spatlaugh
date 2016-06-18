@@ -16,7 +16,8 @@ for(ii in 1:nsim){
 
   # fit a detection function
   hr.model <- try(ds(dist.data, key="hr", adjustment=NULL))
-  if(class(hr.model) == "try-error" | abs(hr.model$ddf$par[1])<1e-6) next
+
+  if(class(hr.model) == "try-error" || abs(hr.model$ddf$par[1])<1e-6) next
 
   # model list object
   ll <- list()
