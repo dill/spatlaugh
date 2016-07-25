@@ -27,29 +27,29 @@ clipped_obs <- function(x, rr, name){
 
 # now loop over the files
 for(i in seq_along(f_names)){
-  
+
   load(f_names[i])
-  
+
   # re-arrange column names
   big_res$N <- big_res$V1
   big_res$CV <- big_res$V2
   big_res$V1 <- big_res$V2 <- NULL
   big_res$se <- big_res$CV*big_res$N
   big_res$sen <- big_res$se/sqrt(big_res$n)
-  
+
   # does 1/smoothing parameter make more sense (no?)
   big_res$sp1 <- 1/big_res$sp1
   big_res$sp2 <- 1/big_res$sp2
-  
+
   # print the name of this scenario as the header
   f_names[i] <- sub(".RData", "", f_names[i])
   cat("\n\n## ", f_names[i],"\n\n")
-  
+
   ## N
   #rr <- reasonable_range(big_res$N)
   # build a data.frame to count clipped observation
   #clipped_d <- ddply(big_res, .(names), clipped_obs, name="N", rr=rr)
-  
+
   #p <- ggplot(big_res)+
   #  geom_histogram(aes(N))+
   #  facet_wrap(~names, scales="free_x",nrow=2)+
@@ -58,7 +58,7 @@ for(i in seq_along(f_names)){
   #  geom_text(aes(label=V1, x=rr[1]+(rr[2]-rr[1]), y=50 ), data=clipped_d) +
   #  geom_vline(aes(xintercept=200))
   #print(p) 
-  
+
 dev.new()
   # bias boxplot
   big_res$bias <- big_res$N-200
@@ -71,7 +71,7 @@ dev.new()
     theme_minimal() +
     geom_hline(aes(yintercept=0), colour="red")
   print(p) 
-  
+
 dev.new()
   # Mark's fancy quantile diagnostic, described above
   p <- ggplot(big_res)+
@@ -80,7 +80,7 @@ dev.new()
     ggtitle("Quantile diagnostic") +
     theme_minimal()
   print(p) 
-  
+
   #rr <- reasonable_range(big_res$sen)
   ## build a data.frame to count clipped observation
   #clipped_d <- ddply(big_res, .(names), clipped_obs, name="sen", rr=rr)

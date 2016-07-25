@@ -99,9 +99,9 @@ Introduction
 \begin_layout Standard
 A great deal of time and money is spent on large-scale cetacean surveys.
  Though sophisticated statistical methods have been developed to deal with
- the complications of complex spatial data, it can be the case that investigator
-s opt for an overly simplistic analysis based on randomisation principles
- which are not appropriate for the data in question.
+ the complications of complex spatial data, investigators can opt to perform
+ an overly simplistic analysis based on randomisation principles which are
+ not appropriate for the data in question.
  An example of a potential issue of this type is the use of 
 \begin_inset Quotes eld
 \end_inset
@@ -111,32 +111,40 @@ vanilla
 \end_inset
 
  Horvitz-Thompson estimators of abundance from line transect surveys when
- the underlying distribution of the study species in fact varies in space.
+ the underlying distribution of the study species varies in space.
  In this paper we show by simulation when such analyses are inappropriate
- in simple situations -- appealing to the line of reasoning that if an estimator
- shows poor properties in a simple situation, then when the distribution,
- availability or detectability is more complex in nature then the estimator
- will perform even more poorly.
+ in simple situations and reasoning that if an estimator shows poor properties
+ in a simple situation, then when the distribution, availability or detectabilit
+y is more complex in nature then the estimator will perform even more poorly.
 \end_layout
 
 \begin_layout Standard
-In this paper we are interested in two methodologies for estimating abundance
- from line transect distance sampling surveys, one is a design-based estimate,
+Here we are interested in two methodologies for estimating abundance from
+ line transect distance sampling surveys, one is a design-based estimate,
  the other is a model-based estimate.
  We assume in both cases that the usual assumptions regarding distance sampling
  surveys have been met (see e.g., Buckland et al 2001, 2004, 2015).
- We also assume that distances are recorded for each observation (along
- with the size of each group of animals, without error).
- Each 
+ We also assume that:
+\end_layout
+
+\begin_layout Itemize
+Distances are recorded for each observation (along with the size of each
+ group of animals, without error)
+\end_layout
+
+\begin_layout Itemize
+The vessel's location along the transect is recorded during the survey (for
+ example using an automated waypoint function on a GPS unit), i.e., the transect
+ lines are recorded as they were visited (the 
 \shape italic
-realised
+realised design
 \shape default
- transect position is recorded (for example using an automated waypoint
- function on a GPS unit), i.e., the transect lines are recorded as they were
- visited, rather than as they were designed.
- As transects were recorded, an covariate that gives some indication of
- sighting conditions should also be recorded (we simply refer to this as
- 
+), rather than as they were designed.
+\end_layout
+
+\begin_layout Itemize
+A covariate that gives some indication of sighting conditions was also recorded
+ (we simply refer to this as 
 \begin_inset Quotes eld
 \end_inset
 
@@ -146,8 +154,15 @@ weather
 
  but it could be Beaufort Sea State or some other omnibus measure of visual
  conditions).
- We now describe the two ways in which one could analyse this data, as used
- in this paper.
+\end_layout
+
+\begin_layout Standard
+We now describe the two ways in which one could analyse this data, as used
+ below.
+\end_layout
+
+\begin_layout Section
+Methods
 \end_layout
 
 \begin_layout Standard
@@ -160,12 +175,16 @@ We do not spend time here describing fitting the detection function to the
 
 , a function of distance, observed detection-related covariates and estimated
  parameters), we can calculate the average (over distance) probability of
- detection for an individual (conditional on observed covariate values)
- by integrating out distance, to obtain 
+ detection for an individual (conditional on observed covariate values),
+ 
 \begin_inset Formula $\hat{p}_{i}$
 \end_inset
 
-.
+, by integrating out distance.
+\end_layout
+
+\begin_layout Subsection
+Horvitz-Thompson-like estimators
 \end_layout
 
 \begin_layout Standard
@@ -188,7 +207,7 @@ blah, CITE
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-\hat{N}=\frac{A}{a}\sum_{i=1}^{n}\frac{s_{i}}{\hat{p}_{i}}\label{eq:HT}
+\hat{N}_{HT}=\frac{A}{a}\sum_{i=1}^{n}\frac{s_{i}}{\hat{p}_{i}}\label{eq:HT}
 \end{equation}
 
 \end_inset
@@ -231,7 +250,7 @@ covered area
 \end_inset
 
 , which is the product of the line lengths and their corresponding strip
- widths (if the strips were all the same length then 
+ widths (if the strips were all the same width then 
 \begin_inset Formula $a=2wL$
 \end_inset
 
@@ -248,11 +267,15 @@ covered area
 \begin_inset Formula $A$
 \end_inset
 
- is the area that we wish to estimate abundance for.
+ is the area that we wish to estimate abundance for (sometimes referred
+ to as the 
+\shape italic
+study area
+\shape default
+).
  Intuitively, we take the group sizes, correct them for detectability and
  sum to get an estimate of abundance in the covered area, we then rescale
- this according to the proportion of the covered area that the study region
- is.
+ this to the study region.
  The HT estimator assumes that animal density is constant within the study
  area.
  This assumption may be justifiable in some situations, but seems very unlikely
@@ -261,7 +284,7 @@ covered area
 
 \begin_layout Standard
 In order to circumvent this shortcoming, we can perform pre or post hoc
- stratification, slicing-up the study area into smaller polygons and estimating
+ stratification, slicing-up the study area into smaller subsets and estimating
  abundance for each of these.
  These may be geographically defined (
 \begin_inset Quotes eld
@@ -298,6 +321,19 @@ deep or shallow water
 \end_inset
 
 ).
+ Mathematically, this consists of changing the limits of the sum (summing
+ over the animals which occur at a given depth or in a particular area etc),
+ then changing 
+\begin_inset Formula $a$
+\end_inset
+
+ and 
+\begin_inset Formula $A$
+\end_inset
+
+ accordingly to reflect the effort in the given stratum and the area of
+ that stratum, respectively; abundance estimates can then be summed to obtain
+ total abundance or given per-stratum form.
  In some sense these estimates reflect a crude, 
 \begin_inset Quotes eld
 \end_inset
@@ -308,11 +344,78 @@ blocky
 
  spatial model, which try to address the deeper drivers of distribution
  in a given species.
+ Stratification can be performed using animal/group-specific covariates
+ (e.g., abundance of males/females, juveniles/adults etc), though we do not
+ address this here.
 \end_layout
 
 \begin_layout Standard
-We now describe one approach to distance sampling line transect surveys
- using an explicit spatial model, which we refer to as 
+Variance is estimated for 
+\begin_inset Formula $\hat{N}_{HT}$
+\end_inset
+
+ by noting that there are two sources of randomness in the equation: 
+\shape italic
+(i) 
+\shape default
+from the variance in the model for 
+\begin_inset Formula $\hat{p}_{i}$
+\end_inset
+
+ and 
+\shape italic
+(ii)
+\shape default
+ from the randomness in the number of observed groups, 
+\begin_inset Formula $n$
+\end_inset
+
+.
+ The variance component from 
+\begin_inset Formula $\hat{p}_{i}$
+\end_inset
+
+ can be calculated by using the variance from the detection function estimation
+ procedure and using a sandwich estimator to express that parameter variance
+ in terms of 
+\begin_inset Formula $\hat{p}_{i}$
+\end_inset
+
+ (Borchers, Buckland and Zucchhini, 2001 Appendix C).
+ Variance in 
+\begin_inset Formula $n$
+\end_inset
+
+ is usually calculated as variance in 
+\begin_inset Formula $n/L$
+\end_inset
+
+, that is the encounter rate variance.
+ There are a number of options for this estimator, depending on the possible
+ design used.
+ Fewster 
+\shape italic
+et al
+\shape default
+ (2009) proposes a series of estimators and evaluates them.
+ Here we use the Fewster 
+\shape italic
+et al
+\shape default
+ (2009) R2 estimator (
+\series bold
+CHECK this, IIRC this is the default in mrds
+\series default
+).
+\end_layout
+
+\begin_layout Subsection
+Density surface models
+\end_layout
+
+\begin_layout Standard
+We now describe one spatially explicit approach to modelling distance sampling
+ line transect survey data, which we refer to as 
 \shape italic
 density surface models
 \shape default
@@ -340,10 +443,10 @@ wood, carrol etc
 segments
 \shape default
 .
- The mean response of the model can be written as:,
+ The mean response of the model can be written as:
 \begin_inset Formula 
 \[
-\mathbb{E}(n_{j})=A_{j}\hat{p}_{j}\exp(\beta_{0}+\sum_{k}f_{k}(z_{kj})),
+\mathbb{E}(n_{j})=A_{j}\hat{p}_{j}\exp(\beta_{0}+\sum_{k}s_{k}(z_{kj})),
 \]
 
 \end_inset
@@ -374,14 +477,26 @@ where
 \begin_inset Formula $\exp$
 \end_inset
 
- is the link function.
+ is the inverse link function
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Though any exponential family response can be used in the GAM framework
+ with any appropriate link function, we just talk about count distributions
+ and log link functions for clarity of notation.
+\end_layout
+
+\end_inset
+
+.
  The model intercept is 
 \begin_inset Formula $\beta_{0}$
 \end_inset
 
 .
  The 
-\begin_inset Formula $f_{k}$
+\begin_inset Formula $s_{k}$
 \end_inset
 
  are usually splines (
@@ -399,7 +514,7 @@ cite Simon doubly general paper
 \series default
 ).
  The exact form of each 
-\begin_inset Formula $f_{k}$
+\begin_inset Formula $s_{k}$
 \end_inset
 
  depends on the nature of the effect we wish to model, for smooths of location
@@ -407,15 +522,68 @@ cite Simon doubly general paper
  below.
 \end_layout
 
+\begin_layout Standard
+A typical DSM may take a form such as:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\mathbb{E}(n_{j})=A_{j}\hat{p}_{j}\exp(\beta_{0}+s_{x,y}(x_{j},y_{j})+s_{\text{Depth}}(\text{Depth}_{j})),
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+that is: the expected count in segment 
+\begin_inset Formula $j$
+\end_inset
+
+ is a function of its location and the water depth at that location, this
+ is then exponentiated onto the response scale, and multiplied by the area
+ of the segment and probability of detection in that segment.
+\end_layout
+
+\begin_layout Standard
+Note that here the probability of detection has a subscript 
+\begin_inset Formula $j$
+\end_inset
+
+ not 
+\begin_inset Formula $i$
+\end_inset
+
+ as in the HT estimator.
+ This is because in this formulation of the DSM we only consider detectability
+ as varying at the scale of the segments, not the observed individuals/groups.
+ This means that covariates that effect detectability such as weather, observer
+ shift or ship can be used, but sex of the animal or observer ID (if there
+ were multiple observers on deck at once) cannot be
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+These covariates can be included in a more general formulation of DSMs,
+ though we don't consider them here for clarity of presentation.
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Section
 Motivation
 \end_layout
 
 \begin_layout Standard
-The DSM approach is more complex as we explicitly model the spatial and
- environmental covariate effects, but this explicit modelling is the only
- way to deal with the heterogeneity in spatial distribution of the study
- species.
+A criticism of the DSM approach is that it is more complex, as we explicitly
+ model the spatial and environmental covariate effects, but this explicit
+ modelling is the only way to deal with the heterogeneity in spatial distributio
+n of the study species.
  We note that an appeal to 
 \begin_inset Quotes eld
 \end_inset
@@ -438,7 +606,7 @@ From Burnham et al.
 \begin_layout Standard
 \begin_inset Formula 
 \[
-n\hat{f}(0)=\sum_{j=1}^{r}n_{j}\hat{f}_{j}(0)
+n\hat{f}(0)=\sum_{r=1}^{R}n_{r}\hat{f}_{r}(0)
 \]
 
 \end_inset
@@ -448,7 +616,7 @@ n\hat{f}(0)=\sum_{j=1}^{r}n_{j}\hat{f}_{j}(0)
 
 \begin_layout Standard
 where there are 
-\begin_inset Formula $r$
+\begin_inset Formula $R$
 \end_inset
 
  strata chosen to minimise heterogeneity, 
@@ -456,7 +624,7 @@ where there are
 \end_inset
 
  is the total number of observations, 
-\begin_inset Formula $n_{j}$
+\begin_inset Formula $n_{r}$
 \end_inset
 
  is the number of observations in stratum 
@@ -468,18 +636,18 @@ where there are
 \end_inset
 
  and 
-\begin_inset Formula $\hat{f}_{j}(0)$
+\begin_inset Formula $\hat{f}_{r}(0)$
 \end_inset
 
- are the pdfs of distances evaluated at zero distance for the whole sample
- and by stratum, respectively.
+ are the probability density functions of the observed distances, evaluated
+ at zero distance, for the whole sample and by stratum, respectively.
  Equivalently we can write:
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula 
 \[
-\frac{n}{\hat{p}}=\sum_{j=1}^{r}\frac{n_{j}}{\hat{p}_{j}}
+\frac{n}{\hat{p}}=\sum_{r=1}^{R}\frac{n_{r}}{\hat{p}_{r}}
 \]
 
 \end_inset
@@ -500,24 +668,25 @@ y in detectability is not too extreme.
 \begin_inset Quotes erd
 \end_inset
 
- But note that this is a statement essentially about Horvitz-Thompson estimation
- in the presence of detectability heterogeneity and does not say anything
- about the case where density varies within strata -- in this case the effect
- of detectability and distribution are confounded, unless data on observation
- conditions (e.g., a weather covariate) and spatial distribution (e.g., location
- of transects) is recorded and modelled.
+ This is a statement about Horvitz-Thompson estimation in the presence of
+ detection heterogeneity and does not say anything about the case where
+ density varies within strata --- in this case the effect of detectability
+ and distribution are confounded, unless data on observation conditions
+ (e.g., a weather covariate) and spatial distribution (e.g., location of transects)
+ is recorded and modelled.
  A spatial model that includes data on the location of the observations
  and the sighting conditions will be able to tease apart these effects and
  attribute appropriate uncertainty.
 \end_layout
 
 \begin_layout Standard
-Again this is all when 
+So far we have only considered the case where detectability is certain on
+ the line (
 \begin_inset Formula $g(0)=1$
 \end_inset
 
- and only gets more complicated once we start thinking about double observer
- methods.
+), this situation only gets more complicated once we start thinking about
+ double observer methods.
  Buckland et al (2004) say: 
 \begin_inset Quotes eld
 \end_inset
@@ -537,7 +706,7 @@ If
 
 , so if we do expect that the probability of detection at zero distance
  is influenced by covariates (which it almost surely will be), pooling robustnes
-s doesn't apply anyway.
+s does not apply.
 \end_layout
 
 \begin_layout Standard
@@ -549,7 +718,7 @@ reasonable
 \begin_inset Quotes erd
 \end_inset
 
-design, so appeals to it should only be made in the case where the realised
+ design, so appeals to it should only be made in the case where the realised
  design has (approximately) even coverage.
 \end_layout
 
@@ -563,8 +732,8 @@ dumb
 \end_inset
 
  spatial model and hope for the best.
- This is not the case and properly configuring a spatial model is a time-consumi
-ng process requiring some 
+ Properly configuring a spatial model is a time-consuming process requiring
+ some 
 \begin_inset Quotes eld
 \end_inset
 
@@ -580,10 +749,27 @@ expert
 maybe cite Mannocci and Conn papers here?
 \series default
 ).
+ There is no 
+\begin_inset Quotes eld
+\end_inset
+
+quick fix
+\begin_inset Quotes erd
+\end_inset
+
+ to obtain a good spatial model, care must be taken in the construction
+ and checking of the model if reasonable inferences are to be drawn.
 \end_layout
 
 \begin_layout Section
 Simulation setup
+\end_layout
+
+\begin_layout Standard
+With the above in mind, we set about constructing some simple simulations
+ of plausible survey data.
+ We attempted to keep the underlying densities as simple as possible and
+ the realised designs as fairly realistic.
 \end_layout
 
 \begin_layout Subsection
@@ -601,9 +787,9 @@ name "sub:Density-surfaces"
 We used a series of simple density surfaces to test for differences between
  the proposed models.
  Although animal distribution is much more complicated than the patterns
- shown below, if models fail for these simple density surfaces then it's
- likely that there will be more severe issues when more complex surfaces
- are used.
+ shown below, if models fail for these simple density surfaces (where gradients
+ are clearly defined) then it's likely that there will be more severe issues
+ when more complex surfaces are used.
  In the simulations presented here the following surfaces were investigated:
 \end_layout
 
