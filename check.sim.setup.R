@@ -30,4 +30,7 @@ check.sim.setup <- function(simsetup) {
   plot(eg.survey)
   hist(dist.data$distance, xlab = "Distance (m)", main = "Distance Data")
   par(mfrow = c(1, 1))
+
+  # print some stuff
+  cat("Observations:", nrow(dist.data), "\n")
 }
