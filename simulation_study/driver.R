@@ -3,8 +3,9 @@
 
 
 library(DSsim)
-library(devtools)
-load_all("~/current/dsm")
+#library(devtools)
+#load_all("~/current/dsm")
+library(dsm)
 library(Distance)
 #library(handy2)
 library(plyr)
