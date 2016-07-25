@@ -12,5 +12,6 @@ plot_df <- function(df){
   xx <- seq(0, df@truncation, len=500)
   plot(xx, g(xx, df@scale.param, df@shape.param), type="l",
        xlab="Distance", ylab="Probability of detection",
+       ylim=c(0, 1),
        main="Detection function")
 }
