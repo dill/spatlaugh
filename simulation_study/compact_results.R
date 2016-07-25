@@ -1,6 +1,5 @@
 library(ggplot2)
 library(plyr)
-library(reshape2)
 
 # one for each distribution/detectability
 f_names <- list.files(pattern="*\\.RData")
@@ -42,13 +41,11 @@ for(i in seq_along(f_names)){
 
   # print the name of this scenario as the header
   f_names[i] <- sub(".RData", "", f_names[i])
-  #cat("\n\n## ", f_names[i],"\n\n")
   big_res$scenario <- f_names[i]
 
   ## WARNING: magic numbers below!!
   # bias boxplot
   big_res$bias <- big_res$N-200
-
 
   # separate out the scenario definition
   big_res$density <- sub("([a-z]+)-[a-z]+-[a-z]+", "\\1", big_res$scenario[1])
@@ -61,32 +58,32 @@ for(i in seq_along(f_names)){
 
 
 ## WARNING: magic numbers below!!
-p <- ggplot(huge_res)+
-  geom_boxplot(aes(names, bias), outlier.size = 0.75) +
-  #facet_wrap(~names, scales="free_x",nrow=2)+
-  #ggtitle(paste0(f_names[i], "Bias")) +
-  labs(y="Bias", x="Model") +
-  coord_cartesian(ylim=c(-200,300)) +
-  theme_minimal() +
-  #facet_wrap(~density+design+df, ncol=3,
-  facet_wrap(density~design+df, ncol=3,
-             labeller=function(labels, multi_line=FALSE){
-                        label_value(labels, multi_line)
-                      }) +
-  geom_hline(aes(yintercept=0), colour="red") +
-  theme(axis.text.x = element_text(angle = 45))
-print(p)
+#p <- ggplot(huge_res)+
+#  geom_boxplot(aes(names, bias), outlier.size = 0.75) +
+#  #facet_wrap(~names, scales="free_x",nrow=2)+
+#  #ggtitle(paste0(f_names[i], "Bias")) +
+#  labs(y="Bias", x="Model") +
+#  coord_cartesian(ylim=c(-200,300)) +
+#  theme_minimal() +
+#  #facet_wrap(~density+design+df, ncol=3,
+#  facet_wrap(density~design+df, ncol=3,
+#             labeller=function(labels, multi_line=FALSE){
+#                        label_value(labels, multi_line)
+#                      }) +
+#  geom_hline(aes(yintercept=0), colour="red") +
+#  theme(axis.text.x = element_text(angle = 45))
+#print(p)
 
 
 ##dev.new()
-##  # Mark's fancy quantile diagnostic, described above
-##  p <- ggplot(big_res)+
-##    geom_histogram(aes(quantile))+
-##    facet_wrap(~names, nrow=2)+
-##    ggtitle(paste0(f_names[i], "Quantile diagnostic")) +
-##    geom_vline(xintercept=0.5) +
-##    theme_minimal()
-##  print(p)
+  # Mark's fancy quantile diagnostic, described above
+  p <- ggplot(big_res)+
+    geom_histogram(aes(quantile))+
+    facet_wrap(~names, nrow=2)+
+    ggtitle(paste0(f_names[i], "Quantile diagnostic")) +
+    geom_vline(xintercept=0.5) +
+    theme_minimal()
+  print(p)
 
 
 
