@@ -6,7 +6,7 @@ library(DSsim)
 library(devtools)
 load_all("~/current/dsm")
 library(Distance)
-library(handy2)
+#library(handy2)
 library(plyr)
 
 
@@ -17,8 +17,8 @@ source("../dsmify.R")
 source("quick_dht.R")
 source("get_N_quantile.R")
 
-true_N <- 200
-nsim <- 500
+true_N <- 500
+nsim <- 250
 
 n_grid_x <- 300
 n_grid_y <- 100
@@ -36,25 +36,23 @@ R <- matrix(c(cos(pi/4), sin(pi/4), -sin(pi/4), cos(pi/4)),2,2)
 pred_dat1[,c("xr","yr")] <- t(R %*% t(pred_dat1[,c("x","y")]))
 
 
-
-
 # setup detection function
 df <- list()
 df[["good"]] <- list(key        = "hr",
-                     scale      = 0.03,
+                     scale      = 0.025,
                      shape      = 3,
                      truncation = 0.05)
 df[["bad"]] <- list(key        = "hr",
-                    scale      = 0.01,
-                    shape      = 1.1,
-                    truncation = 0.02)
+                    scale      = 0.005,
+                    shape      = 1,
+                    truncation = 0.05)
 
 
 # setup densities
 densities <- list()
 densities[["f"]] <- 1
-densities[["lr"]] <- density.surface$x
-densities[["rl"]] <- rev(density.surface$x)
+densities[["lr"]] <- 5*(density.surface$x/3)
+densities[["rl"]] <- rev(densities[["lr"]])
 
 # stratification schemes
 stratification <- list()
@@ -68,10 +66,9 @@ scenarios <- expand.grid(density = c("lr","rl","f"),
                          df      = c("good","bad"),#"lr","rl"),
                          stringsAsFactors=FALSE)
 
-
 for(iii in 1:nrow(scenarios)){
 
-
+  # get this set of settings
   this_set <- scenarios[iii,,drop=FALSE]
 
   # print scenario name
@@ -92,8 +89,7 @@ for(iii in 1:nrow(scenarios)){
   source("test.R")
 
   # write out the results
-  # getting the filename here is ludicrous
-  save(big_res, file=paste0(scenario_name, ".RData"))
+#  save(big_res, file=paste0(scenario_name, ".RData"))
 }
 
 

@@ -42,7 +42,7 @@ test_dssim <- function(design_path, dsurf, n_grid=NULL, n_pop=500, df,
                                                  ~cds(key="hr", formula=~1)),
                                      method = "ds", criteria = "AIC")
 
-  my_simulation <- make.simulation(reps=10, single.transect.set=TRUE,
+  my_simulation <- make.simulation(reps=1, single.transect.set=TRUE,
                                    region.obj=region, design.obj=this_design,
                                    population.description.obj=pop.description,
                                    detectability.obj=detect,

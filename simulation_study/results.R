@@ -65,21 +65,23 @@ dev.new()
   p <- ggplot(big_res)+
     geom_boxplot(aes(names, bias)) +
     #facet_wrap(~names, scales="free_x",nrow=2)+
-    ggtitle("Bias") +
+    ggtitle(paste0(f_names[i], "Bias")) +
     labs(y="Bias") +
     coord_cartesian(ylim=c(-200,300)) +
     theme_minimal() +
     geom_hline(aes(yintercept=0), colour="red")
-  print(p) 
+    geom_vline(xintercept=0.5)
+  print(p)
 
 dev.new()
   # Mark's fancy quantile diagnostic, described above
   p <- ggplot(big_res)+
     geom_histogram(aes(quantile))+
     facet_wrap(~names, nrow=2)+
-    ggtitle("Quantile diagnostic") +
+    ggtitle(paste0(f_names[i], "Quantile diagnostic")) +
+    geom_vline(xintercept=0.5) +
     theme_minimal()
-  print(p) 
+  print(p)
 
   #rr <- reasonable_range(big_res$sen)
   ## build a data.frame to count clipped observation

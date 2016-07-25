@@ -1,5 +1,3 @@
-#check.sim.setup(ss)
-
 big_res <- c()
 
 pb <- txtProgressBar(min=1, max=nsim, style=3)
@@ -24,7 +22,7 @@ for(ii in 1:nsim){
   # model list object
   ll <- list()
 
-  # function that times out so our fits don't go on for ever
+  # function that times out, so our fits don't go on forever
   timer <- function(x){
     x <- substitute(x)
     setTimeLimit(elapsed=300) # 5 mins?
