@@ -191,5 +191,221 @@ Group size and g0 (ignored, say what that means)
 ¿Demo of non-pooling-robust?
 \end_layout
 
+\begin_layout Standard
+Now for lunch...
+\end_layout
+
+\begin_layout Section
+Layouts
+\end_layout
+
+\begin_layout Standard
+ie combinations of survey-designs, density-gradient-directions, and weather-tren
+ds.
+ The designs in the current draft are too easy...
+ note that the general direction of the 
+\begin_inset Quotes eld
+\end_inset
+
+stitches
+\begin_inset Quotes erd
+\end_inset
+
+ matches the gradients, and even when there's some stitching missing, the
+ stitches do cover the whole range, and when there's a huge gap the stratificati
+on is placed in the middle.
+ The 
+\begin_inset Quotes eld
+\end_inset
+
+IWC
+\begin_inset Quotes erd
+\end_inset
+
+ design is fun, but doesn't make a cogent point.
+ Also, there's no Weather-trend; the point of Weather, is that a design
+ might look like it has even coverage, but if you take into account that
+ bad-Weather transects are all on the RHS, then the effective coverage there
+ is much lower and the design can be really unbalanced.
+\end_layout
+
+\begin_layout Standard
+Fig
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:layouts"
+
+\end_inset
+
+ shows four layouts that could be hard-cases for HT to get right.
+ The big-coloured-in-arrows show the direction of spatial gradient (which
+ could go up or down in that direction).
+ The dotted line in B shows transects done in bad weather; thus B should
+ end up roughly the same as A result-wise, even though A is obviously a
+ bit dangerous.
+ C is a nasty one, and illustrates the directional point (?eg for TP smooths?).
+ In D, even boring HT will work OK for bias, but it will give a dodgy variance
+ estimate because the transects (the units-of-variance) are not 
+\begin_inset Quotes eld
+\end_inset
+
+independent
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Of course, A and B are 
+\begin_inset Quotes eld
+\end_inset
+
+good
+\begin_inset Quotes erd
+\end_inset
+
+ (easy) cases if the gradient is horizontal rather than vertical.
+\end_layout
+
+\begin_layout Standard
+Even if you do use all of these (plus at least one easy one), I don't think
+ we'd necessarily need a full set of results for each of them, if your computer
+ wouldn't like that.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+layouts
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:layouts"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename layouts.emf
+	lyxscale 30
+	scale 20
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+How bad to make the 
+\begin_inset Quotes eld
+\end_inset
+
+reference
+\begin_inset Quotes erd
+\end_inset
+
+ HT analysis?
+\end_layout
+
+\begin_layout Standard
+I think we can choose just one, make it fairly bad, and say in the Discussion
+ that there are less-bad HT options out there.
+ Here's a possible list:
+\end_layout
+
+\begin_layout Enumerate
+Each stratum analysed completely separately, without covariates
+\end_layout
+
+\begin_layout Enumerate
+Strata analysed separately for density, using a pooled det fun across all
+ strata but no covariates
+\end_layout
+
+\begin_layout Enumerate
+Strata analysed separately for density, using covariates for the det fun
+ and (obviously in this case) pooling across strata
+\end_layout
+
+\begin_layout Standard
+So #1 would be the laziest and also most risky, and it does correspond AFAIK
+ to what has often been done in some surveys of interest to IWC.
+ All we gotta do, is 
+\emph on
+say
+\emph default
+ that #2 and #3 might be better.
+ 
+\end_layout
+
+\begin_layout Standard
+If we implement #1, then the Q arises of whether to 
+\begin_inset Quotes eld
+\end_inset
+
+auto-post-stratify
+\begin_inset Quotes erd
+\end_inset
+
+— because even the least sophisticated 
+\begin_inset Quotes eld
+\end_inset
+
+analyst
+\begin_inset Quotes erd
+\end_inset
+
+ will know about post-stratification.
+ I'm not sure what 
+\begin_inset Quotes eld
+\end_inset
+
+rule
+\begin_inset Quotes erd
+\end_inset
+
+ people have tended to apply there, but generally you wouldn't want to estimate
+ a det fun on less than...
+ what do you think?..
+ straw-man 
+\begin_inset Formula $X=20$
+\end_inset
+
+ sightings (I have no real idea what 
+\begin_inset Formula $X$
+\end_inset
+
+ should be myself, over to you...).
+ So, one option would be to do all analyses in both a single-stratum and
+ compulsory-post-stratified version, and for the result use the single-stratum
+ version if there are 
+\begin_inset Formula $<X$
+\end_inset
+
+ sightings in the smaller stratum.
+ Obviously we would have to fix the stratification boundary in advance.
+\end_layout
+
 \end_body
 \end_document
