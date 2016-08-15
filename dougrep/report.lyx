@@ -1,8 +1,13 @@
-#LyX 2.1 created this file. For more info see http://www.lyx.org/
-\lyxformat 474
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
 \begin_document
 \begin_header
+\save_transient_properties true
+\origin unavailable
 \textclass article
+\begin_preamble
+\addbibresource{this.bib}
+\end_preamble
 \use_default_options true
 \begin_modules
 knitr
@@ -12,16 +17,16 @@ knitr
 \language_package default
 \inputencoding auto
 \fontencoding global
-\font_roman ae
-\font_sans default
-\font_typewriter default
-\font_math auto
+\font_roman "ae" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
-\font_sf_scale 100
-\font_tt_scale 100
+\font_sf_scale 100 100
+\font_tt_scale 100 100
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -670,7 +675,7 @@ y in detectability is not too extreme.
 
  This is a statement about Horvitz-Thompson estimation in the presence of
  detection heterogeneity and does not say anything about the case where
- density varies within strata --- in this case the effect of detectability
+ density varies within strata — in this case the effect of detectability
  and distribution are confounded, unless data on observation conditions
  (e.g., a weather covariate) and spatial distribution (e.g., location of transects)
  is recorded and modelled.
@@ -776,7 +781,7 @@ With the above in mind, we set about constructing some simple simulations
 Density surfaces
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:Density-surfaces"
+name "subsec:Density-surfaces"
 
 \end_inset
 
@@ -1014,7 +1019,7 @@ status open
 \begin_layout Plain Layout
 \begin_inset Tabular
 <lyxtabular version="3" rows="3" columns="4">
-<features rotate="0" tabularvalignment="middle">
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
@@ -1887,6 +1892,10 @@ sin(\pi/4) & cos(\pi/4)
 
 \begin_layout Itemize
 Isotropic smooths 
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -1925,6 +1934,10 @@ bs="tp"
 \end_deeper
 \begin_layout Itemize
 Tensor product smooths (smooths listed below were used in both directions)
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -1947,6 +1960,10 @@ bs="tp"
 \end_deeper
 \begin_layout Itemize
 Non-spatially explicit models
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -2367,7 +2384,7 @@ For each of the designs illustrated above, we applied each of the three
 The density surfaces described in Section 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:Density-surfaces"
+reference "subsec:Density-surfaces"
 
 \end_inset
 
@@ -3379,6 +3396,48 @@ Appendix 2 - Mathematical equivalence between HT and DSM
 
 \begin_layout Standard
 This should go somewhere, why not here?
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "full"
+options "default"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+printbibliography
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body
