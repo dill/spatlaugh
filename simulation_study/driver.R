@@ -9,17 +9,11 @@ library(dsm)
 library(Distance)
 #library(handy2)
 library(plyr)
+library(designtester)
 
-
-source("../check.sim.setup.R")
-source("../plot_df.R")
-source("../test_dssim.R")
-source("../dsmify.R")
-source("quick_dht.R")
-source("get_N_quantile.R")
 
 true_N <- 500
-nsim <- 250
+nsim <- 2#250
 
 n_grid_x <- 300
 n_grid_y <- 100
@@ -67,7 +61,7 @@ scenarios <- expand.grid(density = c("lr","rl","f"),
                          df      = c("good","bad"),#"lr","rl"),
                          stringsAsFactors=FALSE)
 
-for(iii in 1:nrow(scenarios)){
+for(iii in 1){#:nrow(scenarios)){
 
   # get this set of settings
   this_set <- scenarios[iii,,drop=FALSE]
@@ -81,12 +75,12 @@ for(iii in 1:nrow(scenarios)){
   density.surface$density <- densities[[this_set$density]]
 
   # build simulation setup
-  ss <- test_dssim(paste0("../shapes/", this_set$design),
-                   density.surface,
-                   n_grid_x=n_grid_x, n_grid_y=n_grid_y,
-                   n_pop=true_N, df=df[[this_set$df]],
-                   region="../shapes/region2/data")
-#check.sim.setup(ss)
+  ss <- build_sim(paste0("../shapes/", this_set$design),
+                  dsurf=density.surface,
+                  n_grid_x=n_grid_x, n_grid_y=n_grid_y,
+                  n_pop=true_N, df=df[[this_set$df]],
+                  region="../shapes/region2/data")
+  #check_sim_setup(ss)
   source("test.R")
 
   # write out the results
