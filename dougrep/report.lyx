@@ -6,6 +6,7 @@
 \origin unavailable
 \textclass article
 \begin_preamble
+\usepackage[style=authoryear,natbib=true,backend=biber,firstinits=true,uniquename=init]{biblatex} 
 \addbibresource{this.bib}
 \end_preamble
 \use_default_options true
@@ -13,6 +14,9 @@
 knitr
 \end_modules
 \maintain_unincluded_children false
+\begin_local_layout
+Provides natbib 1
+\end_local_layout
 \language british
 \language_package default
 \inputencoding auto
@@ -30,7 +34,7 @@ knitr
 \graphics default
 \default_output_format default
 \output_sync 0
-\bibtex_command default
+\bibtex_command biber
 \index_command default
 \paperfontsize default
 \spacing single
@@ -47,8 +51,8 @@ knitr
 \use_package stackrel 1
 \use_package stmaryrd 1
 \use_package undertilde 1
-\cite_engine basic
-\cite_engine_type default
+\cite_engine natbib
+\cite_engine_type authoryear
 \biblio_style plain
 \use_bibtopic false
 \use_indices false
@@ -128,7 +132,14 @@ Here we are interested in two methodologies for estimating abundance from
  line transect distance sampling surveys, one is a design-based estimate,
  the other is a model-based estimate.
  We assume in both cases that the usual assumptions regarding distance sampling
- surveys have been met (see e.g., Buckland et al 2001, 2004, 2015).
+ surveys have been met (see e.g., 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Buckland:2001vm,Buckland:2004ts,buckland2015distance"
+
+\end_inset
+
+).
  We also assume that:
 \end_layout
 
@@ -172,8 +183,14 @@ Methods
 
 \begin_layout Standard
 We do not spend time here describing fitting the detection function to the
- distance data and refer readers to Buckland et al (2001, 2004, 2015) for
- information on model formulation and selection.
+ distance data and refer readers to 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Buckland:2001vm,Buckland:2004jq,buckland2015distance"
+
+\end_inset
+
+ for information on model formulation and selection.
  Assuming a fitted detection function (which we will denote 
 \begin_inset Formula $g$
 \end_inset
@@ -201,11 +218,15 @@ Horvitz-Thompson-like
 \begin_inset Quotes erd
 \end_inset
 
- estimator (henceforth HT) first described in (
-\series bold
-blah, CITE
-\series default
-).
+ estimator (henceforth HT) 
+\begin_inset CommandInset citation
+LatexCommand citep
+before "e.g.,"
+key "Borchers:2004wr"
+
+\end_inset
+
+.
  In its simplest version, the HT estimator is
 \end_layout
 
@@ -386,7 +407,15 @@ from the variance in the model for
 \begin_inset Formula $\hat{p}_{i}$
 \end_inset
 
- (Borchers, Buckland and Zucchhini, 2001 Appendix C).
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+after "Appendix C"
+key "Borchers:2002vs"
+
+\end_inset
+
+.
  Variance in 
 \begin_inset Formula $n$
 \end_inset
@@ -398,16 +427,22 @@ from the variance in the model for
 , that is the encounter rate variance.
  There are a number of options for this estimator, depending on the possible
  design used.
- Fewster 
-\shape italic
-et al
-\shape default
- (2009) proposes a series of estimators and evaluates them.
- Here we use the Fewster 
-\shape italic
-et al
-\shape default
- (2009) R2 estimator (
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Fewster:2009ku"
+
+\end_inset
+
+ proposes a series of estimators and evaluates them.
+ Here we use the 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Fewster:2009ku"
+
+\end_inset
+
+ R2 estimator (
 \series bold
 CHECK this, IIRC this is the default in mrds
 \series default
@@ -424,22 +459,29 @@ We now describe one spatially explicit approach to modelling distance sampling
 \shape italic
 density surface models
 \shape default
- (DSMs; 
-\series bold
-Hedley, Miller etc
-\series default
-).
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+before "DSMs;"
+key "Hedley:2004et,Miller:2013fq"
+
+\end_inset
+
+.
  These are similar to the HT estimators above, as they assume that the detection
  function has already been adequately fitted to the distance data and estimates
  of probability of detection are available for the spatial model to use.
  The spatial part of the model uses the generalized additive modelling framework
- (
-\series bold
-wood, carrol etc
-\series default
-) to build smooth, spatially explicit terms describing the distribution
- of the species and their response to other biological/physical variables
- (though in this paper we only consider models that include smooths of location).
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "hastie1990generalized,Ruppert:2003uc,Wood:2006vg"
+
+\end_inset
+
+ to build smooth, spatially explicit terms describing the distribution of
+ the species and their response to other biological/physical variables (though
+ in this paper we only consider models that include smooths of location).
  Rather than dealing with whole transects (which are generally long and
  can include large changes in animal density along their length, as well
  as covariate values), we cut the transects into smaller pieces, which we
@@ -504,20 +546,26 @@ Though any exponential family response can be used in the GAM framework
 \begin_inset Formula $s_{k}$
 \end_inset
 
- are usually splines (
-\series bold
-some papers
-\series default
-): smooth functions of one or more covariates (denoted 
+ are usually splines 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "deBoor:1978wq"
+
+\end_inset
+
+: smooth functions of one or more covariates (denoted 
 \begin_inset Formula $z_{jk}$
 \end_inset
 
 ), though could be more exotic things like random effects, tensor products,
- smooth-factor interactions and so forth (
-\series bold
-cite Simon doubly general paper
-\series default
-).
+ smooth-factor interactions and so forth 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Wood:2016cw"
+
+\end_inset
+
+.
  The exact form of each 
 \begin_inset Formula $s_{k}$
 \end_inset
@@ -597,15 +645,29 @@ pooling robustness
 \begin_inset Quotes erd
 \end_inset
 
- (Buckland 2004, section 11.12) does not get around this issue.
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+after "Section 11.12"
+key "Buckland:2004ts"
+
+\end_inset
+
+ does not get around this issue.
  Before explaining why, we first define and explain pooling robustness in
  a distance sampling context.
 
 \shape italic
  
 \shape default
-From Burnham et al.
- (1980):
+From 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Burnham:1980wz"
+
+\end_inset
+
+:
 \end_layout
 
 \begin_layout Standard
@@ -663,7 +725,15 @@ where there are
 \begin_layout Standard
 Intuitively, we say that pooling robustness holds, the estimates from a
  stratified analysis would be the same as those for an unstratified analysis.
- Buckland et al (2004, section 11.12) state: 
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+after "Section 11.12"
+key "Buckland:2004ts"
+
+\end_inset
+
+ state: 
 \begin_inset Quotes eld
 \end_inset
 
@@ -692,7 +762,14 @@ So far we have only considered the case where detectability is certain on
 
 ), this situation only gets more complicated once we start thinking about
  double observer methods.
- Buckland et al (2004) say: 
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Buckland:2004ts"
+
+\end_inset
+
+ say: 
 \begin_inset Quotes eld
 \end_inset
 
@@ -749,11 +826,7 @@ expert
  judgement.
  As well as formulating, fitting and selecting between models, the investigator
  also needs to select an appropriate prediction grid, ensuring that unreasonable
- extrapolations are not made (
-\series bold
-maybe cite Mannocci and Conn papers here?
-\series default
-).
+ extrapolations are not made.
  There is no 
 \begin_inset Quotes eld
 \end_inset
@@ -1900,35 +1973,54 @@ Isotropic smooths
 
 \begin_deeper
 \begin_layout Itemize
-Thin plate spline (
+Thin plate spline
 \family typewriter
-bs="tp"
+, bs="tp"
 \family default
-; Wood, 2003)
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Wood:2003tc"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
-Thin plate spline with shrinkage (
+Thin plate spline with shrinkage, 
 \family typewriter
 bs="ts"
 \family default
-; Marra and Wood, 2011)
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Marra:2011fv"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
-Duchon spline (
+Duchon spline, 
 \family typewriter
 bs="ds", m=c(1, 0.5)
 \family default
-; Miller and Wood, 2014)
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Miller:2014hc"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
-Thin plate spline with rotated covariates (
+Thin plate spline with rotated covariates, 
 \family typewriter
 bs="tp"
-\family default
-) 
 \end_layout
 
 \end_deeper
@@ -1942,19 +2034,17 @@ Tensor product smooths (smooths listed below were used in both directions)
 
 \begin_deeper
 \begin_layout Itemize
-Thin plate spline (
+Thin plate spline, 
 \family typewriter
 bs="tp"
 \family default
-) 
+ 
 \end_layout
 
 \begin_layout Itemize
-Thin plate spline with rotated covariates (
+Thin plate spline with rotated covariates, 
 \family typewriter
 bs="tp"
-\family default
-)
 \end_layout
 
 \end_deeper
@@ -2403,8 +2493,15 @@ Note that the aim here is not to show which spatial model is best out of
  the HT estimators and the spatial models.
  There are large differences between the spatial models which can be attributed
  to the model formulation process.
- None of the models underwent model checking in the usual way (see e.g.
- Miller et al 2013, more papers), so the spatial models represent the 
+ None of the models underwent model checking in the usual way 
+\begin_inset CommandInset citation
+LatexCommand citep
+before "e.g.,"
+key "Miller:2013fq,Winiarski:2014bc"
+
+\end_inset
+
+, so the spatial models represent the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -3409,7 +3506,7 @@ status open
 \lang english
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
-bibfiles "full"
+bibfiles "full,this"
 options "default"
 
 \end_inset
