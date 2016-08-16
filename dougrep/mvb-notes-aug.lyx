@@ -98,7 +98,12 @@ Need (and mention early) a how-to guide, for how we suggest you check an
 \end_layout
 
 \begin_layout Enumerate
-Happily, Lyx 
+
+\series bold
+DONE.
+
+\series default
+ Happily, Lyx 
 \begin_inset Formula $\geqslant2.20$
 \end_inset
 
@@ -116,7 +121,12 @@ addbibresource{mybibs.bib}
 \end_layout
 
 \begin_layout Enumerate
-Fig 1: conveys no information at all! (Nice colours tho...).
+
+\series bold
+DONE.
+
+\series default
+ Fig 1: conveys no information at all! (Nice colours tho...).
  Dot-plot or contours or something...
 \end_layout
 

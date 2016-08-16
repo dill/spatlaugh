@@ -935,8 +935,12 @@ n_grid_y <- 100
 
 \begin_layout Plain Layout
 
-density.surface <- expand.grid(x = seq(0, 3, len=n_grid_x),              
-                  							y = seq(0, 1, len=n_grid_y))
+density.surface <- expand.grid(x = seq(0, 3, len=n_grid_x),
+\end_layout
+
+\begin_layout Plain Layout
+
+                               y = seq(0, 1, len=n_grid_y))
 \end_layout
 
 \begin_layout Plain Layout
@@ -961,12 +965,12 @@ densities <- list(rep(1, length(density.surface$x)),
 
 \begin_layout Plain Layout
 
-				 rev(density.surface$x)) 
+				  rev(density.surface$x)) 
 \end_layout
 
 \begin_layout Plain Layout
 
-names <- list("f", "lr", "rl", "rl_002", "rl_001")    
+names <- list("f", "lr", "rl")    
 \end_layout
 
 \begin_layout Plain Layout
@@ -997,6 +1001,26 @@ for(i in 1:3){
 \begin_layout Plain Layout
 
         xlab="x", ylab="y", asp=1)
+\end_layout
+
+\begin_layout Plain Layout
+
+  contour(matrix(densities[[i]], n_grid_x, n_grid_y),
+\end_layout
+
+\begin_layout Plain Layout
+
+        x=seq(0, 3, len=n_grid_x),
+\end_layout
+
+\begin_layout Plain Layout
+
+        y= seq(0, 1, len=n_grid_y),
+\end_layout
+
+\begin_layout Plain Layout
+
+        add=TRUE)
 \end_layout
 
 \begin_layout Plain Layout
