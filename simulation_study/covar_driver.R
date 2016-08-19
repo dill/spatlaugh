@@ -9,7 +9,7 @@ library(dsm)
 library(Distance)
 #library(handy2)
 library(plyr)
-library(designtester)
+library(ltdesigntester)
 
 
 true_N <- 500
