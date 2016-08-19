@@ -81,7 +81,7 @@ for(iii in 1){#:nrow(scenarios)){
                   n_pop=true_N, df=df[[this_set$df]],
                   region="../shapes/region2/data")
   #check_sim_setup(ss)
-  source("test.R")
+  big_res <- do_sim(nsim, ss, pred_dat1, stratification[[this_set$design]])
 
   # write out the results
 #  save(big_res, file=paste0(scenario_name, ".RData"))
