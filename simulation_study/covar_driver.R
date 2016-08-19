@@ -61,7 +61,8 @@ ss_bad <- build_sim("../shapes/manyzigzags",
                      n_pop=true_N, df=df[["bad"]],
                      region="../shapes/region2/data", n_sim=1)
 
-cov_dat <- do_sim_covar(list(ss_good, ss_bad))
+cov_dat <- build_sim_covar(list(ss_good, ss_bad), logit_scale=0.1,
+                           logit_location=1.5)
 
 segs <- cov_dat$segs
 obs <- cov_dat$obs
