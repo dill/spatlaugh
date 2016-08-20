@@ -13,7 +13,6 @@ library(ltdesigntester)
 
 
 true_N <- 500
-nsim <- 2#250
 
 n_grid_x <- 300
 n_grid_y <- 100
@@ -44,6 +43,7 @@ df[["bad"]] <- list(key        = "hr",
                     truncation = w_trunc)
 
 
+
 stratification <- 1.5
 
 # set the density
@@ -61,17 +61,23 @@ ss_bad <- build_sim("../shapes/manyzigzags",
                      n_pop=true_N, df=df[["bad"]],
                      region="../shapes/region2/data", n_sim=1)
 
-cov_dat <- build_sim_covar(list(ss_good, ss_bad), logit_scale=0.1,
-                           logit_location=1.5)
 
-segs <- cov_dat$segs
-obs <- cov_dat$obs
-dist <- cov_dat$dist
+## define some transects (rather than segments)
+## !!! this is not general yet
+aa <- create.survey.results(ss_good, TRUE)
+bb <- aa@transects@sampler.info
+se <- bb$start.Y==max(bb$start.Y) | bb$end.Y==max(bb$end.Y) |
+      bb$start.Y==min(bb$start.Y) | bb$end.Y==min(bb$end.Y)
 
-library(Distance)
-library(mrds)
-dd <- ds(dist, truncation=w_trunc, formula=~weather, key="hr")
+# get number of segments per transect
+se_mat <- matrix(which(se), ncol=2,byrow=TRUE)
+tr_n <- apply(se_mat, 1, diff)
+# make the labels
+tr_id <- rep(1:nrow(se_mat), tr_n+1)
 
-mm <- dsm(count~s(x,y), obs=obs, ddf=dd, segment.data=segs, family=tw(), method="REML")
 
-vis.gam(mm,plot.type="contour", view=c("x","y"),asp=1)
+logit_opts <- list(scale=0.1, location=1.5)
+cov_dat <- do_sim(100, list(ss_good, ss_bad), pred_dat1,
+                  stratification, logit_opts, tr_id)
+
+
