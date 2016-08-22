@@ -50,12 +50,12 @@ stratification <- 1.5
 density.surface$density <- 5*(density.surface$x/3)
 
 # build simulation setup -- good
-ss_good <- build_sim("../shapes/manyzigzags",
+ss_good <- build_sim("../shapes/zzl",
                      dsurf=density.surface,
                      n_grid_x=n_grid_x, n_grid_y=n_grid_y,
                      n_pop=true_N, df=df[["good"]],
                      region="../shapes/region2/data", n_sim=1)
-ss_bad <- build_sim("../shapes/manyzigzags",
+ss_bad <- build_sim("../shapes/zzl",
                      dsurf=density.surface,
                      n_grid_x=n_grid_x, n_grid_y=n_grid_y,
                      n_pop=true_N, df=df[["bad"]],
@@ -77,6 +77,8 @@ tr_id <- rep(1:nrow(se_mat), tr_n+1)
 
 
 logit_opts <- list(scale=0.1, location=1.5)
+
+# run the simulation!
 cov_dat <- do_sim(5, list(ss_good, ss_bad), pred_dat1,
                   stratification, logit_opts, tr_id)
 
