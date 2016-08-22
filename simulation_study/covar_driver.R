@@ -63,23 +63,22 @@ ss_bad <- build_sim("../shapes/zzl",
 
 
 ## define some transects (rather than segments)
-## !!! this is not general yet
+## !!! is this not general yet ?!
 aa <- create.survey.results(ss_good, TRUE)
 bb <- aa@transects@sampler.info
-se <- bb$start.Y==max(bb$start.Y) | bb$end.Y==max(bb$end.Y) |
+seg <- bb$start.Y==max(bb$start.Y) | bb$end.Y==max(bb$end.Y) |
       bb$start.Y==min(bb$start.Y) | bb$end.Y==min(bb$end.Y)
-
 # get number of segments per transect
-se_mat <- matrix(which(se), ncol=2,byrow=TRUE)
-tr_n <- apply(se_mat, 1, diff)
+seg_mat <- matrix(which(seg), ncol=2, byrow=TRUE)
+tr_n <- apply(seg_mat, 1, diff)
 # make the labels
-tr_id <- rep(1:nrow(se_mat), tr_n+1)
+tr_id <- rep(1:nrow(seg_mat), tr_n+1)
 
 
 logit_opts <- list(scale=0.1, location=1.5)
 
 # run the simulation!
-cov_dat <- do_sim(250, list(ss_good, ss_bad), pred_dat1,
+cov_dat <- do_sim(200, list(ss_good, ss_bad), pred_dat1,
                   stratification, logit_opts, tr_id)
 
 save.image("done.RData")
