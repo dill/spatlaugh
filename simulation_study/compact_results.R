@@ -58,32 +58,32 @@ for(i in seq_along(f_names)){
 
 
 ## WARNING: magic numbers below!!
-p <- ggplot(huge_res)+
-  geom_boxplot(aes(names, bias), outlier.size = 0.75) +
+p <- ggplot(big_res)+
+  geom_boxplot(aes(model, bias), outlier.size = 0.75) +
   #facet_wrap(~names, scales="free_x",nrow=2)+
   #ggtitle(paste0(f_names[i], "Bias")) +
   labs(y="Bias", x="Model") +
-  coord_cartesian(ylim=c(-400,400)) +
+  #coord_cartesian(ylim=c(-400,400)) +
   theme_minimal() +
   #facet_wrap(~density+design+df, ncol=3,
-  facet_wrap(density~design+df, ncol=6,
-             labeller=function(labels, multi_line=FALSE){
-                        label_value(labels, multi_line)
-                      }) +
+  #facet_wrap(density~design+df, ncol=6,
+  #           labeller=function(labels, multi_line=FALSE){
+  #                      label_value(labels, multi_line)
+  #                    }) +
   geom_hline(aes(yintercept=0), colour="red") +
   theme(axis.text.x = element_text(angle = 90, size=6))
 print(p)
 
 
 ##dev.new()
-#  # Mark's fancy quantile diagnostic, described above
-#  p <- ggplot(big_res)+
-#    geom_histogram(aes(quantile))+
-#    facet_wrap(~names, nrow=2)+
-#    ggtitle(paste0(f_names[i], "Quantile diagnostic")) +
-#    geom_vline(xintercept=0.5) +
-#    theme_minimal()
-#  print(p)
+  # Mark's fancy quantile diagnostic, described above
+  p <- ggplot(big_res)+
+    geom_histogram(aes(quantile))+
+    facet_wrap(~model, nrow=2)+
+    #ggtitle(paste0(f_names[i], "Quantile diagnostic")) +
+    geom_vline(xintercept=0.5) +
+    theme_minimal()
+  print(p)
 
 
 

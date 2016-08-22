@@ -80,8 +80,24 @@ for(iii in 1){#:nrow(scenarios)){
                   n_grid_x=n_grid_x, n_grid_y=n_grid_y,
                   n_pop=true_N, df=df[[this_set$df]],
                   region="../shapes/region2/data")
+
+
+## define some transects (rather than segments)
+## !!! is this not general yet ?!
+aa <- create.survey.results(ss, TRUE)
+bb <- aa@transects@sampler.info
+seg <- bb$start.Y==max(bb$start.Y) | bb$end.Y==max(bb$end.Y) |
+      bb$start.Y==min(bb$start.Y) | bb$end.Y==min(bb$end.Y)
+# get number of segments per transect
+seg_mat <- matrix(which(seg), ncol=2, byrow=TRUE)
+tr_n <- apply(seg_mat, 1, diff)
+# make the labels
+tr_id <- rep(1:nrow(seg_mat), tr_n+1)
+
+
   #check_sim_setup(ss)
-  big_res <- do_sim(nsim, ss, pred_dat1, stratification[[this_set$design]])
+  big_res <- do_sim(nsim, ss, pred_dat1, stratification[[this_set$design]],
+                    transect_id=tr_id)
 
   # write out the results
 #  save(big_res, file=paste0(scenario_name, ".RData"))
