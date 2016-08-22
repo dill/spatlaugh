@@ -784,8 +784,16 @@ So far we have only considered the case where detectability is certain on
 \begin_inset Formula $g(0)=1$
 \end_inset
 
-), this situation only gets more complicated once we start thinking about
- double observer methods.
+).
+ If we start to consider issues around uncertain detectability on the line
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Borchers:1998eq,Borchers:1998ic,Borchers:2005do,Burt:2014gu"
+
+\end_inset
+
+ this situation only gets more complicated.
  
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -1109,6 +1117,27 @@ low
 \end_inset
 
  by varying the parameters of a hazard rate detection function.
+ We also simulated a two-level weather covariate that changed from left
+ to right across the study area, on one side the weather was 
+\begin_inset Quotes eld
+\end_inset
+
+good
+\begin_inset Quotes erd
+\end_inset
+
+ (characterised by detection function 1, below) and on the other side the
+ weather was 
+\begin_inset Quotes eld
+\end_inset
+
+bad
+\begin_inset Quotes erd
+\end_inset
+
+ (characterised by detection function 2).
+ The transition was controlled by a logistic function.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -1479,6 +1508,24 @@ name "fig:dfs"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+We do not consider the case where detectability is uncertain at zero distance
+ (
+\begin_inset Formula $g(0)\neq1$
+\end_inset
+
+) here.
+ We assume that if animals occur directly in front of the observer they
+ will be seen.
+ We also do not consider any availability issues (that whales are often
+ underwater and cannot be seen).
+ Finally, we also assume that observations are of single animals (that group
+ size is one).
+ These are simplifying assumptions, but a modelling strategy that fails
+ in this simple situation is unlikely to perform well once any of these
+ assumptions are relaxed.
 \end_layout
 
 \begin_layout Subsection

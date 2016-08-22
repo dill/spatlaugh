@@ -204,6 +204,11 @@ Weather issues— where has weather gone? I think we need weather in there
 \end_layout
 
 \begin_layout Enumerate
+
+\series bold
+DONE.
+ 
+\series default
 Group size and g0 (ignored, say what that means)
 \end_layout
 
