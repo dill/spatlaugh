@@ -82,4 +82,4 @@ logit_opts <- list(scale=0.1, location=1.5)
 cov_dat <- do_sim(250, list(ss_good, ss_bad), pred_dat1,
                   stratification, logit_opts, tr_id)
 
-
+save.image("done.RData")
