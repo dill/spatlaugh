@@ -96,11 +96,11 @@ tr_id <- rep(1:nrow(seg_mat), tr_n+1)
 
 
   #check_sim_setup(ss)
-  big_res <- do_sim(nsim, ss, pred_dat1, stratification[[this_set$design]],
+  big_res <- do_sim(200, ss, pred_dat1, stratification[[this_set$design]],
                     transect_id=tr_id)
 
   # write out the results
-#  save(big_res, file=paste0(scenario_name, ".RData"))
+  save(big_res, file=paste0(scenario_name, ".RData"))
 }
 
 
