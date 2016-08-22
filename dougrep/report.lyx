@@ -101,6 +101,30 @@ Integrated Statistics, Woods Hole, MA & Centre for Research into Ecological
 Commonwealth Scientific and Industrial Research Organization, Hobart, TAS
 \end_layout
 
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<preamble, include=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+opts_knit$set(cache=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Introduction 
 \end_layout
@@ -2345,6 +2369,39 @@ dat <- rbind(dat, data.frame(scenario = "+ve bias", quantile = nb))
 
 \begin_layout Plain Layout
 
+nb <- rnorm(2*n, mean=0.5, sd=0.15) 
+\end_layout
+
+\begin_layout Plain Layout
+
+nb <- nb[nb<1 & nb >0] 
+\end_layout
+
+\begin_layout Plain Layout
+
+nb <- nb[1:1000] 
+\end_layout
+
+\begin_layout Plain Layout
+
+dat <- rbind(dat, data.frame(scenario = "Over confident", quantile = nb))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# what we'd like to see 
+\end_layout
+
+\begin_layout Plain Layout
+
 nb <- rnorm(2*n, mean=0.5, sd=0.35) 
 \end_layout
 
@@ -2360,7 +2417,7 @@ nb <- nb[1:1000]
 
 \begin_layout Plain Layout
 
-dat <- rbind(dat, data.frame(scenario = "conservative", quantile = nb))
+dat <- rbind(dat, data.frame(scenario = "Conservative", quantile = nb))
 \end_layout
 
 \begin_layout Plain Layout
@@ -2390,6 +2447,11 @@ p <- ggplot(dat) +
 \begin_layout Plain Layout
 
       geom_vline(xintercept=0.5) +
+\end_layout
+
+\begin_layout Plain Layout
+
+      labs(x="Quantile", y="Count") +
 \end_layout
 
 \begin_layout Plain Layout
