@@ -77,7 +77,7 @@ tr_id <- rep(1:nrow(se_mat), tr_n+1)
 
 
 logit_opts <- list(scale=0.1, location=1.5)
-cov_dat <- do_sim(100, list(ss_good, ss_bad), pred_dat1,
+cov_dat <- do_sim(5, list(ss_good, ss_bad), pred_dat1,
                   stratification, logit_opts, tr_id)
 
 
