@@ -1,19 +1,15 @@
 # drive the sims
 
 
-
 library(DSsim)
-#library(devtools)
-#load_all("~/current/dsm")
 library(dsm)
 library(Distance)
-#library(handy2)
 library(plyr)
 library(ltdesigntester)
 
 
 true_N <- 500
-nsim <- 2#250
+nsim <- 200
 
 n_grid_x <- 300
 n_grid_y <- 100
@@ -61,7 +57,23 @@ scenarios <- expand.grid(density = c("lr","rl","f"),
                          df      = c("good","bad"),#"lr","rl"),
                          stringsAsFactors=FALSE)
 
-for(iii in 1){#:nrow(scenarios)){
+# transect definitions
+transects <- list(iwc = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                          3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+                          5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7,
+                          7, 7, 7, 7, 8, 8, 8, 8),
+                  zzl = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                          3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+                          5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+                          7, 7, 7, 7, 7, 7, 7, 7, 7),
+                  manyzigzags = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2,
+                                  2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4,
+                                  4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+                                  6, 6, 6, 6, 6, 6, 6, 6, 6))
+
+
+
+for(iii in 1:nrow(scenarios)){
 
   # get this set of settings
   this_set <- scenarios[iii,,drop=FALSE]
@@ -82,22 +94,10 @@ for(iii in 1){#:nrow(scenarios)){
                   region="../shapes/region2/data")
 
 
-## define some transects (rather than segments)
-## !!! is this not general yet ?!
-aa <- create.survey.results(ss, TRUE)
-bb <- aa@transects@sampler.info
-seg <- bb$start.Y==max(bb$start.Y) | bb$end.Y==max(bb$end.Y) |
-      bb$start.Y==min(bb$start.Y) | bb$end.Y==min(bb$end.Y)
-# get number of segments per transect
-seg_mat <- matrix(which(seg), ncol=2, byrow=TRUE)
-tr_n <- apply(seg_mat, 1, diff)
-# make the labels
-tr_id <- rep(1:nrow(seg_mat), tr_n+1)
-
 
   #check_sim_setup(ss)
-  big_res <- do_sim(200, ss, pred_dat1, stratification[[this_set$design]],
-                    transect_id=tr_id)
+  big_res <- do_sim(nsim, ss, pred_dat1, stratification[[this_set$design]],
+                    transect_id=transects[[this_set$design]])
 
   # write out the results
   save(big_res, file=paste0(scenario_name, ".RData"))

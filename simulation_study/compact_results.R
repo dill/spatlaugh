@@ -63,7 +63,7 @@ p <- ggplot(big_res)+
   #facet_wrap(~names, scales="free_x",nrow=2)+
   #ggtitle(paste0(f_names[i], "Bias")) +
   labs(y="Bias", x="Model") +
-  #coord_cartesian(ylim=c(-400,400)) +
+  coord_cartesian(ylim=c(-400,400)) +
   theme_minimal() +
   #facet_wrap(~density+design+df, ncol=3,
   #facet_wrap(density~design+df, ncol=6,
