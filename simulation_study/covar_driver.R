@@ -1,18 +1,15 @@
 # drive the sims
 
 
-
 library(DSsim)
-#library(devtools)
-#load_all("~/current/dsm")
 library(dsm)
 library(Distance)
-#library(handy2)
 library(plyr)
 library(ltdesigntester)
 
 
 true_N <- 500
+nsim <- 200
 
 n_grid_x <- 300
 n_grid_y <- 100
@@ -43,42 +40,76 @@ df[["bad"]] <- list(key        = "hr",
                     truncation = w_trunc)
 
 
+# setup densities
+densities <- list()
+densities[["f"]] <- 1
+densities[["lr"]] <- 5*(density.surface$x/3)
+densities[["rl"]] <- rev(densities[["lr"]])
 
-stratification <- 1.5
+# stratification schemes
+stratification <- list()
+stratification[["zzl"]] <- 1.5
+stratification[["manyzigzags"]] <- c(1, 2)
+stratification[["iwc"]] <- c(0.5, 2)
 
-# set the density
-density.surface$density <- 5*(density.surface$x/3)
-
-# build simulation setup -- good
-ss_good <- build_sim("../shapes/zzl",
-                     dsurf=density.surface,
-                     n_grid_x=n_grid_x, n_grid_y=n_grid_y,
-                     n_pop=true_N, df=df[["good"]],
-                     region="../shapes/region2/data", n_sim=1)
-ss_bad <- build_sim("../shapes/zzl",
-                     dsurf=density.surface,
-                     n_grid_x=n_grid_x, n_grid_y=n_grid_y,
-                     n_pop=true_N, df=df[["bad"]],
-                     region="../shapes/region2/data", n_sim=1)
-
-
-## define some transects (rather than segments)
-## !!! is this not general yet ?!
-aa <- create.survey.results(ss_good, TRUE)
-bb <- aa@transects@sampler.info
-seg <- bb$start.Y==max(bb$start.Y) | bb$end.Y==max(bb$end.Y) |
-      bb$start.Y==min(bb$start.Y) | bb$end.Y==min(bb$end.Y)
-# get number of segments per transect
-seg_mat <- matrix(which(seg), ncol=2, byrow=TRUE)
-tr_n <- apply(seg_mat, 1, diff)
-# make the labels
-tr_id <- rep(1:nrow(seg_mat), tr_n+1)
+## build the simulation scenarios
+scenarios <- expand.grid(density = c("lr","rl","f"),
+                         design  = c("zzl","manyzigzags","iwc"),
+#                         df      = c("good","bad"),#"lr","rl"),
+                         stringsAsFactors=FALSE)
 
 
-logit_opts <- list(scale=0.1, location=1.5)
+# transect definitions
+transects <- list(iwc = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                          3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+                          5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7,
+                          7, 7, 7, 7, 8, 8, 8, 8),
+                  zzl = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                          3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+                          5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+                          7, 7, 7, 7, 7, 7, 7, 7, 7),
+                  manyzigzags = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2,
+                                  2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4,
+                                  4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+                                  6, 6, 6, 6, 6, 6, 6, 6, 6))
 
-# run the simulation!
-cov_dat <- do_sim(200, list(ss_good, ss_bad), pred_dat1,
-                  stratification, logit_opts, tr_id)
 
-save.image("zzl_cov_lr.RData")
+
+for(iii in 1:nrow(scenarios)){
+
+  # get this set of settings
+  this_set <- scenarios[iii,,drop=FALSE]
+
+  # print scenario name
+  scenario_name <- paste(apply(this_set, 2, as.character), collapse="-")
+
+  cat("Scenario:", scenario_name, "\n")
+
+  # set the density
+  density.surface$density <- densities[[this_set$density]]
+
+  # build simulation setup -- good
+  ss_good <- build_sim(paste0("../shapes/", this_set$design),
+                       dsurf=density.surface,
+                       n_grid_x=n_grid_x, n_grid_y=n_grid_y,
+                       n_pop=true_N, df=df[["good"]],
+                       region="../shapes/region2/data", n_sim=1)
+  ss_bad <- build_sim(paste0("../shapes/", this_set$design),
+                       dsurf=density.surface,
+                       n_grid_x=n_grid_x, n_grid_y=n_grid_y,
+                       n_pop=true_N, df=df[["bad"]],
+                       region="../shapes/region2/data", n_sim=1)
+
+  logit_opts <- list(scale=0.1, location=1.5)
+
+  # run the simulation!
+  big_res <- do_sim(nsim, list(ss_good, ss_bad), pred_dat1,
+                    stratification[[this_set$design]], logit_opts,
+                    transect_id=transects[[this_set$design]])
+
+
+  # write out the results
+  save(big_res, file=paste0(scenario_name, "-covar.RData"))
+}
+
+
