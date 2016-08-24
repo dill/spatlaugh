@@ -2645,694 +2645,6 @@ dumbest possible
  spatial model, without any thought to checking or calibration.
 \end_layout
 
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-<<results-organise-data, echo=FALSE, message=FALSE, warning=FALSE>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-library(ggplot2)
-\end_layout
-
-\begin_layout Plain Layout
-
-library(plyr)
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-# one for each distribution/detectability
-\end_layout
-
-\begin_layout Plain Layout
-
-f_names <- list.files(path="../simulation_study/", pattern="*
-\backslash
-
-\backslash
-.RData", full.names=TRUE)
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-# lookup for model names to short descriptions
-\end_layout
-
-\begin_layout Plain Layout
-
-model_name_lookup <- list("HT" = "Horvitz-Thompson",
-\end_layout
-
-\begin_layout Plain Layout
-
-                          "HT_strat" = "Horvitz-Thompson (stratified)",
-\end_layout
-
-\begin_layout Plain Layout
-
-                          "m_xy_ds"  = "Duchon spline bivariate",
-\end_layout
-
-\begin_layout Plain Layout
-
-                          "m_xy_te"  = "Thin plate tensor product",
-\end_layout
-
-\begin_layout Plain Layout
-
-                          "m_xy_tp"  = "Thin plate bivariate",
-\end_layout
-
-\begin_layout Plain Layout
-
-                          "m_xy_ts"  = "Thin plate with shrinkage bivariate",
-\end_layout
-
-\begin_layout Plain Layout
-
-                          "m_xyr_tp"  = "Thin plate bivariate rotated",
-\end_layout
-
-\begin_layout Plain Layout
-
-                          "m_xyr_te"  = "Thin plate tensor product rotated"
-\end_layout
-
-\begin_layout Plain Layout
-
-                          )
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-huge_res <- c()
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-# now loop over the files
-\end_layout
-
-\begin_layout Plain Layout
-
-for(i in seq_along(f_names)){
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  load(f_names[i])
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  # re-arrange column names
-\end_layout
-
-\begin_layout Plain Layout
-
-  big_res$N <- big_res$V1
-\end_layout
-
-\begin_layout Plain Layout
-
-  big_res$CV <- big_res$V2
-\end_layout
-
-\begin_layout Plain Layout
-
-  big_res$V1 <- big_res$V2 <- NULL
-\end_layout
-
-\begin_layout Plain Layout
-
-  big_res$se <- big_res$CV*big_res$N
-\end_layout
-
-\begin_layout Plain Layout
-
-  big_res$sen <- big_res$se/sqrt(big_res$n)
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  # print the name of this scenario as the header
-\end_layout
-
-\begin_layout Plain Layout
-
-  f_names[i] <- sub("../simulation_study//", "", f_names[i], fixed=TRUE)
-\end_layout
-
-\begin_layout Plain Layout
-
-  f_names[i] <- sub(".RData", "", f_names[i])
-\end_layout
-
-\begin_layout Plain Layout
-
-  big_res$scenario <- f_names[i]
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  ## WARNING: magic numbers below!!
-\end_layout
-
-\begin_layout Plain Layout
-
-  # bias boxplot
-\end_layout
-
-\begin_layout Plain Layout
-
-  big_res$bias <- big_res$N-200
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  # separate out the scenario definition
-\end_layout
-
-\begin_layout Plain Layout
-
-  big_res$density <- sub("([a-z]+)-[a-z]+-[a-z]+", "
-\backslash
-
-\backslash
-1", big_res$scenario[1])
-\end_layout
-
-\begin_layout Plain Layout
-
-  big_res$design <- sub("[a-z]+-([a-z]+)-[a-z]+", "
-\backslash
-
-\backslash
-1", big_res$scenario[1])
-\end_layout
-
-\begin_layout Plain Layout
-
-  big_res$df <- sub("[a-z]+-[a-z]+-([a-z]+)", "
-\backslash
-
-\backslash
-1", big_res$scenario[1])
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  huge_res <- rbind(huge_res, big_res)
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-@
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:bias"
-
-\end_inset
-
- shows the bias in abundance estimates.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-<<plot-results-bias, fig.width=9, fig.height=9, echo=FALSE, message=FALSE,
- warning=FALSE>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-p <- ggplot(huge_res)+
-\end_layout
-
-\begin_layout Plain Layout
-
-  geom_boxplot(aes(names, bias), outlier.size = 0.75) +
-\end_layout
-
-\begin_layout Plain Layout
-
-  labs(y="Bias", x="Model") +
-\end_layout
-
-\begin_layout Plain Layout
-
-  coord_cartesian(ylim=c(-200, 350)) +
-\end_layout
-
-\begin_layout Plain Layout
-
-  theme_minimal() +
-\end_layout
-
-\begin_layout Plain Layout
-
-  facet_wrap(density~design+df, ncol=3,
-\end_layout
-
-\begin_layout Plain Layout
-
-             labeller=function(labels, multi_line=FALSE){
-\end_layout
-
-\begin_layout Plain Layout
-
-                        label_value(labels, multi_line)
-\end_layout
-
-\begin_layout Plain Layout
-
-                      }) +
-\end_layout
-
-\begin_layout Plain Layout
-
-  geom_hline(aes(yintercept=0), colour="red") +
-\end_layout
-
-\begin_layout Plain Layout
-
-  theme(axis.text.x = element_text(angle=45))
-\end_layout
-
-\begin_layout Plain Layout
-
-print(p)
-\end_layout
-
-\begin_layout Plain Layout
-
-@
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Bias in abundance for each of the models per simulation scenario.
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:bias"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-<<plot-results-selfconfidence_f, fig.width=9, fig.height=9, echo=FALSE, message=FA
-LSE, warning=FALSE>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-huge_res_f <- huge_res[huge_res$density=="f",]
-\end_layout
-
-\begin_layout Plain Layout
-
-p <- ggplot(huge_res_f)+
-\end_layout
-
-\begin_layout Plain Layout
-
-      geom_histogram(aes(quantile))+
-\end_layout
-
-\begin_layout Plain Layout
-
-      facet_wrap(names~design+df, ncol=3,
-\end_layout
-
-\begin_layout Plain Layout
-
-                 labeller=function(labels, multi_line=FALSE){
-\end_layout
-
-\begin_layout Plain Layout
-
-                            label_value(labels, multi_line)
-\end_layout
-
-\begin_layout Plain Layout
-
-                          }) +
-\end_layout
-
-\begin_layout Plain Layout
-
-      geom_vline(xintercept=0.5) +
-\end_layout
-
-\begin_layout Plain Layout
-
-      theme_minimal()
-\end_layout
-
-\begin_layout Plain Layout
-
-print(p)
-\end_layout
-
-\begin_layout Plain Layout
-
-@
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Plots of the 
-\begin_inset Quotes eld
-\end_inset
-
-self-confidence
-\begin_inset Quotes erd
-\end_inset
-
- measure for the flat density surface.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-<<plot-results-selfconfidence_lr, fig.width=9, fig.height=9, echo=FALSE, message=F
-ALSE, warning=FALSE>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-huge_res_lr <- huge_res[huge_res$density=="lr",]
-\end_layout
-
-\begin_layout Plain Layout
-
-p <- ggplot(huge_res_lr)+
-\end_layout
-
-\begin_layout Plain Layout
-
-      geom_histogram(aes(quantile))+
-\end_layout
-
-\begin_layout Plain Layout
-
-      facet_wrap(names~design+df, ncol=3,
-\end_layout
-
-\begin_layout Plain Layout
-
-                 labeller=function(labels, multi_line=FALSE){
-\end_layout
-
-\begin_layout Plain Layout
-
-                            label_value(labels, multi_line)
-\end_layout
-
-\begin_layout Plain Layout
-
-                          }) +
-\end_layout
-
-\begin_layout Plain Layout
-
-      geom_vline(xintercept=0.5) +
-\end_layout
-
-\begin_layout Plain Layout
-
-      theme_minimal()
-\end_layout
-
-\begin_layout Plain Layout
-
-print(p)
-\end_layout
-
-\begin_layout Plain Layout
-
-@
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Plots of the 
-\begin_inset Quotes eld
-\end_inset
-
-self-confidence
-\begin_inset Quotes erd
-\end_inset
-
- measure for the left-right density surface.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-<<plot-results-selfconfidence_rl, fig.width=9, fig.height=9, echo=FALSE, message=F
-ALSE, warning=FALSE>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-huge_res_rl <- huge_res[huge_res$density=="rl",]
-\end_layout
-
-\begin_layout Plain Layout
-
-p <- ggplot(huge_res_rl)+
-\end_layout
-
-\begin_layout Plain Layout
-
-      geom_histogram(aes(quantile))+
-\end_layout
-
-\begin_layout Plain Layout
-
-      facet_wrap(names~design+df, ncol=3,
-\end_layout
-
-\begin_layout Plain Layout
-
-                 labeller=function(labels, multi_line=FALSE){
-\end_layout
-
-\begin_layout Plain Layout
-
-                            label_value(labels, multi_line)
-\end_layout
-
-\begin_layout Plain Layout
-
-                          }) +
-\end_layout
-
-\begin_layout Plain Layout
-
-      geom_vline(xintercept=0.5) +
-\end_layout
-
-\begin_layout Plain Layout
-
-      theme_minimal()
-\end_layout
-
-\begin_layout Plain Layout
-
-print(p)
-\end_layout
-
-\begin_layout Plain Layout
-
-@
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Plots of the 
-\begin_inset Quotes eld
-\end_inset
-
-self-confidence
-\begin_inset Quotes erd
-\end_inset
-
- measure for the right-left density surface.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Section
 Discussion 
 \end_layout
@@ -3618,6 +2930,739 @@ Sample.Label
  and longitude), and other relevant covariates (sea surface temperature,
  bathymetry etc).
  
+\end_layout
+
+\begin_layout Section*
+Appendix 3 - Full simulation results
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<results-organise-data, echo=FALSE, message=FALSE, warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(ggplot2)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(plyr)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# one for each distribution/detectability
+\end_layout
+
+\begin_layout Plain Layout
+
+f_names <- list.files(path="../simulation_study/",  pattern="*
+\backslash
+
+\backslash
+.RData", 
+\end_layout
+
+\begin_layout Plain Layout
+
+                      full.names=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# lookup for model names to short descriptions
+\end_layout
+
+\begin_layout Plain Layout
+
+model_name_lookup <- list("HT" = "Horvitz-Thompson",
+\end_layout
+
+\begin_layout Plain Layout
+
+                          "HT_strat" = "Horvitz-Thompson (stratified)",
+\end_layout
+
+\begin_layout Plain Layout
+
+                          "m_xy_ds"  = "Duchon spline bivariate",
+\end_layout
+
+\begin_layout Plain Layout
+
+                          "m_xy_te"  = "Thin plate tensor product",
+\end_layout
+
+\begin_layout Plain Layout
+
+                          "m_xy_tp"  = "Thin plate bivariate",
+\end_layout
+
+\begin_layout Plain Layout
+
+                          "m_xy_ts"  = "Thin plate with shrinkage bivariate",
+\end_layout
+
+\begin_layout Plain Layout
+
+                          "m_xyr_tp"  = "Thin plate bivariate rotated",
+\end_layout
+
+\begin_layout Plain Layout
+
+                          "m_xyr_te"  = "Thin plate tensor product rotated"
+\end_layout
+
+\begin_layout Plain Layout
+
+                          )
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+huge_res <- c()
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# now loop over the files
+\end_layout
+
+\begin_layout Plain Layout
+
+for(i in seq_along(f_names)){
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  load(f_names[i])
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  # print the name of this scenario as the header
+\end_layout
+
+\begin_layout Plain Layout
+
+  f_names[i] <- sub("../simulation_study//", "", f_names[i], fixed=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+  f_names[i] <- sub(".RData", "", f_names[i])
+\end_layout
+
+\begin_layout Plain Layout
+
+  big_res$scenario <- f_names[i]
+\end_layout
+
+\begin_layout Plain Layout
+
+  big_res$model <- as.character(big_res$model)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  ## WARNING: magic numbers below!!
+\end_layout
+
+\begin_layout Plain Layout
+
+  # bias boxplot
+\end_layout
+
+\begin_layout Plain Layout
+
+  big_res$bias <- big_res$N-500
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  # separate out the scenario definition
+\end_layout
+
+\begin_layout Plain Layout
+
+  big_res$density <- sub("([a-z]+)-[a-z]+-[a-z]+", "
+\backslash
+
+\backslash
+1", big_res$scenario[1])
+\end_layout
+
+\begin_layout Plain Layout
+
+  big_res$design <- sub("[a-z]+-([a-z]+)-[a-z]+", "
+\backslash
+
+\backslash
+1", big_res$scenario[1])
+\end_layout
+
+\begin_layout Plain Layout
+
+  if(!grepl("covar", big_res$scenario[1])){
+\end_layout
+
+\begin_layout Plain Layout
+
+    big_res$df <- sub("[a-z]+-[a-z]+-([a-z]+)", "
+\backslash
+
+\backslash
+1", big_res$scenario[1])
+\end_layout
+
+\begin_layout Plain Layout
+
+    big_res$covar <- FALSE
+\end_layout
+
+\begin_layout Plain Layout
+
+  }else{
+\end_layout
+
+\begin_layout Plain Layout
+
+    big_res$covar <- TRUE
+\end_layout
+
+\begin_layout Plain Layout
+
+	big_res$df <- "covar"
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  huge_res <- rbind(huge_res, big_res)
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# plot quantiles
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_quantile <- function(dat, covar){
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  #ndat <- ddply(dat, .(df,design,model),  summarize, thisn=length(df))
+\end_layout
+
+\begin_layout Plain Layout
+
+  #ndat$df<-NULL
+\end_layout
+
+\begin_layout Plain Layout
+
+  #ndat <- unique(ndat)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  p <- ggplot(dat)+
+\end_layout
+
+\begin_layout Plain Layout
+
+        geom_histogram(aes(quantile))+
+\end_layout
+
+\begin_layout Plain Layout
+
+        geom_vline(xintercept=0.5) +
+\end_layout
+
+\begin_layout Plain Layout
+
+        #geom_text(aes(x=0.8, y=60, label=thisn), data=ndat) +
+\end_layout
+
+\begin_layout Plain Layout
+
+        theme_minimal()
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  if(covar){
+\end_layout
+
+\begin_layout Plain Layout
+
+    p <- p + facet_grid(model~design,
+\end_layout
+
+\begin_layout Plain Layout
+
+                        labeller=function(labels, multi_line=FALSE){
+\end_layout
+
+\begin_layout Plain Layout
+
+                         label_value(labels, multi_line)
+\end_layout
+
+\begin_layout Plain Layout
+
+                        })
+\end_layout
+
+\begin_layout Plain Layout
+
+  }else{
+\end_layout
+
+\begin_layout Plain Layout
+
+    p <- p + facet_wrap(model~design+df, ncol=3,
+\end_layout
+
+\begin_layout Plain Layout
+
+                        labeller=function(labels, multi_line=FALSE){
+\end_layout
+
+\begin_layout Plain Layout
+
+                         label_value(labels, multi_line)
+\end_layout
+
+\begin_layout Plain Layout
+
+                        })
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  print(p)
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:bias"
+
+\end_inset
+
+ shows the bias in abundance estimates.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<plot-results-bias, fig.width=9, fig.height=9, echo=FALSE, message=FALSE,
+ warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+p <- ggplot(huge_res)+
+\end_layout
+
+\begin_layout Plain Layout
+
+  geom_boxplot(aes(model, bias), outlier.size = 0.75) +
+\end_layout
+
+\begin_layout Plain Layout
+
+  labs(y="Bias", x="Model") +
+\end_layout
+
+\begin_layout Plain Layout
+
+  coord_cartesian(ylim=c(-500, 500)) +
+\end_layout
+
+\begin_layout Plain Layout
+
+  theme_minimal() +
+\end_layout
+
+\begin_layout Plain Layout
+
+#  facet_wrap(density~design+df, ncol=3,
+\end_layout
+
+\begin_layout Plain Layout
+
+#             labeller=function(labels, multi_line=FALSE){
+\end_layout
+
+\begin_layout Plain Layout
+
+#                        label_value(labels, multi_line)
+\end_layout
+
+\begin_layout Plain Layout
+
+#                      }) +
+\end_layout
+
+\begin_layout Plain Layout
+
+  facet_grid(density~design,
+\end_layout
+
+\begin_layout Plain Layout
+
+             labeller=function(labels, multi_line=FALSE){
+\end_layout
+
+\begin_layout Plain Layout
+
+                        label_value(labels, multi_line)
+\end_layout
+
+\begin_layout Plain Layout
+
+                      }) +
+\end_layout
+
+\begin_layout Plain Layout
+
+  geom_hline(aes(yintercept=0), colour="red") +
+\end_layout
+
+\begin_layout Plain Layout
+
+  theme(axis.text.x = element_text(angle=45))
+\end_layout
+
+\begin_layout Plain Layout
+
+print(p)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Bias in abundance for each of the models per simulation scenario.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:bias"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<plot-results-selfconfidence_f, fig.width=9, fig.height=9, echo=FALSE, message=FA
+LSE, warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+huge_res_f <- huge_res[huge_res$density=="f",]
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_quantile(huge_res_f, TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Plots of the 
+\begin_inset Quotes eld
+\end_inset
+
+self-confidence
+\begin_inset Quotes erd
+\end_inset
+
+ measure for the flat density surface.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<plot-results-selfconfidence_lr, fig.width=9, fig.height=9, echo=FALSE, message=F
+ALSE, warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+huge_res_lr <- huge_res[huge_res$density=="lr",]
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_quantile(huge_res_lr, TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Plots of the 
+\begin_inset Quotes eld
+\end_inset
+
+self-confidence
+\begin_inset Quotes erd
+\end_inset
+
+ measure for the left-right density surface.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<plot-results-selfconfidence_rl, fig.width=9, fig.height=9, echo=FALSE, message=F
+ALSE, warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+huge_res_rl <- huge_res[huge_res$density=="rl",]
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_quantile(huge_res_rl, TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Plots of the 
+\begin_inset Quotes eld
+\end_inset
+
+self-confidence
+\begin_inset Quotes erd
+\end_inset
+
+ measure for the right-left density surface.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section*

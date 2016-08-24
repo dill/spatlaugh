@@ -30,17 +30,6 @@ for(i in seq_along(f_names)){
 
   load(f_names[i])
 
-  # re-arrange column names
-  big_res$N <- big_res$V1
-  big_res$CV <- big_res$V2
-  big_res$V1 <- big_res$V2 <- NULL
-  big_res$se <- big_res$CV*big_res$N
-  big_res$sen <- big_res$se/sqrt(big_res$n)
-
-  # does 1/smoothing parameter make more sense (no?)
-  big_res$sp1 <- 1/big_res$sp1
-  big_res$sp2 <- 1/big_res$sp2
-
   # print the name of this scenario as the header
   f_names[i] <- sub(".RData", "", f_names[i])
   cat("\n\n## ", f_names[i],"\n\n")
@@ -61,16 +50,15 @@ for(i in seq_along(f_names)){
 
 dev.new()
   # bias boxplot
-  big_res$bias <- big_res$N-200
+  big_res$bias <- big_res$N-500
   p <- ggplot(big_res)+
-    geom_boxplot(aes(names, bias)) +
+    geom_boxplot(aes(model, bias)) +
     #facet_wrap(~names, scales="free_x",nrow=2)+
     ggtitle(paste0(f_names[i], "Bias")) +
     labs(y="Bias") +
-    coord_cartesian(ylim=c(-200,300)) +
+#    coord_cartesian(ylim=c(-200,300)) +
     theme_minimal() +
     geom_hline(aes(yintercept=0), colour="red")
-    geom_vline(xintercept=0.5)
   print(p)
 
 dev.new()
