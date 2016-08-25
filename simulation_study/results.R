@@ -2,7 +2,7 @@ library(ggplot2)
 library(plyr)
 
 # one for each distribution/detectability
-f_names <- list.files(pattern="*\\.RData")
+f_names <- list.files(pattern="*tb-covar\\.RData")
 
 # lookup for model names to short descriptions
 model_name_lookup <- list("HT" = "Horvitz-Thompson",
@@ -34,20 +34,6 @@ for(i in seq_along(f_names)){
   f_names[i] <- sub(".RData", "", f_names[i])
   cat("\n\n## ", f_names[i],"\n\n")
 
-  ## N
-  #rr <- reasonable_range(big_res$N)
-  # build a data.frame to count clipped observation
-  #clipped_d <- ddply(big_res, .(names), clipped_obs, name="N", rr=rr)
-
-  #p <- ggplot(big_res)+
-  #  geom_histogram(aes(N))+
-  #  facet_wrap(~names, scales="free_x",nrow=2)+
-  #  ggtitle(paste(f_names[i], "N"))+
-  #  scale_x_continuous(limits = rr) +
-  #  geom_text(aes(label=V1, x=rr[1]+(rr[2]-rr[1]), y=50 ), data=clipped_d) +
-  #  geom_vline(aes(xintercept=200))
-  #print(p) 
-
 dev.new()
   # bias boxplot
   big_res$bias <- big_res$N-500
@@ -56,7 +42,7 @@ dev.new()
     #facet_wrap(~names, scales="free_x",nrow=2)+
     ggtitle(paste0(f_names[i], "Bias")) +
     labs(y="Bias") +
-#    coord_cartesian(ylim=c(-200,300)) +
+    coord_cartesian(ylim=c(-500, 500)) +
     theme_minimal() +
     geom_hline(aes(yintercept=0), colour="red")
   print(p)
@@ -65,7 +51,7 @@ dev.new()
   # Mark's fancy quantile diagnostic, described above
   p <- ggplot(big_res)+
     geom_histogram(aes(quantile))+
-    facet_wrap(~names, nrow=2)+
+    facet_wrap(~model, nrow=2)+
     ggtitle(paste0(f_names[i], "Quantile diagnostic")) +
     geom_vline(xintercept=0.5) +
     theme_minimal()

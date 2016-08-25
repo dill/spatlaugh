@@ -90,6 +90,11 @@ Intro: IWC-ify
 \end_layout
 
 \begin_layout Enumerate
+
+\series bold
+DONE.
+ 
+\series default
 Need (and mention early) a how-to guide, for how we suggest you check an
  existing desgin.
  I think the data requirements are specified in Appendix 1 except *** Envir
