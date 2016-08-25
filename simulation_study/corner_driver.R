@@ -9,7 +9,7 @@ library(ltdesigntester)
 
 
 true_N <- 500
-nsim <- 2#0#0
+nsim <- 200
 
 n_grid_y <- 300
 n_grid_x <- 300
@@ -63,7 +63,7 @@ transects <- list(corner = sort(rep(seq(1,20,1),2)))
 
 
 
-for(iii in 1){#:nrow(scenarios)){
+for(iii in 1:nrow(scenarios)){
 
   # get this set of settings
   this_set <- scenarios[iii,,drop=FALSE]
@@ -98,7 +98,7 @@ for(iii in 1){#:nrow(scenarios)){
 
 
   # write out the results
-##  save(big_res, file=paste0(scenario_name, "-covar.RData"))
+  save(big_res, file=paste0(scenario_name, "-covar.RData"))
 }
 
 
