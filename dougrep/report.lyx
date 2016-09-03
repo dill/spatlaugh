@@ -82,22 +82,60 @@ Provides natbib 1
 \begin_body
 
 \begin_layout Title
-Shortcomings of Horvitz-Thompson-based estimates of abundance for large-scale
- cetacean abundance estimation
+Shortcomings of Horvitz-Thompson-like estimators for large-scale cetacean
+ abundance estimation
 \end_layout
 
 \begin_layout Author
 David L.
- Miller and Mark V.
+ Miller
+\begin_inset script superscript
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+
+ and Mark V.
  Bravington
+\begin_inset script superscript
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Address
+\begin_inset script superscript
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+
 Integrated Statistics, Woods Hole, MA & Centre for Research into Ecological
- and Environmental Modelling, St Andrews, Scotland
+ and Environmental Modelling, St
+\begin_inset space ~
+\end_inset
+
+Andrews, Scotland
 \end_layout
 
 \begin_layout Address
+\begin_inset script superscript
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+
 Commonwealth Scientific and Industrial Research Organization, Hobart, TAS
 \end_layout
 
@@ -156,14 +194,15 @@ Here we are interested in two methodologies for estimating abundance from
  line transect distance sampling surveys, one is a design-based estimate,
  the other is a model-based estimate.
  We assume in both cases that the usual assumptions regarding distance sampling
- surveys have been met (see e.g., 
+ surveys have been met 
 \begin_inset CommandInset citation
-LatexCommand citet
+LatexCommand citep
+before "see e.g.,"
 key "Buckland:2001vm,Buckland:2004ts,buckland2015distance"
 
 \end_inset
 
-).
+.
  We also assume that:
 \end_layout
 
@@ -216,17 +255,21 @@ key "Buckland:2001vm,Buckland:2004jq,buckland2015distance"
 
  for information on model formulation and selection.
  Assuming a fitted detection function (which we will denote 
-\begin_inset Formula $g$
+\begin_inset Formula $\hat{g}$
 \end_inset
 
 , a function of distance, observed detection-related covariates and estimated
- parameters), we can calculate the average (over distance) probability of
+ parameters), we can estimate the average (over distance) probability of
  detection for an individual (conditional on observed covariate values),
  
 \begin_inset Formula $\hat{p}_{i}$
 \end_inset
 
-, by integrating out distance.
+, by integrating out distance for a given observation 
+\begin_inset Formula $i$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsection
@@ -262,10 +305,6 @@ key "Borchers:2004wr"
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 where 
 \begin_inset Formula $n$
 \end_inset
@@ -427,7 +466,7 @@ from the variance in the model for
 
  can be calculated by using the variance from the detection function estimation
  procedure and using a sandwich estimator to express that parameter variance
- in terms of 
+ on the scale of 
 \begin_inset Formula $\hat{p}_{i}$
 \end_inset
 
@@ -466,10 +505,17 @@ key "Fewster:2009ku"
 
 \end_inset
 
- R2 estimator (
-\series bold
-CHECK this, IIRC this is the default in mrds
-\series default
+ R2 estimator (though the encounter rate estimator itself is 
+\begin_inset Formula $\hat{N}/L$
+\end_inset
+
+, see 
+\begin_inset CommandInset citation
+LatexCommand citealp
+key "Innes:2002ka"
+
+\end_inset
+
 ).
 \end_layout
 
@@ -522,10 +568,6 @@ segments
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 where 
 \begin_inset Formula $j$
 \end_inset
@@ -611,10 +653,6 @@ A typical DSM may take a form such as:
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 that is: the expected count in segment 
 \begin_inset Formula $j$
 \end_inset
@@ -702,10 +740,6 @@ n\hat{f}(0)=\sum_{r=1}^{R}n_{r}\hat{f}_{r}(0)
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 where there are 
 \begin_inset Formula $R$
 \end_inset
@@ -738,7 +772,7 @@ where there are
 \begin_layout Standard
 \begin_inset Formula 
 \[
-\frac{n}{\hat{p}}=\sum_{r=1}^{R}\frac{n_{r}}{\hat{p}_{r}}
+\frac{n}{\hat{p}}=\sum_{r=1}^{R}\frac{n_{r}}{\hat{p}_{r}}.
 \]
 
 \end_inset
@@ -767,12 +801,11 @@ y in detectability is not too extreme.
 \begin_inset Quotes erd
 \end_inset
 
- This is a statement about Horvitz-Thompson estimation in the presence of
- detection heterogeneity and does not say anything about the case where
- density varies within strata — in this case the effect of detectability
- and distribution are confounded, unless data on observation conditions
- (e.g., a weather covariate) and spatial distribution (e.g., location of transects)
- is recorded and modelled.
+ This is a statement about HT estimation in the presence of detection heterogene
+ity and does not say anything about the case where density varies within
+ strata — in this case the effect of detectability and distribution are
+ confounded, unless data on observation conditions (e.g., a weather covariate)
+ and spatial distribution (e.g., location of transects) is recorded and modelled.
  A spatial model that includes data on the location of the observations
  and the sighting conditions will be able to tease apart these effects and
  attribute appropriate uncertainty.
@@ -918,6 +951,17 @@ We used a series of simple density surfaces to test for differences between
  
 \end_layout
 
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+diag
+\begin_inset Quotes erd
+\end_inset
+
+: increasing gradient from top right to bottom left
+\end_layout
+
 \begin_layout Standard
 These are shown in Figure 
 \begin_inset CommandInset ref
@@ -933,7 +977,7 @@ reference "fig:densities"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -952,7 +996,20 @@ library(viridis)
 
 \begin_layout Plain Layout
 
-par(mfrow=c(1,3))
+\end_layout
+
+\begin_layout Plain Layout
+
+par(mfrow=c(1,4))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# first 3
 \end_layout
 
 \begin_layout Plain Layout
@@ -1062,6 +1119,97 @@ for(i in 1:3){
 
 \begin_layout Plain Layout
 
+\end_layout
+
+\begin_layout Plain Layout
+
+# one of these densities is not like the other...
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+n_grid_y <- 300
+\end_layout
+
+\begin_layout Plain Layout
+
+n_grid_x <- 300
+\end_layout
+
+\begin_layout Plain Layout
+
+density.surface <- expand.grid(x = seq(0, 3, len=n_grid_x),
+\end_layout
+
+\begin_layout Plain Layout
+
+                               y = seq(0, 3, len=n_grid_y))
+\end_layout
+
+\begin_layout Plain Layout
+
+ddens <- 5*(rev(density.surface$x)*rev(density.surface$y))
+\end_layout
+
+\begin_layout Plain Layout
+
+image(matrix(ddens, n_grid_x, n_grid_y),
+\end_layout
+
+\begin_layout Plain Layout
+
+      x=seq(0, 3, len=n_grid_x),
+\end_layout
+
+\begin_layout Plain Layout
+
+      y= seq(0, 3, len=n_grid_y),
+\end_layout
+
+\begin_layout Plain Layout
+
+      col = viridis(1000), main="diag",
+\end_layout
+
+\begin_layout Plain Layout
+
+      xlab="x", ylab="y", asp=1)
+\end_layout
+
+\begin_layout Plain Layout
+
+contour(matrix(ddens, n_grid_x, n_grid_y),
+\end_layout
+
+\begin_layout Plain Layout
+
+        x=seq(0, 3, len=n_grid_x),
+\end_layout
+
+\begin_layout Plain Layout
+
+        y= seq(0, 3, len=n_grid_y),
+\end_layout
+
+\begin_layout Plain Layout
+
+        add=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
 @
 \end_layout
 
@@ -1075,7 +1223,8 @@ for(i in 1:3){
 
 \begin_layout Plain Layout
 The proposed density surfaces.
- From left to right: flat, left-right gradient, right-left gradient.
+ From left to right: flat, left-right gradient, right-left gradient, diagonal
+ gradient.
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:densities"
@@ -1164,7 +1313,7 @@ reference "tab:df-pars"
 \begin_inset Float table
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Tabular
@@ -1344,7 +1493,7 @@ status open
 
 \begin_layout Plain Layout
 
-par(mfrow=c(1,3))
+par(mfrow=c(1,2))
 \end_layout
 
 \begin_layout Plain Layout
@@ -1363,7 +1512,7 @@ df_good <- list(key        = "hr",
 
 \begin_layout Plain Layout
 
-                scale      = 0.03,
+                scale      = 0.025,
 \end_layout
 
 \begin_layout Plain Layout
@@ -1387,17 +1536,17 @@ df_bad <- list(key        = "hr",
 
 \begin_layout Plain Layout
 
-                    scale      = 0.01,
+                    scale      = 0.005,
 \end_layout
 
 \begin_layout Plain Layout
 
-                    shape      = 1.1,
+                    shape      = 1,
 \end_layout
 
 \begin_layout Plain Layout
 
-                    truncation = 0.02)
+                    truncation = 0.05)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1533,8 +1682,8 @@ Designs
 \end_layout
 
 \begin_layout Standard
-We experimented with three designs: one bad design with a large gap between
- each contiguous section of realised effort, one 
+We experimented with four designs.
+ Two 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1542,17 +1691,21 @@ iffy
 \begin_inset Quotes erd
 \end_inset
 
- design where there are gaps between 
+ designs: one with a large gap between each contiguous section of realised
+ effort and one with two very different effort distributions for two parts
+ of the survey.
+ A 
 \begin_inset Quotes eld
 \end_inset
 
-chunks
+bad
 \begin_inset Quotes erd
 \end_inset
 
- of effort and one good design with good realised coverage across the whole
- study area (to confirm that what we consider to be a good design gives
- us the results we expect from our metrics).
+ design where the effort is concentrated along two sides of the area.
+ A good design with good realised coverage across the whole study area (to
+ confirm that what we consider to be a good design gives us the results
+ we expect from our metrics).
  The designs are shown in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1561,9 +1714,12 @@ reference "fig:designs"
 \end_inset
 
 .
+ In each case the box surrounding the design indicates the area used for
+ prediction in the simulations, dashed lines indicate strata used for stratified
+ HT estimates.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsubsection*
 Design 1: zig-zag with straight line
 \end_layout
 
@@ -1582,15 +1738,19 @@ reference "fig:designs"
 .
 \end_layout
 
-\begin_layout Subsubsection
-Design 2: IWC
+\begin_layout Subsubsection*
+Design 2: two different zig-zags
+\end_layout
+
+\begin_layout Subsubsection*
+Design 2: corner
 \end_layout
 
 \begin_layout Standard
-This design illustrates the case where conditions were more amenable than
- in the first example, but coverage is still quite patchy with some gaps
- in coverage.
- Shown in the middle panel of Figure 
+This design concentrates along two sides of the study area, this design
+ mimics the commonly used technique where near-coast transects are used
+ to extrapolate well beyond the covered area.
+ Shown in the third panel of Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:designs"
@@ -1600,7 +1760,7 @@ reference "fig:designs"
 .
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsubsection*
 Design 3: zig-zag with good coverage
 \end_layout
 
@@ -1621,7 +1781,7 @@ reference "fig:designs"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -1629,12 +1789,12 @@ status open
 
 \begin_layout Plain Layout
 
-<<designs, echo=FALSE, fig.width=10, fig.height=4>>=
+<<designs, echo=FALSE, fig.width=11, fig.height=4>>=
 \end_layout
 
 \begin_layout Plain Layout
 
-par(mfrow=c(1,3))
+par(mfrow=c(1,4))
 \end_layout
 
 \begin_layout Plain Layout
@@ -1648,12 +1808,12 @@ par(mfrow=c(1,3))
 
 \begin_layout Plain Layout
 
-plot_shape <- function(shape, main, strat=NULL){
+plot_shape <- function(shape, main, strat=NULL, xlim=c(0,3), ylim=c(0,1)){
 \end_layout
 
 \begin_layout Plain Layout
 
-  plot(c(0,3), c(0,1), type="n", xlab="x", ylab="y", asp=1, main=main) 
+  plot(xlim, ylim, type="n", xlab="x", ylab="y", asp=1, main=main) 
 \end_layout
 
 \begin_layout Plain Layout
@@ -1677,7 +1837,12 @@ plot_shape <- function(shape, main, strat=NULL){
 
 \begin_layout Plain Layout
 
-  lines(c(0,3,3,0,0), c(0,0,1,1,0))
+  lines(c(xlim[1], xlim[2], xlim[2], xlim[1], xlim[1]),
+\end_layout
+
+\begin_layout Plain Layout
+
+        c(ylim[1], ylim[1], ylim[2], ylim[2], ylim[1]))
 \end_layout
 
 \begin_layout Plain Layout
@@ -1696,7 +1861,7 @@ plot_shape <- function(shape, main, strat=NULL){
 
 \begin_layout Plain Layout
 
-      lines(x=rep(strat[i], 2), y=0:1, lty=2, col="red")
+      lines(x=rep(strat[i], 2), y=ylim, lty=2, col="red")
 \end_layout
 
 \begin_layout Plain Layout
@@ -1841,13 +2006,13 @@ zzl <- rbind.data.frame(mzz,
 
 \begin_layout Plain Layout
 
-                                    y = seq(0, 1, len=10), 
+                                   y = seq(0, 1, len=10), 
 \end_layout
 
 \begin_layout Plain Layout
 
-                              leg = rep(as.character(max(as.numeric(mzz$leg))+1),
- 10)))
+                                   leg = rep(as.character(max(as.numeric(mzz$leg))
++1), 10)))
 \end_layout
 
 \begin_layout Plain Layout
@@ -1861,82 +2026,17 @@ strat_zzl <- 1.5
 
 \begin_layout Plain Layout
 
-# iwc
+### now the corner
 \end_layout
 
 \begin_layout Plain Layout
 
-i <- data.frame(x   = rep(0.25, 10),
+region_sq <- data.frame(x=c(0,0,3,3,0),
 \end_layout
 
 \begin_layout Plain Layout
 
-                y   = seq(0, 1, len=10),
-\end_layout
-
-\begin_layout Plain Layout
-
-                leg = rep(1, 10))
-\end_layout
-
-\begin_layout Plain Layout
-
-w <- data.frame(x   = c(zz$x*0.5, zz$x*0.5+0.5)+0.75,
-\end_layout
-
-\begin_layout Plain Layout
-
-                y   = 1-c(zz$y, zz$y),
-\end_layout
-
-\begin_layout Plain Layout
-
-                leg = rep(2, 2*length(zz$x)))
-\end_layout
-
-\begin_layout Plain Layout
-
-ce <- data.frame(x   = c(seq(2.8, 2.5, len=5),
-\end_layout
-
-\begin_layout Plain Layout
-
-                         seq(2.5, 2.3, len=5), seq(2.3, 2.5, len=5),
-\end_layout
-
-\begin_layout Plain Layout
-
-                         seq(2.5, 2.8, len=5)),
-\end_layout
-
-\begin_layout Plain Layout
-
-                 y   = c(rep(0.02, 5),
-\end_layout
-
-\begin_layout Plain Layout
-
-                         seq(0.02, 0.98, len=10),
-\end_layout
-
-\begin_layout Plain Layout
-
-                         rep(0.98, 5)),
-\end_layout
-
-\begin_layout Plain Layout
-
-                 leg = rep(3, 20))
-\end_layout
-
-\begin_layout Plain Layout
-
-iwc <- rbind.data.frame(i, w, ce)
-\end_layout
-
-\begin_layout Plain Layout
-
-strat_iwc <- c(0.5, 2)
+                        y=c(0,3,3,0,0))
 \end_layout
 
 \begin_layout Plain Layout
@@ -1945,17 +2045,127 @@ strat_iwc <- c(0.5, 2)
 
 \begin_layout Plain Layout
 
-plot_shape(zzl, "bad", strat_zzl)
 \end_layout
 
 \begin_layout Plain Layout
 
-plot_shape(iwc, "iffy", strat_iwc)
+n_segs <- 3
+\end_layout
+
+\begin_layout Plain Layout
+
+zz <- data.frame(y = c(seq(0, 0.25, len=n_segs),
+\end_layout
+
+\begin_layout Plain Layout
+
+                       seq(0.25, 0.5, len=n_segs)),
+\end_layout
+
+\begin_layout Plain Layout
+
+                 x = c(seq(0, 0.5, len=n_segs),
+\end_layout
+
+\begin_layout Plain Layout
+
+                       seq(0.5, 0, len=n_segs)))
+\end_layout
+
+\begin_layout Plain Layout
+
+mzz <- rbind(zz, zz, zz, zz, zz)
+\end_layout
+
+\begin_layout Plain Layout
+
+mzz$y <- mzz$y + sort(rep(seq(0.5,2.5, by=0.5), 2*n_segs))
+\end_layout
+
+\begin_layout Plain Layout
+
+mzz$leg <- sort(rep(seq(1,10, by=1), 3))
+\end_layout
+
+\begin_layout Plain Layout
+
+mzz$x <- mzz$x +0.25
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+zzu <- data.frame(x = c(seq(0, 0.25, len=n_segs),
+\end_layout
+
+\begin_layout Plain Layout
+
+                        seq(0.25, 0.5, len=n_segs)),
+\end_layout
+
+\begin_layout Plain Layout
+
+                  y = c(seq(0.5, 0, len=n_segs),
+\end_layout
+
+\begin_layout Plain Layout
+
+                        seq(0, 0.5, len=n_segs)))
+\end_layout
+
+\begin_layout Plain Layout
+
+mzzu <- rbind(zzu, zzu, zzu, zzu, zzu)
+\end_layout
+
+\begin_layout Plain Layout
+
+mzzu$x <- mzzu$x + sort(rep(seq(0.25,2.25, by=0.5), 2*n_segs))
+\end_layout
+
+\begin_layout Plain Layout
+
+mzzu$leg <- 10+sort(rep(seq(1,10, by=1), 3))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+corner <- rbind.data.frame(mzz, mzzu)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# make the plots
 \end_layout
 
 \begin_layout Plain Layout
 
 plot_shape(mzz2, "good", strat_mzz)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_shape(zzl, "iffy", strat_zzl)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_shape(corner, "bad", 1, xlim=c(0,3), ylim=c(0,3))
 \end_layout
 
 \begin_layout Plain Layout
@@ -1987,7 +2197,7 @@ iffy
  In each case the black box around the designs indicates the limits of the
  study area.
  Red dashed lines indicate the boundaries of the strata used with the stratified
- Horvitz-Thompson estimator (see 
+ HT estimator (see 
 \begin_inset Quotes eld
 \end_inset
 
@@ -2171,7 +2381,7 @@ reference "fig:designs"
 
 \end_inset
 
-.
+
 \end_layout
 
 \end_deeper
@@ -2287,7 +2497,7 @@ reference "fig:self-confidence"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -2416,7 +2626,7 @@ dat <- rbind(dat, data.frame(scenario = "+ve bias", quantile = nb))
 
 \begin_layout Plain Layout
 
-nb <- rnorm(2*n, mean=0.5, sd=0.15) 
+nb <- rnorm(2*n, mean=0.5, sd=0.1) 
 \end_layout
 
 \begin_layout Plain Layout
@@ -2592,19 +2802,385 @@ Results
 \end_layout
 
 \begin_layout Standard
-For each of the designs illustrated above, we applied each of the three
- densities along with each of a low, high and changing detectability (both
- left-right and right-left) leaving us with 
-\begin_inset Formula $3\times3\times4$
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<get-data-format, echo=FALSE, message=FALSE, warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(plyr)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# one for each distribution/detectability
+\end_layout
+
+\begin_layout Plain Layout
+
+f_names <- list.files(path="../simulation_study/",  pattern="*
+\backslash
+
+\backslash
+.RData", 
+\end_layout
+
+\begin_layout Plain Layout
+
+                      full.names=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# lookup for model names to short descriptions
+\end_layout
+
+\begin_layout Plain Layout
+
+model_name_lookup <- c("HT",
+\end_layout
+
+\begin_layout Plain Layout
+
+                       "HTcovar",
+\end_layout
+
+\begin_layout Plain Layout
+
+                       "HTstrat",
+\end_layout
+
+\begin_layout Plain Layout
+
+                       "HTstratcovar",
+\end_layout
+
+\begin_layout Plain Layout
+
+                       "Duchon",
+\end_layout
+
+\begin_layout Plain Layout
+
+                       "TPTE",
+\end_layout
+
+\begin_layout Plain Layout
+
+                       "TP",
+\end_layout
+
+\begin_layout Plain Layout
+
+                       "TPSH",
+\end_layout
+
+\begin_layout Plain Layout
+
+                       "TPR",
+\end_layout
+
+\begin_layout Plain Layout
+
+                       "TPTER")
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+names(model_name_lookup) <- c("HT",
+\end_layout
+
+\begin_layout Plain Layout
+
+                              "HT_cov",
+\end_layout
+
+\begin_layout Plain Layout
+
+                              "HT_strat",
+\end_layout
+
+\begin_layout Plain Layout
+
+                              "HT_strat_cov",
+\end_layout
+
+\begin_layout Plain Layout
+
+                              "m_xy_ds",
+\end_layout
+
+\begin_layout Plain Layout
+
+                              "m_xy_te",
+\end_layout
+
+\begin_layout Plain Layout
+
+                              "m_xy_tp",
+\end_layout
+
+\begin_layout Plain Layout
+
+                              "m_xy_ts",
+\end_layout
+
+\begin_layout Plain Layout
+
+                              "m_xyr_tp",
+\end_layout
+
+\begin_layout Plain Layout
+
+                              "m_xyr_te")
+\end_layout
+
+\begin_layout Plain Layout
+
+model_name_lookup <- factor(model_name_lookup, levels=c("HT", "HTcovar",
+ "HTstrat",
+\end_layout
+
+\begin_layout Plain Layout
+
+                                                        "HTstratcovar",
+ "Duchon", "TPTE",
+\end_layout
+
+\begin_layout Plain Layout
+
+                                                        "TP", "TPSH", "TPR",
+ "TPTER"))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+huge_res <- c()
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# now loop over the files
+\end_layout
+
+\begin_layout Plain Layout
+
+for(i in seq_along(f_names)){
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  load(f_names[i])
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  # print the name of this scenario as the header
+\end_layout
+
+\begin_layout Plain Layout
+
+  f_names[i] <- sub("../simulation_study//", "", f_names[i], fixed=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+  f_names[i] <- sub(".RData", "", f_names[i])
+\end_layout
+
+\begin_layout Plain Layout
+
+  big_res$scenario <- f_names[i]
+\end_layout
+
+\begin_layout Plain Layout
+
+  big_res$model <- as.character(big_res$model)
+\end_layout
+
+\begin_layout Plain Layout
+
+  big_res$model <- model_name_lookup[big_res$model]
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  ## WARNING: magic numbers below!!
+\end_layout
+
+\begin_layout Plain Layout
+
+  # bias boxplot
+\end_layout
+
+\begin_layout Plain Layout
+
+  big_res$bias <- big_res$N-500
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  # separate out the scenario definition
+\end_layout
+
+\begin_layout Plain Layout
+
+  big_res$density <- sub("([a-z]+)-[a-z]+-[a-z]+", "
+\backslash
+
+\backslash
+1", big_res$scenario[1])
+\end_layout
+
+\begin_layout Plain Layout
+
+  big_res$design <- sub("[a-z]+-([a-z]+)-[a-z]+", "
+\backslash
+
+\backslash
+1", big_res$scenario[1])
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  if(big_res$design == "tb"){
+\end_layout
+
+\begin_layout Plain Layout
+
+	big_res$design <- "twozigzag"
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  if(!grepl("covar", big_res$scenario[1])){
+\end_layout
+
+\begin_layout Plain Layout
+
+    big_res$df <- sub("[a-z]+-[a-z]+-([a-z]+)", "
+\backslash
+
+\backslash
+1", big_res$scenario[1])
+\end_layout
+
+\begin_layout Plain Layout
+
+    big_res$covar <- FALSE
+\end_layout
+
+\begin_layout Plain Layout
+
+  }else{
+\end_layout
+
+\begin_layout Plain Layout
+
+    big_res$covar <- TRUE
+\end_layout
+
+\begin_layout Plain Layout
+
+	big_res$df <- "covar"
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  huge_res <- rbind(huge_res, big_res)
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
 \end_inset
 
- simulation scenarios.
- In each of these scenarios we tested all of the modelling options listed
- above and recorded the metrics from the previous section.
+
 \end_layout
 
 \begin_layout Standard
-The density surfaces described in Section 
+We experimented with possible combinations of simulation scenarios based
+ on the models about.
+ In each scenario, we tested all of the modelling options listed above and
+ recorded the metrics from the previous section.
+ The density surfaces described in Section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Density-surfaces"
@@ -2621,12 +3197,18 @@ relative
 \end_layout
 
 \begin_layout Standard
-Note that the aim here is not to show which spatial model is best out of
- those presented here, it is to show that there are large differences between
- the HT estimators and the spatial models.
- There are large differences between the spatial models which can be attributed
- to the model formulation process.
- None of the models underwent model checking in the usual way 
+Note that the aim here is not to show 
+\shape italic
+which
+\shape default
+ spatial model is best out of those presented here, it is to show that there
+ are large differences between the HT estimators and the spatial models.
+ Differences between the spatial models can be attributed to the model formulati
+on process, for example in the cases where the gradient was simply right-left,
+ left-right or flat, fitting a bivariate spatial model will likely not perform
+ particularly well as it is too flexible.
+ Additionally, none of the models underwent model checking in the usual
+ way 
 \begin_inset CommandInset citation
 LatexCommand citep
 before "e.g.,"
@@ -2643,6 +3225,11 @@ dumbest possible
 \end_inset
 
  spatial model, without any thought to checking or calibration.
+\end_layout
+
+\begin_layout Standard
+We can now look at the more interesting subsets of the results.
+ Full results of all models run are provided in Appendix 2.
 \end_layout
 
 \begin_layout Section
@@ -2933,7 +3520,7 @@ Sample.Label
 \end_layout
 
 \begin_layout Section*
-Appendix 3 - Full simulation results
+Appendix 2 - Full simulation results
 \end_layout
 
 \begin_layout Standard
@@ -2942,258 +3529,12 @@ status open
 
 \begin_layout Plain Layout
 
-<<results-organise-data, echo=FALSE, message=FALSE, warning=FALSE>>=
+<<plot-funcs, echo=FALSE, message=FALSE, warning=FALSE>>=
 \end_layout
 
 \begin_layout Plain Layout
 
 library(ggplot2)
-\end_layout
-
-\begin_layout Plain Layout
-
-library(plyr)
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-# one for each distribution/detectability
-\end_layout
-
-\begin_layout Plain Layout
-
-f_names <- list.files(path="../simulation_study/",  pattern="*
-\backslash
-
-\backslash
-.RData", 
-\end_layout
-
-\begin_layout Plain Layout
-
-                      full.names=TRUE)
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-# lookup for model names to short descriptions
-\end_layout
-
-\begin_layout Plain Layout
-
-model_name_lookup <- list("HT" = "Horvitz-Thompson",
-\end_layout
-
-\begin_layout Plain Layout
-
-                          "HT_strat" = "Horvitz-Thompson (stratified)",
-\end_layout
-
-\begin_layout Plain Layout
-
-                          "m_xy_ds"  = "Duchon spline bivariate",
-\end_layout
-
-\begin_layout Plain Layout
-
-                          "m_xy_te"  = "Thin plate tensor product",
-\end_layout
-
-\begin_layout Plain Layout
-
-                          "m_xy_tp"  = "Thin plate bivariate",
-\end_layout
-
-\begin_layout Plain Layout
-
-                          "m_xy_ts"  = "Thin plate with shrinkage bivariate",
-\end_layout
-
-\begin_layout Plain Layout
-
-                          "m_xyr_tp"  = "Thin plate bivariate rotated",
-\end_layout
-
-\begin_layout Plain Layout
-
-                          "m_xyr_te"  = "Thin plate tensor product rotated"
-\end_layout
-
-\begin_layout Plain Layout
-
-                          )
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-huge_res <- c()
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-# now loop over the files
-\end_layout
-
-\begin_layout Plain Layout
-
-for(i in seq_along(f_names)){
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  load(f_names[i])
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  # print the name of this scenario as the header
-\end_layout
-
-\begin_layout Plain Layout
-
-  f_names[i] <- sub("../simulation_study//", "", f_names[i], fixed=TRUE)
-\end_layout
-
-\begin_layout Plain Layout
-
-  f_names[i] <- sub(".RData", "", f_names[i])
-\end_layout
-
-\begin_layout Plain Layout
-
-  big_res$scenario <- f_names[i]
-\end_layout
-
-\begin_layout Plain Layout
-
-  big_res$model <- as.character(big_res$model)
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  ## WARNING: magic numbers below!!
-\end_layout
-
-\begin_layout Plain Layout
-
-  # bias boxplot
-\end_layout
-
-\begin_layout Plain Layout
-
-  big_res$bias <- big_res$N-500
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  # separate out the scenario definition
-\end_layout
-
-\begin_layout Plain Layout
-
-  big_res$density <- sub("([a-z]+)-[a-z]+-[a-z]+", "
-\backslash
-
-\backslash
-1", big_res$scenario[1])
-\end_layout
-
-\begin_layout Plain Layout
-
-  big_res$design <- sub("[a-z]+-([a-z]+)-[a-z]+", "
-\backslash
-
-\backslash
-1", big_res$scenario[1])
-\end_layout
-
-\begin_layout Plain Layout
-
-  if(!grepl("covar", big_res$scenario[1])){
-\end_layout
-
-\begin_layout Plain Layout
-
-    big_res$df <- sub("[a-z]+-[a-z]+-([a-z]+)", "
-\backslash
-
-\backslash
-1", big_res$scenario[1])
-\end_layout
-
-\begin_layout Plain Layout
-
-    big_res$covar <- FALSE
-\end_layout
-
-\begin_layout Plain Layout
-
-  }else{
-\end_layout
-
-\begin_layout Plain Layout
-
-    big_res$covar <- TRUE
-\end_layout
-
-\begin_layout Plain Layout
-
-	big_res$df <- "covar"
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  huge_res <- rbind(huge_res, big_res)
-\end_layout
-
-\begin_layout Plain Layout
-
-}
 \end_layout
 
 \begin_layout Plain Layout
@@ -3329,6 +3670,89 @@ plot_quantile <- function(dat, covar){
 
 \begin_layout Plain Layout
 
+\end_layout
+
+\begin_layout Plain Layout
+
+# bias plotter
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_bias <- function(dat, covar){
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  p <- ggplot(dat)+
+\end_layout
+
+\begin_layout Plain Layout
+
+    geom_boxplot(aes(model, bias), outlier.size = 0.75) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    labs(y="Bias", x="Model") +
+\end_layout
+
+\begin_layout Plain Layout
+
+    coord_cartesian(ylim=c(-500, 500)) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    theme_minimal() +
+\end_layout
+
+\begin_layout Plain Layout
+
+    facet_grid(design~df,
+\end_layout
+
+\begin_layout Plain Layout
+
+               labeller=function(labels, multi_line=FALSE){
+\end_layout
+
+\begin_layout Plain Layout
+
+                          label_value(labels, multi_line)
+\end_layout
+
+\begin_layout Plain Layout
+
+                        }) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    geom_hline(aes(yintercept=0), colour="red") +
+\end_layout
+
+\begin_layout Plain Layout
+
+    theme(axis.text.x = element_text(angle=90, hjust=1))
+\end_layout
+
+\begin_layout Plain Layout
+
+  print(p)
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
 @
 \end_layout
 
@@ -3341,7 +3765,7 @@ plot_quantile <- function(dat, covar){
 Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig:bias"
+reference "fig:biasf"
 
 \end_inset
 
@@ -3360,88 +3784,18 @@ status open
 
 \begin_layout Plain Layout
 
-<<plot-results-bias, fig.width=9, fig.height=9, echo=FALSE, message=FALSE,
+<<plot-results-bias-f, fig.width=9, fig.height=9, echo=FALSE, message=FALSE,
  warning=FALSE>>=
 \end_layout
 
 \begin_layout Plain Layout
 
-p <- ggplot(huge_res)+
+huge_res_f <- huge_res[huge_res$density=="f",]
 \end_layout
 
 \begin_layout Plain Layout
 
-  geom_boxplot(aes(model, bias), outlier.size = 0.75) +
-\end_layout
-
-\begin_layout Plain Layout
-
-  labs(y="Bias", x="Model") +
-\end_layout
-
-\begin_layout Plain Layout
-
-  coord_cartesian(ylim=c(-500, 500)) +
-\end_layout
-
-\begin_layout Plain Layout
-
-  theme_minimal() +
-\end_layout
-
-\begin_layout Plain Layout
-
-#  facet_wrap(density~design+df, ncol=3,
-\end_layout
-
-\begin_layout Plain Layout
-
-#             labeller=function(labels, multi_line=FALSE){
-\end_layout
-
-\begin_layout Plain Layout
-
-#                        label_value(labels, multi_line)
-\end_layout
-
-\begin_layout Plain Layout
-
-#                      }) +
-\end_layout
-
-\begin_layout Plain Layout
-
-  facet_grid(density~design,
-\end_layout
-
-\begin_layout Plain Layout
-
-             labeller=function(labels, multi_line=FALSE){
-\end_layout
-
-\begin_layout Plain Layout
-
-                        label_value(labels, multi_line)
-\end_layout
-
-\begin_layout Plain Layout
-
-                      }) +
-\end_layout
-
-\begin_layout Plain Layout
-
-  geom_hline(aes(yintercept=0), colour="red") +
-\end_layout
-
-\begin_layout Plain Layout
-
-  theme(axis.text.x = element_text(angle=45))
-\end_layout
-
-\begin_layout Plain Layout
-
-print(p)
+plot_bias(huge_res_f, FALSE)
 \end_layout
 
 \begin_layout Plain Layout
@@ -3458,10 +3812,11 @@ print(p)
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Bias in abundance for each of the models per simulation scenario.
+Bias in abundance for each of the models per simulation scenario for the
+ flat density.
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:bias"
+name "fig:biasf"
 
 \end_inset
 
@@ -3490,7 +3845,190 @@ status open
 
 \begin_layout Plain Layout
 
-<<plot-results-selfconfidence_f, fig.width=9, fig.height=9, echo=FALSE, message=FA
+<<plot-results-bias-lr, fig.width=9, fig.height=9, echo=FALSE, message=FALSE,
+ warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+huge_res_lr <- huge_res[huge_res$density=="lr",]
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_bias(huge_res_lr, FALSE)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Bias in abundance for each of the models per simulation scenario for the
+ left-right gradient density.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:biaslr"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<plot-results-bias-rl, fig.width=9, fig.height=9, echo=FALSE, message=FALSE,
+ warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+huge_res_rl <- huge_res[huge_res$density=="rl",]
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_bias(huge_res_rl, FALSE)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Bias in abundance for each of the models per simulation scenario for the
+ right-left gradient density.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:biasrl"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<plot-results-bias-diag, fig.width=9, fig.height=9, echo=FALSE, message=FALSE,
+ warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+huge_res_diag <- huge_res[huge_res$density=="diag",]
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_bias(huge_res_diag, FALSE)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Bias in abundance for each of the models per simulation scenario for the
+ diagonal gradient density.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:biasdiag"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<plot-results-selfconfidence-f, fig.width=9, fig.height=9, echo=FALSE, message=FA
 LSE, warning=FALSE>>=
 \end_layout
 
@@ -3522,7 +4060,7 @@ plot_quantile(huge_res_f, TRUE)
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Plots of the 
+Histograms of the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -3530,7 +4068,7 @@ self-confidence
 \begin_inset Quotes erd
 \end_inset
 
- measure for the flat density surface.
+ measure for each model for the flat density surface.
 \end_layout
 
 \end_inset
@@ -3547,7 +4085,7 @@ self-confidence
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -3555,7 +4093,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<plot-results-selfconfidence_lr, fig.width=9, fig.height=9, echo=FALSE, message=F
+<<plot-results-selfconfidence-lr, fig.width=9, fig.height=9, echo=FALSE, message=F
 ALSE, warning=FALSE>>=
 \end_layout
 
@@ -3583,7 +4121,7 @@ plot_quantile(huge_res_lr, TRUE)
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Plots of the 
+Histograms of the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -3591,7 +4129,7 @@ self-confidence
 \begin_inset Quotes erd
 \end_inset
 
- measure for the left-right density surface.
+ measure for each model for the left-right density surface.
 \end_layout
 
 \end_inset
@@ -3608,7 +4146,7 @@ self-confidence
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -3616,7 +4154,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<plot-results-selfconfidence_rl, fig.width=9, fig.height=9, echo=FALSE, message=F
+<<plot-results-selfconfidence-rl, fig.width=9, fig.height=9, echo=FALSE, message=F
 ALSE, warning=FALSE>>=
 \end_layout
 
@@ -3644,7 +4182,7 @@ plot_quantile(huge_res_rl, TRUE)
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Plots of the 
+Histograms of the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -3652,7 +4190,7 @@ self-confidence
 \begin_inset Quotes erd
 \end_inset
 
- measure for the right-left density surface.
+ measure for each model for the right-left density surface.
 \end_layout
 
 \end_inset
@@ -3663,14 +4201,67 @@ self-confidence
 \end_inset
 
 
-\end_layout
-
-\begin_layout Section*
-Appendix 2 - Mathematical equivalence between HT and DSM
 \end_layout
 
 \begin_layout Standard
-This should go somewhere, why not here?
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<plot-results-selfconfidence-diag, fig.width=3, fig.height=9, echo=FALSE,
+ message=FALSE, warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+huge_res_diag <- huge_res[huge_res$density=="diag",]
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_quantile(huge_res_diag, TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Histograms of the 
+\begin_inset Quotes eld
+\end_inset
+
+self-confidence
+\begin_inset Quotes erd
+\end_inset
+
+ measure for each model for the diagonal density surface.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
