@@ -1737,6 +1737,20 @@ reference "fig:designs"
 Design 2: two different zig-zags
 \end_layout
 
+\begin_layout Standard
+To show how designs often consist of different coverages in different areas
+ of the survey region, a design with more effort (many zig-zags) is placed
+ next to that with much less coverage (a single zig-zag).
+ This is shown in the second panel of 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:designs"
+
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Subsubsection*
 Design 2: corner
 \end_layout
@@ -1776,7 +1790,7 @@ reference "fig:designs"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -1986,6 +2000,92 @@ strat_mzz <- c(1,2)
 
 \begin_layout Plain Layout
 
+\end_layout
+
+\begin_layout Plain Layout
+
+## two different sets of zigzags
+\end_layout
+
+\begin_layout Plain Layout
+
+R <- matrix(c(cos(pi/2), sin(pi/2), -sin(pi/2), cos(pi/2)),2,2) 
+\end_layout
+
+\begin_layout Plain Layout
+
+# many zigzags
+\end_layout
+
+\begin_layout Plain Layout
+
+# stretch out over 0,3
+\end_layout
+
+\begin_layout Plain Layout
+
+mzz3 <- mzz
+\end_layout
+
+\begin_layout Plain Layout
+
+mzz3$x <- mzz$x*3
+\end_layout
+
+\begin_layout Plain Layout
+
+mzz3$y <- mzz3$y + 1.5
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# add bottom zig(zag)
+\end_layout
+
+\begin_layout Plain Layout
+
+zzll <- zz
+\end_layout
+
+\begin_layout Plain Layout
+
+zzll$x <- zzll$x*3
+\end_layout
+
+\begin_layout Plain Layout
+
+zzll$leg <- c(rep("7", n_segs),
+\end_layout
+
+\begin_layout Plain Layout
+
+              rep("8", n_segs))
+\end_layout
+
+\begin_layout Plain Layout
+
+tb <- rbind.data.frame(mzz3, zzll)
+\end_layout
+
+\begin_layout Plain Layout
+
+tb[,c("x","y")] <- t(R %*% t(tb[,c("x","y")]))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
 # zig zag then line
 \end_layout
 
@@ -2155,7 +2255,12 @@ plot_shape(mzz2, "good", strat_mzz)
 
 \begin_layout Plain Layout
 
-plot_shape(zzl, "iffy", strat_zzl)
+plot_shape(tb, "iffy 1", 1, xlim=c(-2.5, 0), ylim=c(0,3))
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_shape(zzl, "iffy 2", strat_zzl)
 \end_layout
 
 \begin_layout Plain Layout
@@ -3452,6 +3557,10 @@ Even coverage designs work well
 
 \begin_layout Standard
 As expected, when coverage is even and the
+\end_layout
+
+\begin_layout Subsection
+Covariates mess things up
 \end_layout
 
 \begin_layout Section
