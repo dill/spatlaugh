@@ -2,7 +2,7 @@ library(ggplot2)
 library(plyr)
 
 # one for each distribution/detectability
-f_names <- list.files(pattern="*tb-covar\\.RData")
+f_names <- list.files(pattern="*corner-covar\\.RData")
 
 # lookup for model names to short descriptions
 model_name_lookup <- list("HT" = "Horvitz-Thompson",

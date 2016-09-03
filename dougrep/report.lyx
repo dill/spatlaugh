@@ -1049,11 +1049,6 @@ densities <- list(rep(1, length(density.surface$x)),
 
 \begin_layout Plain Layout
 
-				  rev(density.surface$x),
-\end_layout
-
-\begin_layout Plain Layout
-
 				  rev(density.surface$x)) 
 \end_layout
 
@@ -1152,7 +1147,7 @@ density.surface <- expand.grid(x = seq(0, 3, len=n_grid_x),
 
 \begin_layout Plain Layout
 
-ddens <- 5*(rev(density.surface$x)*rev(density.surface$y))
+ddens <- (rev(density.surface$x)*rev(density.surface$y))
 \end_layout
 
 \begin_layout Plain Layout
@@ -2401,7 +2396,22 @@ All simulations were generated using
 DSsim
 \family default
  (R package version 1.0.4), with a wrapper scripts used to generate data that
- could be easily analysed.
+ could be easily analysed, these are collected in the R package 
+\family typewriter
+ltdesigntester
+\family default
+ 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://github.com/dill/ltdesigntester
+\end_layout
+
+\end_inset
+
+; a vignette is provided with the package to illustrate its use.
  Detection functions were fitted in 
 \family typewriter
 Distance
@@ -3228,8 +3238,220 @@ dumbest possible
 \end_layout
 
 \begin_layout Standard
-We can now look at the more interesting subsets of the results.
+We can now look at the more interesting subsets of the results in the remaining
+ subsections of this section.
  Full results of all models run are provided in Appendix 2.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<plot-funcs, echo=FALSE, message=FALSE, warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(ggplot2)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# plot quantiles
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_quantile <- function(dat, covar){
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  #ndat <- ddply(dat, .(df,design,model),  summarize, thisn=length(df))
+\end_layout
+
+\begin_layout Plain Layout
+
+  #ndat$df<-NULL
+\end_layout
+
+\begin_layout Plain Layout
+
+  #ndat <- unique(ndat)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  p <- ggplot(dat)+
+\end_layout
+
+\begin_layout Plain Layout
+
+        geom_histogram(aes(quantile))+
+\end_layout
+
+\begin_layout Plain Layout
+
+        geom_vline(xintercept=0.5) +
+\end_layout
+
+\begin_layout Plain Layout
+
+        #geom_text(aes(x=0.8, y=60, label=thisn), data=ndat) +
+\end_layout
+
+\begin_layout Plain Layout
+
+        theme_minimal()
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  p <- p + facet_grid(model~design,
+\end_layout
+
+\begin_layout Plain Layout
+
+                      labeller=function(labels, multi_line=FALSE){
+\end_layout
+
+\begin_layout Plain Layout
+
+                       label_value(labels, multi_line)
+\end_layout
+
+\begin_layout Plain Layout
+
+                      })
+\end_layout
+
+\begin_layout Plain Layout
+
+  print(p)
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# bias plotter
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_bias <- function(dat, covar){
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  p <- ggplot(dat)+
+\end_layout
+
+\begin_layout Plain Layout
+
+    geom_boxplot(aes(model, bias), outlier.size = 0.75) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    labs(y="Bias", x="Model") +
+\end_layout
+
+\begin_layout Plain Layout
+
+    coord_cartesian(ylim=c(-500, 500)) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    theme_minimal() +
+\end_layout
+
+\begin_layout Plain Layout
+
+    facet_grid(design~df,
+\end_layout
+
+\begin_layout Plain Layout
+
+               labeller=function(labels, multi_line=FALSE){
+\end_layout
+
+\begin_layout Plain Layout
+
+                          label_value(labels, multi_line)
+\end_layout
+
+\begin_layout Plain Layout
+
+                        }) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    geom_hline(aes(yintercept=0), colour="red") +
+\end_layout
+
+\begin_layout Plain Layout
+
+    theme(axis.text.x = element_text(angle=90, hjust=1))
+\end_layout
+
+\begin_layout Plain Layout
+
+  print(p)
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Even coverage designs work well
+\end_layout
+
+\begin_layout Standard
+As expected, when coverage is even and the
 \end_layout
 
 \begin_layout Section
@@ -3524,259 +3746,16 @@ Appendix 2 - Full simulation results
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-<<plot-funcs, echo=FALSE, message=FALSE, warning=FALSE>>=
-\end_layout
-
-\begin_layout Plain Layout
-
-library(ggplot2)
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-# plot quantiles
-\end_layout
-
-\begin_layout Plain Layout
-
-plot_quantile <- function(dat, covar){
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  #ndat <- ddply(dat, .(df,design,model),  summarize, thisn=length(df))
-\end_layout
-
-\begin_layout Plain Layout
-
-  #ndat$df<-NULL
-\end_layout
-
-\begin_layout Plain Layout
-
-  #ndat <- unique(ndat)
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  p <- ggplot(dat)+
-\end_layout
-
-\begin_layout Plain Layout
-
-        geom_histogram(aes(quantile))+
-\end_layout
-
-\begin_layout Plain Layout
-
-        geom_vline(xintercept=0.5) +
-\end_layout
-
-\begin_layout Plain Layout
-
-        #geom_text(aes(x=0.8, y=60, label=thisn), data=ndat) +
-\end_layout
-
-\begin_layout Plain Layout
-
-        theme_minimal()
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  if(covar){
-\end_layout
-
-\begin_layout Plain Layout
-
-    p <- p + facet_grid(model~design,
-\end_layout
-
-\begin_layout Plain Layout
-
-                        labeller=function(labels, multi_line=FALSE){
-\end_layout
-
-\begin_layout Plain Layout
-
-                         label_value(labels, multi_line)
-\end_layout
-
-\begin_layout Plain Layout
-
-                        })
-\end_layout
-
-\begin_layout Plain Layout
-
-  }else{
-\end_layout
-
-\begin_layout Plain Layout
-
-    p <- p + facet_wrap(model~design+df, ncol=3,
-\end_layout
-
-\begin_layout Plain Layout
-
-                        labeller=function(labels, multi_line=FALSE){
-\end_layout
-
-\begin_layout Plain Layout
-
-                         label_value(labels, multi_line)
-\end_layout
-
-\begin_layout Plain Layout
-
-                        })
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
-\end_layout
-
-\begin_layout Plain Layout
-
-  print(p)
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-# bias plotter
-\end_layout
-
-\begin_layout Plain Layout
-
-plot_bias <- function(dat, covar){
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  p <- ggplot(dat)+
-\end_layout
-
-\begin_layout Plain Layout
-
-    geom_boxplot(aes(model, bias), outlier.size = 0.75) +
-\end_layout
-
-\begin_layout Plain Layout
-
-    labs(y="Bias", x="Model") +
-\end_layout
-
-\begin_layout Plain Layout
-
-    coord_cartesian(ylim=c(-500, 500)) +
-\end_layout
-
-\begin_layout Plain Layout
-
-    theme_minimal() +
-\end_layout
-
-\begin_layout Plain Layout
-
-    facet_grid(design~df,
-\end_layout
-
-\begin_layout Plain Layout
-
-               labeller=function(labels, multi_line=FALSE){
-\end_layout
-
-\begin_layout Plain Layout
-
-                          label_value(labels, multi_line)
-\end_layout
-
-\begin_layout Plain Layout
-
-                        }) +
-\end_layout
-
-\begin_layout Plain Layout
-
-    geom_hline(aes(yintercept=0), colour="red") +
-\end_layout
-
-\begin_layout Plain Layout
-
-    theme(axis.text.x = element_text(angle=90, hjust=1))
-\end_layout
-
-\begin_layout Plain Layout
-
-  print(p)
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-@
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:biasf"
-
-\end_inset
-
- shows the bias in abundance estimates.
+This appendix gives all plots of results from the simulations that were
+ run.
+ Plots are aggregated by underlying density used to generate the data.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -3837,7 +3816,7 @@ name "fig:biasf"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -3898,7 +3877,7 @@ name "fig:biaslr"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -3959,7 +3938,7 @@ name "fig:biasrl"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -4028,22 +4007,18 @@ status open
 
 \begin_layout Plain Layout
 
-<<plot-results-selfconfidence-f, fig.width=9, fig.height=9, echo=FALSE, message=FA
-LSE, warning=FALSE>>=
+<<plot-results-selfconfidence-f-good, fig.width=9, fig.height=9, echo=FALSE,
+ message=FALSE, warning=FALSE>>=
 \end_layout
 
 \begin_layout Plain Layout
 
-huge_res_f <- huge_res[huge_res$density=="f",]
+huge_res_f <- huge_res[huge_res$density=="f" & huge_res$df=="good",]
 \end_layout
 
 \begin_layout Plain Layout
 
-\end_layout
-
-\begin_layout Plain Layout
-
-plot_quantile(huge_res_f, TRUE)
+plot_quantile(huge_res_f)
 \end_layout
 
 \begin_layout Plain Layout
@@ -4068,7 +4043,475 @@ self-confidence
 \begin_inset Quotes erd
 \end_inset
 
- measure for each model for the flat density surface.
+ measure for each model for the flat density surface with a 
+\begin_inset Quotes eld
+\end_inset
+
+good
+\begin_inset Quotes erd
+\end_inset
+
+ detection function.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:quantile-f-good"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<plot-results-selfconfidence-lr-good, fig.width=9, fig.height=9, echo=FALSE,
+ message=FALSE, warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+huge_res_lr <- huge_res[huge_res$density=="lr" & huge_res$df=="good",]
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_quantile(huge_res_lr)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Histograms of the 
+\begin_inset Quotes eld
+\end_inset
+
+self-confidence
+\begin_inset Quotes erd
+\end_inset
+
+ measure for each model for the left-right density surface with a 
+\begin_inset Quotes eld
+\end_inset
+
+good
+\begin_inset Quotes erd
+\end_inset
+
+ detection function.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:quantile-lr-good"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<plot-results-selfconfidence-rl-good, fig.width=9, fig.height=9, echo=FALSE,
+ message=FALSE, warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+huge_res_rl <- huge_res[huge_res$density=="rl" & huge_res$df=="good",]
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_quantile(huge_res_rl)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Histograms of the 
+\begin_inset Quotes eld
+\end_inset
+
+self-confidence
+\begin_inset Quotes erd
+\end_inset
+
+ measure for each model for the right-left density surface with a 
+\begin_inset Quotes eld
+\end_inset
+
+good
+\begin_inset Quotes erd
+\end_inset
+
+ detection function.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:quantile-rl-good"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<plot-results-selfconfidence-f-bad, fig.width=9, fig.height=9, echo=FALSE,
+ message=FALSE, warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+huge_res_f <- huge_res[huge_res$density=="f" & huge_res$df=="bad",]
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_quantile(huge_res_f)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Histograms of the 
+\begin_inset Quotes eld
+\end_inset
+
+self-confidence
+\begin_inset Quotes erd
+\end_inset
+
+ measure for each model for the flat density surface with a 
+\begin_inset Quotes eld
+\end_inset
+
+bad
+\begin_inset Quotes erd
+\end_inset
+
+ detection function.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:quantile-f-bad"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<plot-results-selfconfidence-lr-bad, fig.width=9, fig.height=9, echo=FALSE,
+ message=FALSE, warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+huge_res_lr <- huge_res[huge_res$density=="lr" & huge_res$df=="bad",]
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_quantile(huge_res_lr)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Histograms of the 
+\begin_inset Quotes eld
+\end_inset
+
+self-confidence
+\begin_inset Quotes erd
+\end_inset
+
+ measure for each model for the left-right density surface with a 
+\begin_inset Quotes eld
+\end_inset
+
+bad
+\begin_inset Quotes erd
+\end_inset
+
+ detection function.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:quantile-lr-bad"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<plot-results-selfconfidence-rl-bad, fig.width=9, fig.height=9, echo=FALSE,
+ message=FALSE, warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+huge_res_rl <- huge_res[huge_res$density=="rl" & huge_res$df=="bad",]
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_quantile(huge_res_rl)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Histograms of the 
+\begin_inset Quotes eld
+\end_inset
+
+self-confidence
+\begin_inset Quotes erd
+\end_inset
+
+ measure for each model for the right-left density surface with a 
+\begin_inset Quotes eld
+\end_inset
+
+bad
+\begin_inset Quotes erd
+\end_inset
+
+ detection function.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:quantile-rl-bad"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<plot-results-selfconfidence-f-w, fig.width=9, fig.height=9, echo=FALSE,
+ message=FALSE, warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+huge_res_f <- huge_res[huge_res$density=="f",]
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+plot_quantile(huge_res_f)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Histograms of the 
+\begin_inset Quotes eld
+\end_inset
+
+self-confidence
+\begin_inset Quotes erd
+\end_inset
+
+ measure for each model for the flat density surface when the weather covariate
+ was used to generate data.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:quantile-f-w"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -4093,8 +4536,8 @@ status open
 
 \begin_layout Plain Layout
 
-<<plot-results-selfconfidence-lr, fig.width=9, fig.height=9, echo=FALSE, message=F
-ALSE, warning=FALSE>>=
+<<plot-results-selfconfidence-lr-w, fig.width=9, fig.height=9, echo=FALSE,
+ message=FALSE, warning=FALSE>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -4129,7 +4572,15 @@ self-confidence
 \begin_inset Quotes erd
 \end_inset
 
- measure for each model for the left-right density surface.
+ measure for each model for the left-right density surface when the weather
+ covariate was used to generate data.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:quantile-lr-w"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -4154,8 +4605,8 @@ status open
 
 \begin_layout Plain Layout
 
-<<plot-results-selfconfidence-rl, fig.width=9, fig.height=9, echo=FALSE, message=F
-ALSE, warning=FALSE>>=
+<<plot-results-selfconfidence-rl-w, fig.width=9, fig.height=9, echo=FALSE,
+ message=FALSE, warning=FALSE>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -4190,7 +4641,15 @@ self-confidence
 \begin_inset Quotes erd
 \end_inset
 
- measure for each model for the right-left density surface.
+ measure for each model for the right-left density surface when the weather
+ covariate was used to generate data.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:quantile-rl-w"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -4207,7 +4666,7 @@ self-confidence
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -4215,7 +4674,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<plot-results-selfconfidence-diag, fig.width=3, fig.height=9, echo=FALSE,
+<<plot-results-selfconfidence-diag-w, fig.width=2, fig.height=9, echo=FALSE,
  message=FALSE, warning=FALSE>>=
 \end_layout
 
@@ -4251,7 +4710,15 @@ self-confidence
 \begin_inset Quotes erd
 \end_inset
 
- measure for each model for the diagonal density surface.
+ measure for each model for the diagonal density surface when the weather
+ covariate was used to generate data.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:quantile-diag-w"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
