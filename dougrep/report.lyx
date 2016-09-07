@@ -1281,7 +1281,13 @@ bad
 
  (characterised by detection function 2).
  The transition was controlled by a logistic function.
- 
+ Due to it's change along the 
+\begin_inset Formula $x$
+\end_inset
+
+ axis, the covariate is confounded with the density gradients, this is eminently
+ possible in survey data and is a strong reason to always collect some kind
+ of weather-type covariate and include this in models.
 \end_layout
 
 \begin_layout Standard
@@ -1790,7 +1796,7 @@ reference "fig:designs"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -2250,22 +2256,22 @@ corner <- rbind.data.frame(mzz, mzzu)
 
 \begin_layout Plain Layout
 
-plot_shape(mzz2, "good", strat_mzz)
+plot_shape(mzz2, "manyzigzags", strat_mzz)
 \end_layout
 
 \begin_layout Plain Layout
 
-plot_shape(tb, "iffy 1", 1, xlim=c(-2.5, 0), ylim=c(0,3))
+plot_shape(tb, "2zigzags", -1.25, xlim=c(-2.5, 0), ylim=c(0,3))
 \end_layout
 
 \begin_layout Plain Layout
 
-plot_shape(zzl, "iffy 2", strat_zzl)
+plot_shape(zzl, "zzl", strat_zzl)
 \end_layout
 
 \begin_layout Plain Layout
 
-plot_shape(corner, "bad", 1, xlim=c(0,3), ylim=c(0,3))
+plot_shape(corner, "corner", 1, xlim=c(0,3), ylim=c(0,3))
 \end_layout
 
 \begin_layout Plain Layout
@@ -2283,8 +2289,7 @@ plot_shape(corner, "bad", 1, xlim=c(0,3), ylim=c(0,3))
 
 \begin_layout Plain Layout
 Realised effort for the designs used in the simulations.
- From left to right: the bad design, with most of the effort on the left
- of the design; the 
+ From left to right: good design with even coverage; an 
 \begin_inset Quotes eld
 \end_inset
 
@@ -2292,8 +2297,16 @@ iffy
 \begin_inset Quotes erd
 \end_inset
 
- design where effort is more sporadically allocated; the good design with
- even coverage.
+ design where effort high in one side and low in the other; an 
+\begin_inset Quotes eld
+\end_inset
+
+iffy
+\begin_inset Quotes erd
+\end_inset
+
+ design where effort is more sporadically allocated; the bad design, with
+ most of the effort in the left and bottom of the survey area.
  In each case the black box around the designs indicates the limits of the
  study area.
  Red dashed lines indicate the boundaries of the strata used with the stratified
@@ -2489,6 +2502,10 @@ reference "fig:designs"
 Note that for the detection function part of each model we fit a model of
  the same form as the generating model, we do not consider model uncertainty
  or selection for the detection function.
+ For simulations where the weather covariate was simulated, all spatial
+ models use a detection function with the covariate included, we include
+ estimates for HT-based methods both including and not including the weather
+ covariate.
 \end_layout
 
 \begin_layout Subsection
@@ -3317,7 +3334,8 @@ Note that the aim here is not to show
 which
 \shape default
  spatial model is best out of those presented here, it is to show that there
- are large differences between the HT estimators and the spatial models.
+ are large differences between the HT estimators and the spatial models
+ in particular situations.
  Differences between the spatial models can be attributed to the model formulati
 on process, for example in the cases where the gradient was simply right-left,
  left-right or flat, fitting a bivariate spatial model will likely not perform
@@ -3345,7 +3363,16 @@ dumbest possible
 \begin_layout Standard
 We can now look at the more interesting subsets of the results in the remaining
  subsections of this section.
- Full results of all models run are provided in Appendix 2.
+ Bias and 
+\begin_inset Quotes eld
+\end_inset
+
+self-confidence
+\begin_inset Quotes erd
+\end_inset
+
+ plots for all models run are provided in Appendix 2, results (in RData
+ format) are include in the project github repository.
 \end_layout
 
 \begin_layout Standard
@@ -3552,15 +3579,194 @@ plot_bias <- function(dat, covar){
 \end_layout
 
 \begin_layout Subsection
+General comments
+\end_layout
+
+\begin_layout Standard
+Before looking at where particular models succeeded or failed, we first
+ look at general trends in the results.
+ First we note that for any design, flat densities are easy to estimate
+ for HT-type methods, interestingly the spatial models are slightly more
+ confident than the HT-based methods and tend to be slightly negatively
+ biased for the simulations with poor detectability and slightly positively
+ biased for models with good detectability.
+ We note that the rotated coordinate spatial models (
+\begin_inset Quotes eld
+\end_inset
+
+TPR
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+TPTER
+\begin_inset Quotes erd
+\end_inset
+
+) sometimes perform better than their non-rotated variants, we believe this
+ is down to the non-rotated models having another direction of variability
+ (in the 
+\begin_inset Formula $y$
+\end_inset
+
+ direction) that is effectively unused (which we would like to be estimated
+ as a zero effect) that may pick up on minor variations due to sampling
+ variability, in the rotated models both coordinates are used so estimating
+ an effect of exactly zero for the 
+\begin_inset Formula $y$
+\end_inset
+
+ component is not an issue.
+\end_layout
+
+\begin_layout Subsection
 Even coverage designs work well
 \end_layout
 
 \begin_layout Standard
-As expected, when coverage is even and the
+As expected, when coverage is even, the methods based on HT estimators perform
+ well in terms of bias in estimating 
+\begin_inset Formula $\hat{N}$
+\end_inset
+
+.
+ Only when the detectability becomes particularly bad does the 
+\begin_inset Quotes eld
+\end_inset
+
+self-confidence
+\begin_inset Quotes erd
+\end_inset
+
+ diagnostic start to look bad for the HT estimators (at which point it also
+ begins to look worse for the spatial models).
+ (See Appendix 2, plots labelled 
+\begin_inset Quotes eld
+\end_inset
+
+manyzigzags
+\begin_inset Quotes erd
+\end_inset
+
+.) 
 \end_layout
 
 \begin_layout Subsection
-Covariates mess things up
+Uneven coverage is bad
+\end_layout
+
+\begin_layout Standard
+Moving to an uneven design like 
+\begin_inset Quotes eld
+\end_inset
+
+zzl
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+twozigzag
+\begin_inset Quotes erd
+\end_inset
+
+ makes unbiased estimation of abundance much harder and we see all models
+ perform worse.
+ Though in particular, we see that the unstratified HT estimate (
+\begin_inset Quotes eld
+\end_inset
+
+HT
+\begin_inset Quotes erd
+\end_inset
+
+) perform much worse and the stratified HT also perform poorly — this is
+ particularly revealing as in our simulations, the 
+\begin_inset Quotes eld
+\end_inset
+
+correct
+\begin_inset Quotes erd
+\end_inset
+
+ stratification was provided to the estimator, a luxury that we do not have
+ in real life.
+ The 
+\begin_inset Quotes eld
+\end_inset
+
+self-confidence
+\begin_inset Quotes erd
+\end_inset
+
+ diagnostic plots also show a shift in all models, though again the HT-based
+ methods perform worse than the spatial models in on the whole.
+ If performance is poor with the correct stratification, then we can assume
+ that things will be much worse when stratifications are decided 
+\shape italic
+a priori
+\shape default
+ based on logistical constraints rather than information on true distribution
+ when density is not as simple.
+\end_layout
+
+\begin_layout Subsection
+Covariates make things complicated
+\end_layout
+
+\begin_layout Standard
+Ignoring the even coverage design, once the weather covariate is included
+ in the data generation process, things look much worse for the models which
+ do not include it.
+ Both bias and 
+\begin_inset Quotes eld
+\end_inset
+
+self-confidence
+\begin_inset Quotes erd
+\end_inset
+
+ show that stratification and including the covariate do improve the HT
+ estimates, though again we are assuming the correct stratification scheme.
+\end_layout
+
+\begin_layout Standard
+The most complicated simulation setup (corner design with diagonal density
+ gradient and weather covariate) highlights a more usual situation than
+ the others — we are often confronted with uneven coverage (non)-designs,
+ densities are complex and weather is almost always an issue.
+ Given the performance in the simpler situations, this scenario was bound
+ to be more taxing for the HT-based estimation methods.
+ The 
+\begin_inset Quotes eld
+\end_inset
+
+self-confidence
+\begin_inset Quotes erd
+\end_inset
+
+ measure is rather bad for all HT-based methods, but performs very well
+ for the spatial models, looking a lot like the 
+\begin_inset Quotes eld
+\end_inset
+
+conservative
+\begin_inset Quotes erd
+\end_inset
+
+ example shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:self-confidence"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
@@ -4775,7 +4981,7 @@ name "fig:quantile-rl-w"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -4783,7 +4989,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<plot-results-selfconfidence-diag-w, fig.width=2, fig.height=9, echo=FALSE,
+<<plot-results-selfconfidence-diag-w, fig.width=3, fig.height=8, echo=FALSE,
  message=FALSE, warning=FALSE>>=
 \end_layout
 
