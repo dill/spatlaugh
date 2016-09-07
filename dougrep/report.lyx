@@ -208,7 +208,7 @@ key "Buckland:2001vm,Buckland:2004ts,buckland2015distance"
 
 \begin_layout Itemize
 Distances are recorded for each observation (along with the size of each
- group of animals, without error)
+ group of animals, without error).
 \end_layout
 
 \begin_layout Itemize
@@ -2261,7 +2261,7 @@ plot_shape(mzz2, "manyzigzags", strat_mzz)
 
 \begin_layout Plain Layout
 
-plot_shape(tb, "2zigzags", -1.25, xlim=c(-2.5, 0), ylim=c(0,3))
+plot_shape(tb, "twozigzags", -1.25, xlim=c(-2.5, 0), ylim=c(0,3))
 \end_layout
 
 \begin_layout Plain Layout
@@ -2815,6 +2815,10 @@ dat <- rbind(dat, data.frame(scenario = "Conservative", quantile = nb))
 
 \begin_layout Plain Layout
 
+\end_layout
+
+\begin_layout Plain Layout
+
 p <- ggplot(dat) +
 \end_layout
 
@@ -2825,7 +2829,12 @@ p <- ggplot(dat) +
 
 \begin_layout Plain Layout
 
-      scale_x_continuous(limits=c(0,1))+
+      scale_x_continuous(limits=c(0,1), breaks=seq(0,1,len=5),
+\end_layout
+
+\begin_layout Plain Layout
+
+                         labels=c("0","0.25","0.5","0.75","1"))+
 \end_layout
 
 \begin_layout Plain Layout
@@ -2901,6 +2910,14 @@ ok
 \end_inset
 
  shows the spike at 1 indicating positive bias, 
+\begin_inset Quotes eld
+\end_inset
+
+overconfident
+\begin_inset Quotes erd
+\end_inset
+
+ shows a spike with little spread, 
 \begin_inset Quotes eld
 \end_inset
 
@@ -3741,7 +3758,14 @@ The most complicated simulation setup (corner design with diagonal density
  the others — we are often confronted with uneven coverage (non)-designs,
  densities are complex and weather is almost always an issue.
  Given the performance in the simpler situations, this scenario was bound
- to be more taxing for the HT-based estimation methods.
+ to be more taxing for the HT-based estimation methods (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:biasdiag"
+
+\end_inset
+
+).
  The 
 \begin_inset Quotes eld
 \end_inset
@@ -3751,7 +3775,14 @@ self-confidence
 \end_inset
 
  measure is rather bad for all HT-based methods, but performs very well
- for the spatial models, looking a lot like the 
+ for the spatial models (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:quantile-diag-w"
+
+\end_inset
+
+), looking a lot like the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -3774,20 +3805,41 @@ Discussion
 \end_layout
 
 \begin_layout Standard
-(of things that are still negotiable to include post-Bled :)
+Simulations presented here highlight potential issues when HT estimators
+ are used in the case where animal distribution is not constant within a
+ given stratum.
+ Violation of the assumption of flat density within a stratum causes issues
+ when coverage is uneven.
+ Though the designs and densities presented here are relatively simple,
+ the problems that arise only become amplified with added complexity.
+ We do not believe that the most complex scenario (corner design with diagonal
+ density gradient and weather covariate) is in any way pathological — on
+ the contrary, we think it represents a fairly mild version of what is often
+ seen in the field.
+ A more realistic version of this scenario would involve incomplete transects
+ (holes in the effort) and a more complex density surface.
 \end_layout
 
-\begin_layout Itemize
-note that we only need consider these simple gradients not multiples, as
- we can consider each as a stratified version of a 
-\begin_inset Quotes eld
-\end_inset
+\begin_layout Standard
+In general we see that spatial models, even when applied in a very naïve
+ way, provide a less biased, and more coherent way to think about modelling
+ phenomena that are, in their very nature spatial.
+ Although formulating, fitting, checking and validating spatial models is
+ more complex than simply using HT-type methods to obtain density, the added
+ time and resources clearly leads to more reliable results.
+\end_layout
 
-multiple ripple
-\begin_inset Quotes erd
-\end_inset
-
- setup
+\begin_layout Standard
+The 
+\family typewriter
+ltdesigntester
+\family default
+ package developed for this paper is quite general and can be used for any
+ design or density surface.
+ Incorporating more complex detectability covariates is more complicated,
+ but achievable.
+ We encourage investigators to input their current designs and create some
+ simple density surfaces to test how well abundance can be estimated.
 \end_layout
 
 \begin_layout Part*
@@ -4253,7 +4305,7 @@ name "fig:biasrl"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -4314,7 +4366,7 @@ name "fig:biasdiag"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -4390,7 +4442,7 @@ name "fig:quantile-f-good"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -4466,7 +4518,7 @@ name "fig:quantile-lr-good"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -4542,7 +4594,7 @@ name "fig:quantile-rl-good"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -4618,7 +4670,7 @@ name "fig:quantile-f-bad"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -4694,7 +4746,7 @@ name "fig:quantile-lr-bad"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -4770,7 +4822,7 @@ name "fig:quantile-rl-bad"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -4981,7 +5033,7 @@ name "fig:quantile-rl-w"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
