@@ -183,10 +183,11 @@ vanilla
 
  Horvitz-Thompson estimators of abundance from line transect surveys when
  the underlying distribution of the study species varies in space.
- In this paper we show by simulation when such analyses are inappropriate
- in simple situations and reasoning that if an estimator shows poor properties
- in a simple situation, then when the distribution, availability or detectabilit
-y is more complex in nature then the estimator will perform even more poorly.
+ In this paper we show by simulation that these analyses can be inappropriate
+ in simple situations.
+ We reason that if an estimator shows poor properties in a simple situation,
+ then in reality (when distribution, availability or detectability are more
+ complex) the estimator will perform even more poorly.
 \end_layout
 
 \begin_layout Standard
@@ -236,8 +237,7 @@ weather
 \end_layout
 
 \begin_layout Standard
-We now describe the two ways in which one could analyse this data, as used
- below.
+We now describe the two ways in which one could analyse this data.
 \end_layout
 
 \begin_layout Section
@@ -260,7 +260,7 @@ key "Buckland:2001vm,Buckland:2004jq,buckland2015distance"
 
 , a function of distance, observed detection-related covariates and estimated
  parameters), we can estimate the average (over distance) probability of
- detection for an individual (conditional on observed covariate values),
+ detection for an observation (conditional on observed covariate values),
  
 \begin_inset Formula $\hat{p}_{i}$
 \end_inset
@@ -338,8 +338,8 @@ covered area
 \begin_inset Formula $a$
 \end_inset
 
-, which is the product of the line lengths and their corresponding strip
- widths (if the strips were all the same width then 
+, which is the sum of the product of the line lengths and their corresponding
+ strip widths (if the strips were all the same width then 
 \begin_inset Formula $a=2wL$
 \end_inset
 
@@ -373,8 +373,8 @@ study area
 
 \begin_layout Standard
 In order to circumvent this shortcoming, we can perform pre or post hoc
- stratification, slicing-up the study area into smaller subsets and estimating
- abundance for each of these.
+ stratification, slicing-up the study area into smaller subsets or regions
+ and estimating abundance for each of these.
  These may be geographically defined (
 \begin_inset Quotes eld
 \end_inset
@@ -487,7 +487,11 @@ key "Borchers:2002vs"
 \begin_inset Formula $n/L$
 \end_inset
 
-, that is the encounter rate variance.
+: the 
+\shape italic
+encounter rate
+\shape default
+ variance.
  There are a number of options for this estimator, depending on the possible
  design used.
  
@@ -509,7 +513,7 @@ key "Fewster:2009ku"
 \begin_inset Formula $\hat{N}/L$
 \end_inset
 
-, see 
+; 
 \begin_inset CommandInset citation
 LatexCommand citealp
 key "Innes:2002ka"
@@ -538,9 +542,9 @@ key "Hedley:2004et,Miller:2013fq"
 \end_inset
 
 .
- These are similar to the HT estimators above, as they assume that the detection
- function has already been adequately fitted to the distance data and estimates
- of probability of detection are available for the spatial model to use.
+ As with HT estimators, they assume that the detection function has already
+ been adequately fitted to the distance data and estimates of probability
+ of detection are available for the spatial model to use.
  The spatial part of the model uses the generalized additive modelling framework
  
 \begin_inset CommandInset citation
@@ -572,7 +576,7 @@ where
 \begin_inset Formula $j$
 \end_inset
 
- indexes the segments, each of which have area 
+ indexes the segments, which have area 
 \begin_inset Formula $A_{j}$
 \end_inset
 
@@ -735,7 +739,7 @@ key "Burnham:1980wz"
 \begin_layout Standard
 \begin_inset Formula 
 \[
-n\hat{f}(0)=\sum_{r=1}^{R}n_{r}\hat{f}_{r}(0)
+n\hat{f}(0)=\sum_{r=1}^{R}n_{r}\hat{f}_{r}(0),
 \]
 
 \end_inset
@@ -930,9 +934,9 @@ name "subsec:Density-surfaces"
 We used a series of simple density surfaces to test for differences between
  the proposed models.
  Although animal distribution is much more complicated than the patterns
- shown below, if models fail for these simple density surfaces (where gradients
- are clearly defined) then it's likely that there will be more severe issues
- when more complex surfaces are used.
+ shown below, if models perform poorly for these simple density surfaces
+ (where gradients are clearly defined) then it's likely that there will
+ be more severe issues when more complex surfaces are used.
  In the simulations presented here the following surfaces were investigated:
 \end_layout
 
@@ -1241,6 +1245,13 @@ name "fig:densities"
 
 \begin_layout Subsection
 Detectability
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Detectability"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1248,7 +1259,7 @@ Detectability in the survey was set at two fixed detectabilities
 \begin_inset Quotes eld
 \end_inset
 
-high
+good
 \begin_inset Quotes erd
 \end_inset
 
@@ -1256,13 +1267,13 @@ high
 \begin_inset Quotes eld
 \end_inset
 
-low
+bad
 \begin_inset Quotes erd
 \end_inset
 
  by varying the parameters of a hazard rate detection function.
  We also simulated a two-level weather covariate that changed from left
- to right across the study area, on one side the weather was 
+ to right across the study area, on the left side the weather was 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1270,8 +1281,15 @@ good
 \begin_inset Quotes erd
 \end_inset
 
- (characterised by detection function 1, below) and on the other side the
- weather was 
+ (using the 
+\begin_inset Quotes eld
+\end_inset
+
+good
+\begin_inset Quotes erd
+\end_inset
+
+ detection function) and on the right side the weather was 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1279,15 +1297,40 @@ bad
 \begin_inset Quotes erd
 \end_inset
 
- (characterised by detection function 2).
- The transition was controlled by a logistic function.
+ (using the 
+\begin_inset Quotes eld
+\end_inset
+
+bad
+\begin_inset Quotes erd
+\end_inset
+
+ detection function).
+ The transition between the detection functions was controlled by a logistic
+ function.
  Due to it's change along the 
 \begin_inset Formula $x$
 \end_inset
 
- axis, the covariate is confounded with the density gradients, this is eminently
- possible in survey data and is a strong reason to always collect some kind
- of weather-type covariate and include this in models.
+ axis, the covariate is confounded with the 
+\begin_inset Quotes eld
+\end_inset
+
+lr
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+rl
+\begin_inset Quotes erd
+\end_inset
+
+ density gradients – this is eminently possible in survey data and is a
+ strong reason to always collect some kind of weather-type covariate and
+ include this in models.
 \end_layout
 
 \begin_layout Standard
@@ -1367,7 +1410,14 @@ Truncation
 \begin_inset Text
 
 \begin_layout Plain Layout
-1
+\begin_inset Quotes eld
+\end_inset
+
+good
+\begin_inset Quotes erd
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1405,7 +1455,14 @@ Truncation
 \begin_inset Text
 
 \begin_layout Plain Layout
-2
+\begin_inset Quotes eld
+\end_inset
+
+bad
+\begin_inset Quotes erd
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1489,7 +1546,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<detfct, fig.width=10, fig.height=4, echo=FALSE>>=
+<<detfct, fig.width=8, fig.height=4, echo=FALSE>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -1561,7 +1618,7 @@ df_bad <- list(key        = "hr",
 
 \begin_layout Plain Layout
 
-plot_df <- function(df){
+plot_df <- function(df, main=""){
 \end_layout
 
 \begin_layout Plain Layout
@@ -1581,7 +1638,7 @@ plot_df <- function(df){
 
 \begin_layout Plain Layout
 
-       xlab="Distance", ylab="Probability of detection")
+       xlab="Distance", ylab="Probability of detection", main=main)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1605,12 +1662,12 @@ plot_df <- function(df){
 
 \begin_layout Plain Layout
 
-plot_df(df_good)
+plot_df(df_good, "good")
 \end_layout
 
 \begin_layout Plain Layout
 
-plot_df(df_bad)
+plot_df(df_bad, "bad")
 \end_layout
 
 \begin_layout Plain Layout
@@ -1633,7 +1690,7 @@ plot_df(df_bad)
 \begin_layout Plain Layout
 Detection functions used in the simulations.
  Dashed line indicates the truncation distance used.
- Left to right have the parameters given top to bottom in Table 
+ Parameters are as in Table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:df-pars"
@@ -1666,10 +1723,9 @@ We do not consider the case where detectability is uncertain at zero distance
 \begin_inset Formula $g(0)\neq1$
 \end_inset
 
-) here.
- We assume that if animals occur directly in front of the observer they
- will be seen.
- We also do not consider any availability issues (that whales are often
+) here — we assume that if animals occur directly in front of the observer
+ they will be seen.
+ We also do not consider any availability issues (that cetaceans are often
  underwater and cannot be seen).
  Finally, we also assume that observations are of single animals (that group
  size is one).
@@ -1680,10 +1736,27 @@ We do not consider the case where detectability is uncertain at zero distance
 
 \begin_layout Subsection
 Designs
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Designs"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 We experimented with four designs.
+ A good design with good realised coverage across the whole study area (
+\begin_inset Quotes eld
+\end_inset
+
+manyzigzags
+\begin_inset Quotes erd
+\end_inset
+
+; to confirm that what we consider to be a good design gives us the results
+ we expect from our metrics).
  Two 
 \begin_inset Quotes eld
 \end_inset
@@ -1693,20 +1766,34 @@ iffy
 \end_inset
 
  designs: one with a large gap between each contiguous section of realised
- effort and one with two very different effort distributions for two parts
- of the survey.
- A 
+ effort (
 \begin_inset Quotes eld
 \end_inset
 
-bad
+zzl
 \begin_inset Quotes erd
 \end_inset
 
- design where the effort is concentrated along two sides of the area.
- A good design with good realised coverage across the whole study area (to
- confirm that what we consider to be a good design gives us the results
- we expect from our metrics).
+) and one with two very different effort distributions for two parts of
+ the survey (
+\begin_inset Quotes eld
+\end_inset
+
+twozigzags
+\begin_inset Quotes erd
+\end_inset
+
+).
+ A bad design where the effort is concentrated along two sides of the area
+ (
+\begin_inset Quotes eld
+\end_inset
+
+corner
+\begin_inset Quotes erd
+\end_inset
+
+).
  The designs are shown in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1721,14 +1808,20 @@ reference "fig:designs"
 \end_layout
 
 \begin_layout Subsubsection*
-Design 1: zig-zag with straight line
+Design 1: zig-zag with good coverage (
+\begin_inset Quotes eld
+\end_inset
+
+manyzigzags
+\begin_inset Quotes erd
+\end_inset
+
+)
 \end_layout
 
 \begin_layout Standard
-This is supposed to mimic the situation in which a zig-zag design went well
- on the left side of the study area, but not realised in the middle of the
- survey (perhaps due to bad weather), then to the left we have a lonely
- transect (perhaps weather picked-up).
+The final design has good coverage over the whole study area and would be
+ the ideal realised design.
  Shown in the left panel of Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1740,14 +1833,49 @@ reference "fig:designs"
 \end_layout
 
 \begin_layout Subsubsection*
-Design 2: two different zig-zags
+Design 2: zig-zag with straight line (
+\begin_inset Quotes eld
+\end_inset
+
+zzl
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Standard
+This is supposed to mimic the situation in which a zig-zag design went well
+ on the left side of the study area, but not realised in the middle of the
+ survey (perhaps due to bad weather), then to the left we have a lonely
+ transect (perhaps weather picked-up).
+ Shown in the second panel of Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:designs"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection*
+Design 3: two different zig-zags (
+\begin_inset Quotes eld
+\end_inset
+
+twozigzags
+\begin_inset Quotes erd
+\end_inset
+
+)
 \end_layout
 
 \begin_layout Standard
 To show how designs often consist of different coverages in different areas
  of the survey region, a design with more effort (many zig-zags) is placed
  next to that with much less coverage (a single zig-zag).
- This is shown in the second panel of 
+ This is shown in the third panel of 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:designs"
@@ -1758,30 +1886,21 @@ reference "fig:designs"
 \end_layout
 
 \begin_layout Subsubsection*
-Design 2: corner
+Design 4: corner (
+\begin_inset Quotes eld
+\end_inset
+
+corner
+\begin_inset Quotes erd
+\end_inset
+
+)
 \end_layout
 
 \begin_layout Standard
 This design concentrates along two sides of the study area, this design
  mimics the commonly used technique where near-coast transects are used
  to extrapolate well beyond the covered area.
- Shown in the third panel of Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:designs"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Subsubsection*
-Design 3: zig-zag with good coverage
-\end_layout
-
-\begin_layout Standard
-The final design has good coverage over the whole study area and would be
- the ideal realised design.
  Shown in the right panel of Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -2340,6 +2459,13 @@ name "fig:designs"
 
 \begin_layout Subsection
 Models
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Models"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2367,18 +2493,22 @@ tensor product
 \shape default
  of univariate splines.
  We also test that the setup of the smoother isn't unduly advantageous to
- a particular model by rotating the coordinates system by 45º using the
- rotation matrix: 
+ a particular model by rotating the coordinate system by 45º using the rotation
+ matrix: 
 \begin_inset Formula 
 \[
 R=\begin{pmatrix}cos(\pi/4) & -sin(\pi/4)\\
 sin(\pi/4) & cos(\pi/4)
-\end{pmatrix}
+\end{pmatrix}.
 \]
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+The models tested were (starting with their code used for plots later):
 \end_layout
 
 \begin_layout Itemize
@@ -2391,7 +2521,7 @@ Isotropic smooths
 
 \begin_deeper
 \begin_layout Itemize
-Thin plate spline
+TP: thin plate spline
 \family typewriter
 , bs="tp"
 \family default
@@ -2406,7 +2536,7 @@ key "Wood:2003tc"
 \end_layout
 
 \begin_layout Itemize
-Thin plate spline with shrinkage, 
+TPSH: thin plate spline with shrinkage, 
 \family typewriter
 bs="ts"
 \family default
@@ -2421,7 +2551,7 @@ key "Marra:2011fv"
 \end_layout
 
 \begin_layout Itemize
-Duchon spline, 
+Duchon: Duchon spline, 
 \family typewriter
 bs="ds", m=c(1, 0.5)
 \family default
@@ -2435,12 +2565,6 @@ key "Miller:2014hc"
 
 \end_layout
 
-\begin_layout Itemize
-Thin plate spline with rotated covariates, 
-\family typewriter
-bs="tp"
-\end_layout
-
 \end_deeper
 \begin_layout Itemize
 Tensor product smooths (smooths listed below were used in both directions)
@@ -2452,7 +2576,7 @@ Tensor product smooths (smooths listed below were used in both directions)
 
 \begin_deeper
 \begin_layout Itemize
-Thin plate spline, 
+TPTE: thin plate spline, 
 \family typewriter
 bs="tp"
 \family default
@@ -2460,7 +2584,7 @@ bs="tp"
 \end_layout
 
 \begin_layout Itemize
-Thin plate spline with rotated covariates, 
+TPTER: thin plate spline with rotated covariates, 
 \family typewriter
 bs="tp"
 \end_layout
@@ -2476,7 +2600,7 @@ Non-spatially explicit models
 
 \begin_deeper
 \begin_layout Itemize
-Horvitz-Thompson (assuming one stratum, using 
+HT: Horvitz-Thompson (assuming one stratum, using 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:HT"
@@ -2487,7 +2611,7 @@ reference "eq:HT"
 \end_layout
 
 \begin_layout Itemize
-stratified Horvitz-Thompson using strata as shown in Figure 
+HTstrat: stratified Horvitz-Thompson using strata as shown in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:designs"
@@ -2495,6 +2619,22 @@ reference "fig:designs"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Itemize
+HTcovar: Horvitz-Thompson with covariates included (where applicable)
+\end_layout
+
+\begin_layout Itemize
+HTstratcovar: stratified Horvitz-Thompson with covariates using strata as
+ shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:designs"
+
+\end_inset
+
+(where applicable)
 \end_layout
 
 \end_deeper
@@ -2517,7 +2657,7 @@ All simulations were generated using
 \family typewriter
 DSsim
 \family default
- (R package version 1.0.4), with a wrapper scripts used to generate data that
+ (R package version 1.0.6), with a wrapper scripts used to generate data that
  could be easily analysed, these are collected in the R package 
 \family typewriter
 ltdesigntester
@@ -2572,7 +2712,7 @@ Bias
 
 \begin_layout Standard
 We can simply calculate the bias (
-\begin_inset Formula $N_{\text{truth}}-\hat{N}$
+\begin_inset Formula $\hat{N}-N_{\text{truth}}$
 \end_inset
 
 ) and plot boxplots of these values, however this does not get to the uncertaint
@@ -2610,11 +2750,18 @@ If we know the true abundance in our simulation (
 Obtaining the quantile for each simulation, if the distribution of the statistic
  is skewed to either end then we can infer under or over estimation of abundance
  for a particular estimator.
- A flat distribution shows good performance, whereas a "dome" in the middle
- indicates a conservative estimate in the sense that confidence intervals
- are slightly too wide.
+ A flat distribution shows good performance, whereas a 
+\begin_inset Quotes eld
+\end_inset
+
+dome
+\begin_inset Quotes erd
+\end_inset
+
+ in the middle indicates a conservative estimate in the sense that confidence
+ intervals are slightly too wide.
  This more conservative behaviour seems desirable, since we probably have
- no accounted for all of the sources of uncertainty in our model.
+ not accounted for all of the sources of uncertainty in our model.
  An example of plots of this statistic is given in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -2695,41 +2842,12 @@ dat <- data.frame(scenario = "ok", quantile = runif(n))
 
 \begin_layout Plain Layout
 
-# spike on the left => negative bias
+# spike on the left => +ve bias
 \end_layout
 
 \begin_layout Plain Layout
 
 nb <- rexp(2*n, 2) 
-\end_layout
-
-\begin_layout Plain Layout
-
-nb <- nb[nb<1 & nb >0] 
-\end_layout
-
-\begin_layout Plain Layout
-
-nb <- nb[1:1000] 
-\end_layout
-
-\begin_layout Plain Layout
-
-dat <- rbind(dat, data.frame(scenario = "-ve bias", quantile = nb))
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-# spike on the right => positive bias 
-\end_layout
-
-\begin_layout Plain Layout
-
-nb <- 1-rexp(2*n, 2) 
 \end_layout
 
 \begin_layout Plain Layout
@@ -2753,7 +2871,36 @@ dat <- rbind(dat, data.frame(scenario = "+ve bias", quantile = nb))
 
 \begin_layout Plain Layout
 
-# what we'd like to see 
+# spike on the right => -ve bias 
+\end_layout
+
+\begin_layout Plain Layout
+
+nb <- 1-rexp(2*n, 2) 
+\end_layout
+
+\begin_layout Plain Layout
+
+nb <- nb[nb<1 & nb >0] 
+\end_layout
+
+\begin_layout Plain Layout
+
+nb <- nb[1:1000] 
+\end_layout
+
+\begin_layout Plain Layout
+
+dat <- rbind(dat, data.frame(scenario = "-ve bias", quantile = nb))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# overconfidence
 \end_layout
 
 \begin_layout Plain Layout
@@ -2897,19 +3044,19 @@ ok
 \begin_inset Quotes eld
 \end_inset
 
--ve bias
-\begin_inset Quotes erd
-\end_inset
-
- shows a large spike at zero indicating negative bias, 
-\begin_inset Quotes eld
-\end_inset
-
 +ve bias
 \begin_inset Quotes erd
 \end_inset
 
  shows the spike at 1 indicating positive bias, 
+\begin_inset Quotes eld
+\end_inset
+
+-ve bias
+\begin_inset Quotes erd
+\end_inset
+
+ shows a large spike at zero indicating negative bias, 
 \begin_inset Quotes eld
 \end_inset
 
@@ -2926,7 +3073,7 @@ conservative
 \end_inset
 
  shows behaviour where the confidence intervals are slightly too wide, which
- we might prefer (see main text).
+ we might prefer.
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:self-confidence"
@@ -3185,6 +3332,25 @@ for(i in seq_along(f_names)){
 
 \begin_layout Plain Layout
 
+\end_layout
+
+\begin_layout Plain Layout
+
+  # remove the tprs rotated as it doesn't matter(!) same as tprs (isotropy)
+\end_layout
+
+\begin_layout Plain Layout
+
+  big_res <- big_res[big_res$model != "m_xyr_tp",]
+\end_layout
+
+\begin_layout Plain Layout
+
+  # make nice model names
+\end_layout
+
+\begin_layout Plain Layout
+
   big_res$model <- model_name_lookup[big_res$model]
 \end_layout
 
@@ -3199,7 +3365,7 @@ for(i in seq_along(f_names)){
 
 \begin_layout Plain Layout
 
-  # bias boxplot
+  # bias
 \end_layout
 
 \begin_layout Plain Layout
@@ -3341,7 +3507,7 @@ reference "subsec:Density-surfaces"
 relative
 \shape default
  density of the population in question.
- We (arbitrarily) fixed the total population size to be 200 individuals
+ We (arbitrarily) fixed the total population size to be 500 individuals
  for each simulation.
 \end_layout
 
@@ -3378,8 +3544,7 @@ dumbest possible
 \end_layout
 
 \begin_layout Standard
-We can now look at the more interesting subsets of the results in the remaining
- subsections of this section.
+We summarise the results in the remaining subsections of this section.
  Bias and 
 \begin_inset Quotes eld
 \end_inset
@@ -3388,8 +3553,8 @@ self-confidence
 \begin_inset Quotes erd
 \end_inset
 
- plots for all models run are provided in Appendix 2, results (in RData
- format) are include in the project github repository.
+ plots for all simulations are provided in Appendix 2, results (in RData
+ format) are include in the project GitHub repository.
 \end_layout
 
 \begin_layout Standard
@@ -3455,12 +3620,17 @@ plot_quantile <- function(dat, covar){
 
 \begin_layout Plain Layout
 
-        geom_vline(xintercept=0.5) +
+        geom_vline(xintercept=0.5, colour="red") +
 \end_layout
 
 \begin_layout Plain Layout
 
         #geom_text(aes(x=0.8, y=60, label=thisn), data=ndat) +
+\end_layout
+
+\begin_layout Plain Layout
+
+        labs(x="Quantile", y="Count") +
 \end_layout
 
 \begin_layout Plain Layout
@@ -3513,7 +3683,7 @@ plot_quantile <- function(dat, covar){
 
 \begin_layout Plain Layout
 
-plot_bias <- function(dat, covar){
+plot_bias <- function(dat, covar, ylim=c(-500, 500)){
 \end_layout
 
 \begin_layout Plain Layout
@@ -3537,7 +3707,7 @@ plot_bias <- function(dat, covar){
 
 \begin_layout Plain Layout
 
-    coord_cartesian(ylim=c(-500, 500)) +
+    coord_cartesian(ylim = ylim) +
 \end_layout
 
 \begin_layout Plain Layout
@@ -3603,29 +3773,10 @@ General comments
 Before looking at where particular models succeeded or failed, we first
  look at general trends in the results.
  First we note that for any design, flat densities are easy to estimate
- for HT-type methods, interestingly the spatial models are slightly more
- confident than the HT-based methods and tend to be slightly negatively
- biased for the simulations with poor detectability and slightly positively
- biased for models with good detectability.
- We note that the rotated coordinate spatial models (
-\begin_inset Quotes eld
-\end_inset
-
-TPR
-\begin_inset Quotes erd
-\end_inset
-
- and 
-\begin_inset Quotes eld
-\end_inset
-
-TPTER
-\begin_inset Quotes erd
-\end_inset
-
-) sometimes perform better than their non-rotated variants, we believe this
- is down to the non-rotated models having another direction of variability
- (in the 
+ for HT-type methods.
+ We note that the rotated coordinate spatial models (TPTER) sometimes perform
+ better than their non-rotated variants, we believe this is down to the
+ non-rotated models having another direction of variability (in the 
 \begin_inset Formula $y$
 \end_inset
 
@@ -3640,12 +3791,20 @@ TPTER
 \end_layout
 
 \begin_layout Subsection
-Even coverage designs work well
+Designs with good coverage work well
 \end_layout
 
 \begin_layout Standard
-As expected, when coverage is even, the methods based on HT estimators perform
- well in terms of bias in estimating 
+As expected, when coverage is even (Appendix 2, plots labelled 
+\begin_inset Quotes eld
+\end_inset
+
+manyzigzags
+\begin_inset Quotes erd
+\end_inset
+
+) , the methods based on HT estimators perform well in terms of bias in
+ estimating 
 \begin_inset Formula $\hat{N}$
 \end_inset
 
@@ -3660,15 +3819,7 @@ self-confidence
 
  diagnostic start to look bad for the HT estimators (at which point it also
  begins to look worse for the spatial models).
- (See Appendix 2, plots labelled 
-\begin_inset Quotes eld
-\end_inset
-
-manyzigzags
-\begin_inset Quotes erd
-\end_inset
-
-.) 
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -3694,16 +3845,9 @@ twozigzag
 
  makes unbiased estimation of abundance much harder and we see all models
  perform worse.
- Though in particular, we see that the unstratified HT estimate (
-\begin_inset Quotes eld
-\end_inset
-
-HT
-\begin_inset Quotes erd
-\end_inset
-
-) perform much worse and the stratified HT also perform poorly — this is
- particularly revealing as in our simulations, the 
+ Though in particular, we see that the unstratified HT estimate (HT) perform
+ much worse and the stratified HT also perform poorly — this is particularly
+ revealing as in our simulations, the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -3756,7 +3900,7 @@ self-confidence
 The most complicated simulation setup (corner design with diagonal density
  gradient and weather covariate) highlights a more usual situation than
  the others — we are often confronted with uneven coverage (non)-designs,
- densities are complex and weather is almost always an issue.
+ densities that are complex and weather is almost always an issue.
  Given the performance in the simpler situations, this scenario was bound
  to be more taxing for the HT-based estimation methods (Figure 
 \begin_inset CommandInset ref
@@ -3774,15 +3918,15 @@ self-confidence
 \begin_inset Quotes erd
 \end_inset
 
- measure is rather bad for all HT-based methods, but performs very well
- for the spatial models (see Figure 
+ measure is rather bad for all HT-based methods, but the performance of
+ the spatial models (Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:quantile-diag-w"
 
 \end_inset
 
-), looking a lot like the 
+) looks like the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -3797,7 +3941,7 @@ reference "fig:self-confidence"
 
 \end_inset
 
-.
+ .
 \end_layout
 
 \begin_layout Section
@@ -3817,16 +3961,44 @@ Simulations presented here highlight potential issues when HT estimators
  the contrary, we think it represents a fairly mild version of what is often
  seen in the field.
  A more realistic version of this scenario would involve incomplete transects
- (holes in the effort) and a more complex density surface.
+ (holes in the transects) and a more complex density surface.
 \end_layout
 
 \begin_layout Standard
 In general we see that spatial models, even when applied in a very naïve
  way, provide a less biased, and more coherent way to think about modelling
- phenomena that are, in their very nature spatial.
+ phenomena that are in their very nature spatial.
  Although formulating, fitting, checking and validating spatial models is
  more complex than simply using HT-type methods to obtain density, the added
  time and resources clearly leads to more reliable results.
+ It is worth noting that here for the majority of the density surfaces tested
+ (aside from diagonal case) the spatial models were all misspecified, the
+ 
+\begin_inset Quotes eld
+\end_inset
+
+correct
+\begin_inset Quotes erd
+\end_inset
+
+ model would be a single smooth of 
+\begin_inset Formula $x$
+\end_inset
+
+ for the left-right and right-left gradients, not a bivariate smooth of
+ 
+\begin_inset Formula $x$
+\end_inset
+
+ and 
+\begin_inset Formula $y$
+\end_inset
+
+.
+ Even with this constraint, the spatial models performed well.
+ Estimating a flat surface (equivalently estimating almost all of the coefficien
+ts of the bivariate smooths to be zero), with uneven sampling of the density
+ surface is very difficult (not to mention an unrealistic situation).
 \end_layout
 
 \begin_layout Standard
@@ -4116,6 +4288,8 @@ Appendix 2 - Full simulation results
 This appendix gives all plots of results from the simulations that were
  run.
  Plots are aggregated by underlying density used to generate the data.
+ Note that boxplots are clipped at their limits, so some extreme outliers
+ may not be shown.
 \end_layout
 
 \begin_layout Standard
@@ -4160,6 +4334,24 @@ plot_bias(huge_res_f, FALSE)
 \begin_layout Plain Layout
 Bias in abundance for each of the models per simulation scenario for the
  flat density.
+ Columns give the detection function type (see Section
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Detectability"
+
+\end_inset
+
+) and rows give the design used (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Designs"
+
+\end_inset
+
+).
+ With a flat density all models perform relatively well, even when the detectabi
+lity is low (though there is some negative bias).
+ 
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:biasf"
@@ -4183,7 +4375,7 @@ name "fig:biasf"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -4221,6 +4413,40 @@ plot_bias(huge_res_lr, FALSE)
 \begin_layout Plain Layout
 Bias in abundance for each of the models per simulation scenario for the
  left-right gradient density.
+ Columns give the detection function type (see Section
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Detectability"
+
+\end_inset
+
+) and rows give the design used (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Designs"
+
+\end_inset
+
+).
+ In this case for the 
+\begin_inset Quotes eld
+\end_inset
+
+zzl
+\begin_inset Quotes erd
+\end_inset
+
+ design, most of the effort is concentrated on the higher densities, the
+ low effort side is where there are fewer animals, the HT-based methods
+ perform poorly here, as do some of the spatial models.
+ With such a small amount of effort, it would be hard to detect that the
+ gradient was to blame for low numbers of sightings.
+ For the covariate analysis, high detectability coincides with high density
+ and high effort, so the good performance of the stratified HT and spatial
+ models is likely down to a feature of the confounding between density and
+ covariate value (hence the poorer performance of the non-rotationally invariant
+ TPTER model).
+ 
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:biaslr"
@@ -4282,6 +4508,38 @@ plot_bias(huge_res_rl, FALSE)
 \begin_layout Plain Layout
 Bias in abundance for each of the models per simulation scenario for the
  right-left gradient density.
+ Columns give the detection function type (see Section
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Detectability"
+
+\end_inset
+
+) and rows give the design used (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Designs"
+
+\end_inset
+
+).
+ Here the 
+\begin_inset Quotes eld
+\end_inset
+
+zzl
+\begin_inset Quotes erd
+\end_inset
+
+ design allocates more effort to the low density areas, this leads to the
+ non-stratified HT-based estimators to overestimate abundance (assuming
+ high abundance everywhere); stratification improves this somewhat (assuming
+ the correct stratification) but the spatial models are able to pick up
+ on the distribution gradient.
+ For the covariate analysis, high detectability coincides with low density
+ and high effort, leading to bias in the abundance estimates; spatial models
+ have a much greater spread of estimates, obtaining the true abundance at
+ least some of the time.
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:biasrl"
@@ -4324,7 +4582,7 @@ huge_res_diag <- huge_res[huge_res$density=="diag",]
 
 \begin_layout Plain Layout
 
-plot_bias(huge_res_diag, FALSE)
+plot_bias(huge_res_diag, FALSE, ylim=c(-275, 1000))
 \end_layout
 
 \begin_layout Plain Layout
@@ -4343,6 +4601,19 @@ plot_bias(huge_res_diag, FALSE)
 \begin_layout Plain Layout
 Bias in abundance for each of the models per simulation scenario for the
  diagonal gradient density.
+ In this case the stratification of the corner design is somewhat arbitrary
+ and there is a large extrapolation to the top right of the survey area
+ (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:designs"
+
+\end_inset
+
+) where the flat density assumption of the HT-based methods fail.
+ Spatial models perform well, aside from the tensor product of thin plate
+ splines (TPTE).
+ 
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:biasdiag"
@@ -4419,6 +4690,25 @@ good
 \end_inset
 
  detection function.
+ Rows are the models (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Models"
+
+\end_inset
+
+) and columns give the design (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Designs"
+
+\end_inset
+
+).
+ Here we see generally good behaviour in all models, though the spatial
+ models are slightly positively biased, which is likely down to model misspecifi
+cation (smooths should be estimated with zero effects, which is hard).
+ 
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:quantile-f-good"
@@ -4495,6 +4785,46 @@ good
 \end_inset
 
  detection function.
+ Rows are the models (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Models"
+
+\end_inset
+
+) and columns give the design (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Designs"
+
+\end_inset
+
+).
+ In this case for the 
+\begin_inset Quotes eld
+\end_inset
+
+zzl
+\begin_inset Quotes erd
+\end_inset
+
+ design, most of the effort is concentrated on the higher densities, the
+ low effort side is where there are fewer animals, as seen in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:biaslr"
+
+\end_inset
+
+, stratification improves things somewhat, though using the rotated covariates
+ makes the spatial model's job easier (again there is an issue with model
+ specification, as we should really only build a model with a smooth of
+ 
+\begin_inset Formula $x$
+\end_inset
+
+ in this case).
+ 
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:quantile-lr-good"
@@ -4571,6 +4901,39 @@ good
 \end_inset
 
  detection function.
+ Rows are the models (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Models"
+
+\end_inset
+
+) and columns give the design (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Designs"
+
+\end_inset
+
+).
+ Here the 
+\begin_inset Quotes eld
+\end_inset
+
+zzl
+\begin_inset Quotes erd
+\end_inset
+
+ design allocates more effort to the low density areas, as in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:biasrl"
+
+\end_inset
+
+ non-stratified HT estimation is positively biased, stratification improves
+ this but the spatial models are better able to estimate the gradient.
+ 
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:quantile-rl-good"
@@ -4647,6 +5010,35 @@ bad
 \end_inset
 
  detection function.
+ Rows are the models (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Models"
+
+\end_inset
+
+) and columns give the design (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Designs"
+
+\end_inset
+
+).
+ Here we see generally good behaviour in all models (some negative bias
+ across the board, perhaps more severe for the HT-based methods than Figure
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:biasf"
+
+\end_inset
+
+ would have us believe), though the spatial models are slightly positively
+ biased (though more spread out than with the good detectability), which
+ is likely down to model misspecification (smooths should be estimated with
+ zero effects, which is hard).
+ 
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:quantile-f-bad"
@@ -4723,6 +5115,39 @@ bad
 \end_inset
 
  detection function.
+ Rows are the models (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Models"
+
+\end_inset
+
+) and columns give the design (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Designs"
+
+\end_inset
+
+).
+ As in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:biasf"
+
+\end_inset
+
+ we see negative bias in the results, though again this is more extreme
+ for the HT-based methods for the 
+\begin_inset Quotes eld
+\end_inset
+
+zzl
+\begin_inset Quotes erd
+\end_inset
+
+ design.
+ 
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:quantile-lr-bad"
@@ -4799,6 +5224,48 @@ bad
 \end_inset
 
  detection function.
+ Rows are the models (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Models"
+
+\end_inset
+
+) and columns give the design (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Designs"
+
+\end_inset
+
+).
+ As in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:biasf"
+
+\end_inset
+
+ we see negative bias in the results, though again this is more extreme
+ for the HT-based stratified method for the 
+\begin_inset Quotes eld
+\end_inset
+
+zzl
+\begin_inset Quotes erd
+\end_inset
+
+ design, for the unstratified HT estimate we see positive bias for the 
+\begin_inset Quotes eld
+\end_inset
+
+zzl
+\begin_inset Quotes erd
+\end_inset
+
+ design as the model thinks that there is low detectability everywhere and
+ hence underestimates detectability, overestimating abundance.
+ 
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:quantile-rl-bad"
@@ -4872,6 +5339,25 @@ self-confidence
 
  measure for each model for the flat density surface when the weather covariate
  was used to generate data.
+ Here we see generally good behaviour in all models, though the spatial
+ models are slightly positively biased, which is likely down to model misspecifi
+cation (smooths should be estimated with zero effects, which is hard).
+ Rows are the models (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Models"
+
+\end_inset
+
+) and columns give the design (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Designs"
+
+\end_inset
+
+).
+ 
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:quantile-f-w"
@@ -4941,6 +5427,42 @@ self-confidence
 
  measure for each model for the left-right density surface when the weather
  covariate was used to generate data.
+ Rows are the models (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Models"
+
+\end_inset
+
+) and columns give the design (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Designs"
+
+\end_inset
+
+).
+ For the 
+\begin_inset Quotes eld
+\end_inset
+
+zzl
+\begin_inset Quotes erd
+\end_inset
+
+ design the stratification (which acts as spatial and covariate stratification)
+ is quite important, giving much better results (again predicated on the
+ correct stratification being selected).
+ Spatial model results seem reasonable with the notable exception of the
+ Duchon and shrinkage (TPSH) methods for the 
+\begin_inset Quotes eld
+\end_inset
+
+twozigzag
+\begin_inset Quotes erd
+\end_inset
+
+ design.
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:quantile-lr-w"
@@ -4964,7 +5486,7 @@ name "fig:quantile-lr-w"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -5010,6 +5532,44 @@ self-confidence
 
  measure for each model for the right-left density surface when the weather
  covariate was used to generate data.
+ Rows are the models (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Models"
+
+\end_inset
+
+) and columns give the design (see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Designs"
+
+\end_inset
+
+).
+ Here the 
+\begin_inset Quotes eld
+\end_inset
+
+zzl
+\begin_inset Quotes erd
+\end_inset
+
+ design allocates more effort to the low density areas, since there are
+ many detections in the high effort area, the HT estimator overestimates
+ abundance, the stratification improves this a little but causes underestimation
+, even including the covariate doesn't improve things much.
+ We again see more erratic behaviour from the Duchon and shrinkage smoothers
+ (TPSH) for the 
+\begin_inset Quotes eld
+\end_inset
+
+twozigzag
+\begin_inset Quotes erd
+\end_inset
+
+ design.
+ 
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:quantile-rl-w"
@@ -5033,7 +5593,7 @@ name "fig:quantile-rl-w"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -5041,7 +5601,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<plot-results-selfconfidence-diag-w, fig.width=3, fig.height=8, echo=FALSE,
+<<plot-results-selfconfidence-diag-w, fig.width=2.5, fig.height=7, echo=FALSE,
  message=FALSE, warning=FALSE>>=
 \end_layout
 
@@ -5079,6 +5639,47 @@ self-confidence
 
  measure for each model for the diagonal density surface when the weather
  covariate was used to generate data.
+ Rows are the models (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Models"
+
+\end_inset
+
+) and columns give the design (see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Designs"
+
+\end_inset
+
+).
+ As in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:biasdiag"
+
+\end_inset
+
+, the HT-based methods perform poorly, generally overestimating abundance,
+ the spatial models (now not suffering from model misspecification) perform
+ very well, exhibiting the 
+\begin_inset Quotes eld
+\end_inset
+
+conservative
+\begin_inset Quotes erd
+\end_inset
+
+ behaviour referred to in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:self-confidence"
+
+\end_inset
+
+.
+ 
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:quantile-diag-w"
