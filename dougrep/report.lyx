@@ -40,7 +40,7 @@ Provides natbib 1
 \spacing single
 \use_hyperref false
 \papersize default
-\use_geometry false
+\use_geometry true
 \use_package amsmath 1
 \use_package amssymb 1
 \use_package cancel 1
@@ -64,6 +64,10 @@ Provides natbib 1
 \shortcut idx
 \color #008000
 \end_index
+\leftmargin 2.4cm
+\topmargin 3.5cm
+\rightmargin 2.4cm
+\bottommargin 3.5cm
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
@@ -935,7 +939,7 @@ We used a series of simple density surfaces to test for differences between
  the proposed models.
  Although animal distribution is much more complicated than the patterns
  shown below, if models perform poorly for these simple density surfaces
- (where gradients are clearly defined) then it's likely that there will
+ (where gradients are clearly defined) then it is likely that there will
  be more severe issues when more complex surfaces are used.
  In the simulations presented here the following surfaces were investigated:
 \end_layout
@@ -1308,7 +1312,7 @@ bad
  detection function).
  The transition between the detection functions was controlled by a logistic
  function.
- Due to it's change along the 
+ Due to its change along the 
 \begin_inset Formula $x$
 \end_inset
 
