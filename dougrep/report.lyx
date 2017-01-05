@@ -96,7 +96,7 @@ David L.
 \begin_inset script superscript
 
 \begin_layout Plain Layout
-1
+123
 \end_layout
 
 \end_inset
@@ -106,7 +106,7 @@ David L.
 \begin_inset script superscript
 
 \begin_layout Plain Layout
-2
+4
 \end_layout
 
 \end_inset
@@ -123,19 +123,50 @@ David L.
 
 \end_inset
 
-Integrated Statistics, Woods Hole, MA & Centre for Research into Ecological
- and Environmental Modelling, St
-\begin_inset space ~
+Integrated Statistics, Woods Hole, MA
+\begin_inset Newline newline
 \end_inset
 
-Andrews, Scotland
-\end_layout
 
-\begin_layout Address
 \begin_inset script superscript
 
 \begin_layout Plain Layout
 2
+\end_layout
+
+\end_inset
+
+Centre for Research into Ecological and Environmental Modelling & School
+ of Mathematics and Statistics, University of St
+\begin_inset space ~
+\end_inset
+
+Andrews, St
+\begin_inset space ~
+\end_inset
+
+Andrews, Scotland
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset script superscript
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+
+Woods Hole Oceanographic Institution, Woods Hole, MA
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset script superscript
+
+\begin_layout Plain Layout
+4
 \end_layout
 
 \end_inset
@@ -191,7 +222,7 @@ vanilla
  in simple situations.
  We reason that if an estimator shows poor properties in a simple situation,
  then in reality (when distribution, availability or detectability are more
- complex) the estimator will perform even more poorly.
+ complex) estimator performance will be even worse.
 \end_layout
 
 \begin_layout Standard
@@ -304,7 +335,7 @@ key "Borchers:2004wr"
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-\hat{N}_{HT}=\frac{A}{a}\sum_{i=1}^{n}\frac{s_{i}}{\hat{p}_{i}}\label{eq:HT}
+\hat{N}_{HT}=\frac{A}{a}\sum_{i=1}^{n}\frac{s_{i}}{\hat{p}_{i}},\label{eq:HT}
 \end{equation}
 
 \end_inset
@@ -313,7 +344,8 @@ where
 \begin_inset Formula $n$
 \end_inset
 
- is the number of observations, index by 
+ is the number of observations (number of groups if animals occur in clusters),
+ indexed by 
 \begin_inset Formula $i$
 \end_inset
 
@@ -325,7 +357,7 @@ where
 \begin_inset Formula $i^{\text{th}}$
 \end_inset
 
- group and 
+ group (or always 1 if animals are solitary) and 
 \begin_inset Formula $\hat{p}_{i}$
 \end_inset
 
@@ -376,9 +408,16 @@ study area
 \end_layout
 
 \begin_layout Standard
-In order to circumvent this shortcoming, we can perform pre or post hoc
- stratification, slicing-up the study area into smaller subsets or regions
- and estimating abundance for each of these.
+In order to circumvent this shortcoming, we can perform pre- or post-hoc
+ stratification, slicing-up the study area into smaller regions (
+\shape italic
+strata
+\shape default
+)
+\shape italic
+ 
+\shape default
+and estimating abundance for each of these.
  These may be geographically defined (
 \begin_inset Quotes eld
 \end_inset
@@ -392,7 +431,7 @@ near vs.
 \begin_inset Quotes eld
 \end_inset
 
-east/west of some longitude
+east/west of some feature
 \begin_inset Quotes erd
 \end_inset
 
@@ -415,8 +454,7 @@ deep or shallow water
 
 ).
  Mathematically, this consists of changing the limits of the sum (summing
- over the animals which occur at a given depth or in a particular area etc),
- then changing 
+ over the animals which occur in a given stratum), then changing 
 \begin_inset Formula $a$
 \end_inset
 
@@ -447,7 +485,8 @@ Variance is estimated for
 \begin_inset Formula $\hat{N}_{HT}$
 \end_inset
 
- by noting that there are two sources of randomness in the equation: 
+ by noting that there are (at least) two sources of stochasticity in the
+ equation: 
 \shape italic
 (i) 
 \shape default
@@ -455,15 +494,17 @@ from the variance in the model for
 \begin_inset Formula $\hat{p}_{i}$
 \end_inset
 
- and 
+ (i.e., the detection function) and 
 \shape italic
 (ii)
 \shape default
- from the randomness in the number of observed groups, 
+ by noting that the observed number of observations, 
 \begin_inset Formula $n$
 \end_inset
 
-.
+, is random.
+ If animals are observed in groups, then there is also variation from the
+ group size to consider.
  The variance component from 
 \begin_inset Formula $\hat{p}_{i}$
 \end_inset
@@ -525,6 +566,7 @@ key "Innes:2002ka"
 \end_inset
 
 ).
+ If animals occur in groups, we calculate the variance in group size empirically.
 \end_layout
 
 \begin_layout Subsection
@@ -561,9 +603,8 @@ key "hastie1990generalized,Ruppert:2003uc,Wood:2006vg"
  the species and their response to other biological/physical variables (though
  in this paper we only consider models that include smooths of location).
  Rather than dealing with whole transects (which are generally long and
- can include large changes in animal density along their length, as well
- as covariate values), we cut the transects into smaller pieces, which we
- call 
+ in which animal density and environmental covariate values can change appreciab
+ly), we cut the transects into smaller pieces, which we call 
 \shape italic
 segments
 \shape default
@@ -571,7 +612,7 @@ segments
  The mean response of the model can be written as:
 \begin_inset Formula 
 \[
-\mathbb{E}(n_{j})=A_{j}\hat{p}_{j}\exp(\beta_{0}+\sum_{k}s_{k}(z_{kj})),
+\mathbb{E}(n_{j})=A_{j}\hat{p}_{j}\exp\left[\beta_{0}+\sum_{k}s_{k}(z_{kj})\right],
 \]
 
 \end_inset
@@ -594,7 +635,8 @@ where
 \begin_inset Formula $n_{j}$
 \end_inset
 
-, is distributed according to some count distribution for which 
+, is distributed according to some count distribution (usually Tweedie or
+ negative binomial) for which 
 \begin_inset Formula $\exp$
 \end_inset
 
@@ -603,9 +645,9 @@ where
 status open
 
 \begin_layout Plain Layout
-Though any exponential family response can be used in the GAM framework
- with any appropriate link function, we just talk about count distributions
- and log link functions for clarity of notation.
+Though any exponential family (and beyond) response can be used in the GAM
+ framework with any appropriate link function, we just talk about count
+ distributions and log link functions for clarity of notation.
 \end_layout
 
 \end_inset
@@ -656,7 +698,7 @@ A typical DSM may take a form such as:
 \begin_layout Standard
 \begin_inset Formula 
 \[
-\mathbb{E}(n_{j})=A_{j}\hat{p}_{j}\exp(\beta_{0}+s_{x,y}(x_{j},y_{j})+s_{\text{Depth}}(\text{Depth}_{j})),
+\mathbb{E}(n_{j})=A_{j}\hat{p}_{j}\exp\left[\beta_{0}+s_{x,y}(x_{j},y_{j})+s_{\text{Depth}}(\text{Depth}_{j})\right],
 \]
 
 \end_inset
@@ -683,14 +725,22 @@ Note that here the probability of detection has a subscript
  This is because in this formulation of the DSM we only consider detectability
  as varying at the scale of the segments, not the observed individuals/groups.
  This means that covariates that effect detectability such as weather, observer
- shift or ship can be used, but sex of the animal or observer ID (if there
- were multiple observers on deck at once) cannot be
+ shift/team or ship can be used, but sex of the animal or observer ID (if
+ there were multiple observers on deck at once) cannot be
 \begin_inset Foot
 status open
 
 \begin_layout Plain Layout
 These covariates can be included in a more general formulation of DSMs,
  though we don't consider them here for clarity of presentation.
+ See 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Miller:2013fq"
+
+\end_inset
+
+ for further details.
 \end_layout
 
 \end_inset
@@ -704,10 +754,18 @@ Motivation
 
 \begin_layout Standard
 A criticism of the DSM approach is that it is more complex, as we explicitly
- model the spatial and environmental covariate effects, but this explicit
- modelling is the only way to deal with the heterogeneity in spatial distributio
-n of the study species.
- We note that an appeal to 
+ model the spatial and environmental covariate effects, but explicit modelling
+ is the only way to deal with the heterogeneity in spatial distribution
+ of the study species.
+ 
+\end_layout
+
+\begin_layout Subsection
+Pooling robustness
+\end_layout
+
+\begin_layout Standard
+An appeal to 
 \begin_inset Quotes eld
 \end_inset
 
@@ -761,7 +819,7 @@ where there are
 \end_inset
 
  is the number of observations in stratum 
-\begin_inset Formula $j$
+\begin_inset Formula $r$
 \end_inset
 
  and 
@@ -793,7 +851,7 @@ Intuitively, we say that pooling robustness holds, the estimates from a
  stratified analysis would be the same as those for an unstratified analysis.
  
 \begin_inset CommandInset citation
-LatexCommand citep
+LatexCommand citet
 after "Section 11.12"
 key "Buckland:2004ts"
 
@@ -804,8 +862,8 @@ key "Buckland:2004ts"
 \end_inset
 
 if only an overall abundance estimate is required, standard methods without
- covariates are satisfactory under rather mild conditions, provided heterogeneit
-y in detectability is not too extreme.
+ covariates [in the detection function] are satisfactory under rather mild
+ conditions, provided heterogeneity in detectability is not too extreme.
 \begin_inset Quotes erd
 \end_inset
 
@@ -842,26 +900,54 @@ key "Buckland:2004ts"
 
 \end_inset
 
- say: 
+ say if the detection function includes covariates 
 \begin_inset Quotes eld
 \end_inset
 
-If 
-\begin_inset Formula $g(0,z)$
-\end_inset
-
- is a function of 
-\begin_inset Formula $z$
-\end_inset
-
-, then the model robustness criterion fails, and we must model the heterogeneity
+then the model robustness criterion fails, and we must model the heterogeneity
  to avoid bias
 \begin_inset Quotes erd
 \end_inset
 
-, so if we do expect that the probability of detection at zero distance
- is influenced by covariates (which it almost surely will be), pooling robustnes
-s does not apply.
+.
+ So, if we do expect that the probability of detection at zero distance
+ is influenced by covariates (which it almost surely will be in a marine
+ survey), pooling robustness does not apply.
+\end_layout
+
+\begin_layout Subsection
+Designs with unknown coverage probability
+\end_layout
+
+\begin_layout Standard
+Implicit in the HT formula (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:HT"
+
+\end_inset
+
+) is the assumption that all animals are equally likely to be seen.
+ With a truly randomised design, this is certainly the case, but it is often
+ the case that designs are 
+\begin_inset Quotes eld
+\end_inset
+
+constructed
+\begin_inset Quotes erd
+\end_inset
+
+ rather than realised from a randomisation process (such as that provided
+ in Distance for Windows 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Thomas:2010cf"
+
+\end_inset
+
+).
+ This can be for a variety of logistical reasons, but the lack of randomisation
+ completely invalidates HT estimation of abundance.
 \end_layout
 
 \begin_layout Standard
@@ -1346,203 +1432,14 @@ reference "fig:dfs"
 
 \end_inset
 
- and a table of the parameters of the detection functions is given in Table
- 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "tab:df-pars"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float table
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="3" columns="4">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<row>
-<cell alignment="center" valignment="top" bottomline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Detection function
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" bottomline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Scale
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" bottomline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Shape
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" bottomline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Truncation
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Quotes eld
-\end_inset
-
-good
-\begin_inset Quotes erd
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.025
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-3
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.05
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Quotes eld
-\end_inset
-
-bad
-\begin_inset Quotes erd
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.005
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.05
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Parameters for the detection functions used in the simulations.
- Plots of the detection functions are shown in Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:dfs"
-
-\end_inset
-
-.
-\begin_inset CommandInset label
-LatexCommand label
-name "tab:df-pars"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
+ along with their parameters.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -1598,17 +1495,17 @@ df_bad <- list(key        = "hr",
 
 \begin_layout Plain Layout
 
-                    scale      = 0.005,
+               scale      = 0.005,
 \end_layout
 
 \begin_layout Plain Layout
 
-                    shape      = 1,
+               shape      = 1,
 \end_layout
 
 \begin_layout Plain Layout
 
-                    truncation = 0.05)
+               truncation = 0.05)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1694,14 +1591,27 @@ plot_df(df_bad, "bad")
 \begin_layout Plain Layout
 Detection functions used in the simulations.
  Dashed line indicates the truncation distance used.
- Parameters are as in Table 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "tab:df-pars"
-
+ For the 
+\begin_inset Quotes eld
 \end_inset
 
-.
+good
+\begin_inset Quotes erd
+\end_inset
+
+ detection function, the scale parameter was set at 0.025, shape parameter
+ at 3.
+ For the 
+\begin_inset Quotes eld
+\end_inset
+
+bad
+\begin_inset Quotes erd
+\end_inset
+
+ detection function, the scale parameter was set at 0.005, and the shape
+ at 1.
+ In both cases truncation was at 0.05.
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:dfs"
@@ -1722,8 +1632,8 @@ name "fig:dfs"
 \end_layout
 
 \begin_layout Standard
-We do not consider the case where detectability is uncertain at zero distance
- (
+For clarity and simplicity we do not consider the case where detectability
+ is uncertain at zero distance (
 \begin_inset Formula $g(0)\neq1$
 \end_inset
 
@@ -2497,12 +2407,12 @@ tensor product
 \shape default
  of univariate splines.
  We also test that the setup of the smoother isn't unduly advantageous to
- a particular model by rotating the coordinate system by 45º using the rotation
+ a particular model by rotating the coordinate system by 45° using the rotation
  matrix: 
 \begin_inset Formula 
 \[
-R=\begin{pmatrix}cos(\pi/4) & -sin(\pi/4)\\
-sin(\pi/4) & cos(\pi/4)
+R=\begin{pmatrix}\cos(\pi/4) & -\sin(\pi/4)\\
+\sin(\pi/4) & \cos(\pi/4)
 \end{pmatrix}.
 \]
 
@@ -2638,7 +2548,7 @@ reference "fig:designs"
 
 \end_inset
 
-(where applicable)
+ (where applicable)
 \end_layout
 
 \end_deeper
@@ -2666,7 +2576,7 @@ DSsim
 \family typewriter
 ltdesigntester
 \family default
- 
+ (available at 
 \begin_inset Flex URL
 status open
 
@@ -2677,7 +2587,7 @@ http://github.com/dill/ltdesigntester
 
 \end_inset
 
-; a vignette is provided with the package to illustrate its use.
+); a vignette is provided with the package to illustrate its use.
  Detection functions were fitted in 
 \family typewriter
 Distance
@@ -2720,7 +2630,7 @@ We can simply calculate the bias (
 \end_inset
 
 ) and plot boxplots of these values, however this does not get to the uncertaint
-y, which we're more interested in.
+y, which is more interesting.
 \end_layout
 
 \begin_layout Subsubsection
@@ -3786,8 +3696,9 @@ Before looking at where particular models succeeded or failed, we first
 
  direction) that is effectively unused (which we would like to be estimated
  as a zero effect) that may pick up on minor variations due to sampling
- variability, in the rotated models both coordinates are used so estimating
- an effect of exactly zero for the 
+ variability.
+ In the rotated models both coordinates are used so estimating an effect
+ of exactly zero for the 
 \begin_inset Formula $y$
 \end_inset
 
@@ -3807,8 +3718,8 @@ manyzigzags
 \begin_inset Quotes erd
 \end_inset
 
-) , the methods based on HT estimators perform well in terms of bias in
- estimating 
+), the methods based on HT estimators perform well in terms of bias in estimatin
+g 
 \begin_inset Formula $\hat{N}$
 \end_inset
 
