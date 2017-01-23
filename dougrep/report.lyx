@@ -3412,7 +3412,7 @@ for(i in seq_along(f_names)){
 
 \begin_layout Standard
 We experimented with possible combinations of simulation scenarios based
- on the models about.
+ on the models above.
  In each scenario, we tested all of the modelling options listed above and
  recorded the metrics from the previous section.
  The density surfaces described in Section 
