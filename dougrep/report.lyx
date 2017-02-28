@@ -86,6 +86,27 @@ Provides natbib 1
 \begin_body
 
 \begin_layout Title
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+change title!
+\end_layout
+
+\end_inset
+
+Checking whether abundance surveys are safe to analyse with 
+\begin_inset Quotes eld
+\end_inset
+
+design-based
+\begin_inset Quotes erd
+\end_inset
+
+ methods
+\end_layout
+
+\begin_layout Title
 Shortcomings of Horvitz-Thompson-like estimators for large-scale cetacean
  abundance estimation
 \end_layout
@@ -199,7 +220,147 @@ opts_knit$set(cache=TRUE)
 \end_layout
 
 \begin_layout Section
-Introduction 
+Introduction
+\end_layout
+
+\begin_layout Standard
+The IWC Scientific Committee (SC) often has to consider abundance estimates
+ derived from line-transect surveys which have been analysed using 
+\begin_inset Quotes eld
+\end_inset
+
+design-based estimators
+\begin_inset Quotes erd
+\end_inset
+
+, but where for various reasons it is not clear whether the resulting estimates
+ and CVs are trustworthy for, say, RMP purposes.
+ The SC has in recent years (up to 2016) considered revising its formal
+ Guidelines
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+The Requirements and Guidelines for Conducting Surveys and Analysing Data
+ within the Revised Management Management Scheme: IWC (2012).
+ “Requirements and Guidelines for Conducting Surveys and Analysing Data
+ within the Revised Management Scheme”.
+ J.
+ Cetacean Res.
+ Manage.
+ (Suppl.) 13, pp.
+ 509–517.
+\end_layout
+
+\end_inset
+
+ to take advantage of metholodogical developments, in particular the increased
+ flexibility offered by 
+\begin_inset Quotes eld
+\end_inset
+
+model-based
+\begin_inset Quotes erd
+\end_inset
+
+ abundance estimates constructed around spatial smooths of animal density.
+ As background for that revision, document IWC/65b/RMP11 (Hedley/Bravington
+ 2014) describes the assumptions 
+\emph on
+required
+\emph default
+ by design-based 
+\emph on
+principles
+\emph default
+; it also introduces some of the practical issues around model-based estimates,
+ which are more flexible but also more complicated to implement.
+ In section
+\begin_inset space ~
+\end_inset
+
+11 of that Document, the authors note that it may sometimes be possible
+ to derive acceptable estimates and CVs using a design-based calculation—
+ which in 
+\emph on
+this
+\emph default
+ document we call an HT (
+\begin_inset Quotes eld
+\end_inset
+
+Horvitz-Thompson-like
+\begin_inset Quotes erd
+\end_inset
+
+) estimate— even when the underlying design-based assumptions are not strictly
+ met, provided that (among other things) achieved coverage is sufficiently
+ uniform.
+ They suggest that HT acceptability needs to be verified on a case-by-case
+ basis, using diagnostics derived from model-based analysis.
+ This document reviews the main differences between HT and model-based estimates
+, and introduces software developed specifically to help check HT acceptability.
+\end_layout
+
+\begin_layout Standard
+On
+\end_layout
+
+\begin_layout Standard
+*start MVB*
+\end_layout
+
+\begin_layout Standard
+difficult to 
+\end_layout
+
+\begin_layout Standard
+weather covariate
+\end_layout
+
+\begin_layout Standard
+step aside from the theory of 
+\begin_inset Quotes eld
+\end_inset
+
+what were they thinking?
+\begin_inset Quotes erd
+\end_inset
+
+ into 
+\begin_inset Quotes eld
+\end_inset
+
+what did they do, and see?
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Impossible to prove what was in people's minds.
+ And irrelevant from the PoV of: can you trust this estimate to have low
+ bias, and CIs based on these data to reliably encompass the truth, whatever
+ it was?
+\end_layout
+
+\begin_layout Standard
+Avoided thinking about...
+ (group size...)
+\end_layout
+
+\begin_layout Standard
+HT as 
+\begin_inset Quotes eld
+\end_inset
+
+design-based
+\begin_inset Quotes erd
+\end_inset
+
+...
+\end_layout
+
+\begin_layout Standard
+*end MVB*
 \end_layout
 
 \begin_layout Standard
@@ -847,8 +1008,8 @@ where there are
 \end_layout
 
 \begin_layout Standard
-Intuitively, we say that pooling robustness holds, the estimates from a
- stratified analysis would be the same as those for an unstratified analysis.
+Intuitively, we say that if pooling robustness holds, the estimates from
+ a stratified analysis would be the same as those for an unstratified analysis.
  
 \begin_inset CommandInset citation
 LatexCommand citet
