@@ -53,13 +53,18 @@ Provides natbib 1
 \use_package undertilde 1
 \cite_engine natbib
 \cite_engine_type authoryear
-\biblio_style plain
+\biblio_style 
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
 \suppress_date false
 \justification true
 \use_refstyle 1
+\branch orig-not-used
+\selected 0
+\filename_suffix 0
+\color #faf0e6
+\end_branch
 \index Index
 \shortcut idx
 \color #008000
@@ -86,16 +91,7 @@ Provides natbib 1
 \begin_body
 
 \begin_layout Title
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-change title!
-\end_layout
-
-\end_inset
-
-Checking whether abundance surveys are safe to analyse with 
+When can abundance surveys be analysed with 
 \begin_inset Quotes eld
 \end_inset
 
@@ -103,12 +99,7 @@ design-based
 \begin_inset Quotes erd
 \end_inset
 
- methods
-\end_layout
-
-\begin_layout Title
-Shortcomings of Horvitz-Thompson-like estimators for large-scale cetacean
- abundance estimation
+ methods?
 \end_layout
 
 \begin_layout Author
@@ -221,11 +212,18 @@ opts_knit$set(cache=TRUE)
 
 \begin_layout Section
 Introduction
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Introduction"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 The IWC Scientific Committee (SC) often has to consider abundance estimates
- derived from line-transect surveys which have been analysed using 
+ derived from line transect surveys which have been analysed using 
 \begin_inset Quotes eld
 \end_inset
 
@@ -234,11 +232,11 @@ design-based estimators
 \end_inset
 
 , but where for various reasons it is not clear whether the resulting estimates
- and CVs are trustworthy for, say, RMP purposes.
- The SC has in recent years (up to 2016) considered revising its formal
- Guidelines
+ of abundance and uncertainty are trustworthy for, say, RMP purposes.
+ The SC has therefore in recent years (up to 2016) considered revising its
+ formal Guidelines
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 The Requirements and Guidelines for Conducting Surveys and Analysing Data
@@ -254,7 +252,7 @@ The Requirements and Guidelines for Conducting Surveys and Analysing Data
 
 \end_inset
 
- to take advantage of metholodogical developments, in particular the increased
+ to take advantage of methodological developments, in particular the increased
  flexibility offered by 
 \begin_inset Quotes eld
 \end_inset
@@ -263,9 +261,10 @@ model-based
 \begin_inset Quotes erd
 \end_inset
 
- abundance estimates constructed around spatial smooths of animal density.
- As background for that revision, document IWC/65b/RMP11 (Hedley/Bravington
- 2014) describes the assumptions 
+ abundance estimates, constructed statistically around smooth estimates
+ of animal density across space.
+ As background for that revision, document IWC/65b/RMP11 (Hedley & Bravington
+ 2014) describes the randomization assumptions 
 \emph on
 required
 \emph default
@@ -279,9 +278,9 @@ principles
 \begin_inset space ~
 \end_inset
 
-11 of that Document, the authors note that it may sometimes be possible
- to derive acceptable estimates and CVs using a design-based calculation—
- which in 
+11 of that document, the authors note that it may sometimes be possible
+ to derive acceptable estimates of abundance and uncertainty using a design-base
+d calculation— which in 
 \emph on
 this
 \emph default
@@ -294,104 +293,87 @@ Horvitz-Thompson-like
 \end_inset
 
 ) estimate— even when the underlying design-based assumptions are not strictly
- met, provided that (among other things) achieved coverage is sufficiently
- uniform.
- They suggest that HT acceptability needs to be verified on a case-by-case
- basis, using diagnostics derived from model-based analysis.
- This document reviews the main differences between HT and model-based estimates
-, and introduces software developed specifically to help check HT acceptability.
-\end_layout
-
-\begin_layout Standard
-On
-\end_layout
-
-\begin_layout Standard
-*start MVB*
-\end_layout
-
-\begin_layout Standard
-difficult to 
-\end_layout
-
-\begin_layout Standard
-weather covariate
-\end_layout
-
-\begin_layout Standard
-step aside from the theory of 
+ met, provided that (among other things) realised coverage is sufficiently
+ even.
+ This has been common practice at IWC and elsewhere, but generally on an
+ 
+\emph on
+ad hoc
+\emph default
+ basis with no clear criteria for 
 \begin_inset Quotes eld
 \end_inset
 
-what were they thinking?
-\begin_inset Quotes erd
-\end_inset
-
- into 
-\begin_inset Quotes eld
-\end_inset
-
-what did they do, and see?
+how bad is too bad?
 \begin_inset Quotes erd
 \end_inset
 
 .
- Impossible to prove what was in people's minds.
- And irrelevant from the PoV of: can you trust this estimate to have low
- bias, and CIs based on these data to reliably encompass the truth, whatever
- it was?
+ For such cases, IWC/65b/RMP11 recommends instead that HT acceptability
+ needs to be verified on a case-by-case basis, using diagnostics derived
+ from model-based analysis.
 \end_layout
 
 \begin_layout Standard
-Avoided thinking about...
- (group size...)
-\end_layout
+This document follows up on that suggestion.
+ We briefly review the main differences between HT and model-based estimates
+ (section
+\begin_inset space ~
+\end_inset
 
-\begin_layout Standard
-HT as 
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Methods"
+
+\end_inset
+
+), explain where problems can occur with the former (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Motivation"
+
+\end_inset
+
+), and through simulation demonstrate those problems and how they might
+ be checked for using model-based criteria (sections
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Simulation"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Results"
+
+\end_inset
+
+).
+ The idea is to consider a range of scenarios about underlying density gradients
+, then fit different spatial models (including a 
 \begin_inset Quotes eld
 \end_inset
 
-design-based
+null model
 \begin_inset Quotes erd
 \end_inset
 
-...
+ that is equivalent to an HT estimate) to data simulated from the actual
+ survey tracks and each density scenario, then check the consistency of
+ point estimates and variance estimates across the different models.
+ Software implementing these criteria/checks is available as an accompanying
+ R package.
 \end_layout
 
 \begin_layout Standard
-*end MVB*
-\end_layout
-
-\begin_layout Standard
-A great deal of time and money is spent on large-scale cetacean surveys.
- Though sophisticated statistical methods have been developed to deal with
- the complications of complex spatial data, investigators can opt to perform
- an overly simplistic analysis based on randomisation principles which are
- not appropriate for the data in question.
- An example of a potential issue of this type is the use of 
-\begin_inset Quotes eld
-\end_inset
-
-vanilla
-\begin_inset Quotes erd
-\end_inset
-
- Horvitz-Thompson estimators of abundance from line transect surveys when
- the underlying distribution of the study species varies in space.
- In this paper we show by simulation that these analyses can be inappropriate
- in simple situations.
- We reason that if an estimator shows poor properties in a simple situation,
- then in reality (when distribution, availability or detectability are more
- complex) estimator performance will be even worse.
-\end_layout
-
-\begin_layout Standard
-Here we are interested in two methodologies for estimating abundance from
- line transect distance sampling surveys, one is a design-based estimate,
- the other is a model-based estimate.
- We assume in both cases that the usual assumptions regarding distance sampling
- surveys have been met 
+In order to keep things tractable, we have made certain assumptions, beyond
+ the usual requirements for distance sampling 
 \begin_inset CommandInset citation
 LatexCommand citep
 before "see e.g.,"
@@ -399,28 +381,46 @@ key "Buckland:2001vm,Buckland:2004ts,buckland2015distance"
 
 \end_inset
 
-.
- We also assume that:
+):
 \end_layout
 
 \begin_layout Itemize
-Distances are recorded for each observation (along with the size of each
- group of animals, without error).
+Transect lines are the ones actually visited (
+\begin_inset Quotes eld
+\end_inset
+
+realised effort
+\begin_inset Quotes erd
+\end_inset
+
+), not whatever may have been planned in the original design.
 \end_layout
 
 \begin_layout Itemize
-The vessel's location along the transect is recorded during the survey (for
- example using an automated waypoint function on a GPS unit), i.e., the transect
- lines are recorded as they were visited (the 
-\shape italic
-realised design
-\shape default
-), rather than as they were designed.
-\end_layout
+We assume there is 
+\emph on
+some
+\emph default
+ environmental covariate related to sighting probability that has been measured
+ along (within) transect lines, not just when sighting is made (e.g., Beaufort
+ sea state recorded as 
+\begin_inset Quotes eld
+\end_inset
 
-\begin_layout Itemize
-A covariate that gives some indication of sighting conditions was also recorded
- (we simply refer to this as 
+good
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+worse
+\begin_inset Quotes erd
+\end_inset
+
+ categories).
+ We refer to this covariate simply as 
 \begin_inset Quotes eld
 \end_inset
 
@@ -428,16 +428,68 @@ weather
 \begin_inset Quotes erd
 \end_inset
 
- but it could be Beaufort Sea State or some other omnibus measure of visual
- conditions).
+.
+ For evaluating a survey, it should not matter too much exactly how the
+ weather covariate is defined.
+ Without a weather covariate, though, we do not consider it possible to
+ adequately evaluate HT acceptability 
+\shape italic
+post hoc
+\shape default
+ (see section
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Motivation"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Itemize
+We assume that detectability, broadly speaking has already been estimated
+ in a preliminary step.
+ So 
+\begin_inset Formula $g\left(0\right)$
+\end_inset
+
+ and availability etc have already been estimated .
+ What is required for evaluation, is the integrated detection probability
+ out to the truncation distance; the details of functional form do not matter.
+ 
+\end_layout
+
+\begin_layout Itemize
+We have ignored school/group size; if a survey is not going to lead to reliable
+ HT analysis even if all groups are size 1 with equal detectability, then
+ variations in group size (and detectability) are hardly going to improve
+ matters.
+ Group size error is an even harder issue.
+ See section
+\begin_inset space ~
+\end_inset
+
+9 of IWC/65b/RMP11 for some discussion.
 \end_layout
 
 \begin_layout Standard
-We now describe the two ways in which one could analyse this data.
+With these assumptions in mind, we now go on to describe the HT and spatial
+ approaches to estimating abundance.
 \end_layout
 
 \begin_layout Section
 Methods
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Methods"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -454,22 +506,47 @@ key "Buckland:2001vm,Buckland:2004jq,buckland2015distance"
 \begin_inset Formula $\hat{g}$
 \end_inset
 
-, a function of distance, observed detection-related covariates and estimated
- parameters), we can estimate the average (over distance) probability of
- detection for an observation (conditional on observed covariate values),
- 
-\begin_inset Formula $\hat{p}_{i}$
+— a function of distance (
+\begin_inset Formula $y$
 \end_inset
 
-, by integrating out distance for a given observation 
+), observed detection-related covariates such as weather (
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+), and estimated parameters (
+\begin_inset Formula $\boldsymbol{\theta}$
+\end_inset
+
+)), we can estimate the average (over distance) probability of detection
+ for an observation (indexed by 
 \begin_inset Formula $i$
 \end_inset
 
-.
+, conditional on observed covariate values), 
+\begin_inset Formula $\hat{p}_{i}$
+\end_inset
+
+, by integrating 
+\begin_inset Formula $\hat{g}\left(y;\mathbf{z_{i}},\boldsymbol{\theta}\right)$
+\end_inset
+
+ across perpendicular distances 
+\begin_inset Formula $y$
+\end_inset
+
+ out to the truncation distance.
 \end_layout
 
 \begin_layout Subsection
 Horvitz-Thompson-like estimators
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:HT"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -481,7 +558,7 @@ Horvitz-Thompson-like
 \begin_inset Quotes erd
 \end_inset
 
- estimator (henceforth HT) 
+ estimator 
 \begin_inset CommandInset citation
 LatexCommand citep
 before "e.g.,"
@@ -560,17 +637,43 @@ study area
 \shape default
 ).
  Intuitively, we take the group sizes, correct them for detectability and
- sum to get an estimate of abundance in the covered area, we then rescale
- this to the study region.
- The HT estimator assumes that animal density is constant within the study
- area.
- This assumption may be justifiable in some situations, but seems very unlikely
- in a dynamic environment such as an ocean.
+ sum to get an estimate of abundance in the covered area, which we then
+ rescale to the study region.
+ The HT estimator can only estimate animal density at a constant level within
+ the area 
+\begin_inset Formula $A$
+\end_inset
+
+; the rescaling assumes that the density in the observed area is representative
+ of the larger area.
+ The unbiasedness of equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:HT"
+
+\end_inset
+
+ relies on the inclusion probability of the observations being known, we
+ estimate these (via estimating detectability and implicitly assuming equal
+ inclusion probability; see IWC/65b/RMP11 section
+\begin_inset space ~
+\end_inset
+
+1) so equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:HT"
+
+\end_inset
+
+ is only unbiased when these assumptions hold.
+ These assumptions may be approximately valid in some situations, but it
+ is hard to check directly.
 \end_layout
 
 \begin_layout Standard
-In order to circumvent this shortcoming, we can perform pre- or post-hoc
- stratification, slicing-up the study area into smaller regions (
+We can perform pre or post hoc stratification, slicing-up the study area
+ into smaller regions (
 \shape italic
 strata
 \shape default
@@ -639,6 +742,9 @@ blocky
  Stratification can be performed using animal/group-specific covariates
  (e.g., abundance of males/females, juveniles/adults etc), though we do not
  address this here.
+ The assumptions and shortcomings mentioned in the previous paragraph still
+ apply, but on a smaller scale, so may be more defensible.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -698,8 +804,8 @@ key "Borchers:2002vs"
 encounter rate
 \shape default
  variance.
- There are a number of options for this estimator, depending on the possible
- design used.
+ There are a number of formulations for this estimator, depending on the
+ possible design used.
  
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -715,11 +821,11 @@ key "Fewster:2009ku"
 
 \end_inset
 
- R2 estimator (though the encounter rate estimator itself is 
+ R2 estimator (though we use an encounter rate estimator of 
 \begin_inset Formula $\hat{N}/L$
 \end_inset
 
-; 
+ as in 
 \begin_inset CommandInset citation
 LatexCommand citealp
 key "Innes:2002ka"
@@ -727,23 +833,34 @@ key "Innes:2002ka"
 \end_inset
 
 ).
+ Note though that this estimator only considers variance between the sample
+ units: the transects, so if transects are long and there is significant
+ variation in density along the transect, we may obtain variance estimates
+ that are far too small.
  If animals occur in groups, we calculate the variance in group size empirically.
 \end_layout
 
 \begin_layout Subsection
 Density surface models
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:DSM"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 We now describe one spatially explicit approach to modelling distance sampling
  line transect survey data, which we refer to as 
 \shape italic
-density surface models
+density surface modelling
 \shape default
  
 \begin_inset CommandInset citation
 LatexCommand citep
-before "DSMs;"
+before "DSM;"
 key "Hedley:2004et,Miller:2013fq"
 
 \end_inset
@@ -762,7 +879,7 @@ key "hastie1990generalized,Ruppert:2003uc,Wood:2006vg"
 
  to build smooth, spatially explicit terms describing the distribution of
  the species and their response to other biological/physical variables (though
- in this paper we only consider models that include smooths of location).
+ here we only consider models that include smooths of location).
  Rather than dealing with whole transects (which are generally long and
  in which animal density and environmental covariate values can change appreciab
 ly), we cut the transects into smaller pieces, which we call 
@@ -796,17 +913,17 @@ where
 \begin_inset Formula $n_{j}$
 \end_inset
 
-, is distributed according to some count distribution (usually Tweedie or
- negative binomial) for which 
+ (count per segment), is distributed according to some count distribution
+ (usually Tweedie or negative binomial) for which 
 \begin_inset Formula $\exp$
 \end_inset
 
  is the inverse link function
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
-Though any exponential family (and beyond) response can be used in the GAM
+Though any exponential (and beyond) family response can be used in the GAM
  framework with any appropriate link function, we just talk about count
  distributions and log link functions for clarity of notation.
 \end_layout
@@ -838,7 +955,7 @@ key "deBoor:1978wq"
  smooth-factor interactions and so forth 
 \begin_inset CommandInset citation
 LatexCommand citep
-key "Wood:2016cw"
+key "Wood:2006vg,Wood:2016cw"
 
 \end_inset
 
@@ -849,7 +966,11 @@ key "Wood:2016cw"
 
  depends on the nature of the effect we wish to model, for smooths of location
  there are quite a few options, some of which are enumerated and described
- below.
+ below (IWC/65b/RMP11 also discusses this in section
+\begin_inset space ~
+\end_inset
+
+7.2).
 \end_layout
 
 \begin_layout Standard
@@ -885,11 +1006,11 @@ Note that here the probability of detection has a subscript
  as in the HT estimator.
  This is because in this formulation of the DSM we only consider detectability
  as varying at the scale of the segments, not the observed individuals/groups.
- This means that covariates that effect detectability such as weather, observer
- shift/team or ship can be used, but sex of the animal or observer ID (if
- there were multiple observers on deck at once) cannot be
+ This means that covariates such as weather, observer shift/team or ship
+ can be included in the detection function, but sex of the animal or observer
+ ID (if there were multiple observers on deck at once) cannot be
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 These covariates can be included in a more general formulation of DSMs,
@@ -910,19 +1031,29 @@ key "Miller:2013fq"
 \end_layout
 
 \begin_layout Section
-Motivation
+Why do spatial modelling?
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Motivation"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 A criticism of the DSM approach is that it is more complex, as we explicitly
- model the spatial and environmental covariate effects, but explicit modelling
- is the only way to deal with the heterogeneity in spatial distribution
- of the study species.
- 
+ model the spatial and possibly environmental covariate effects.
+ More mode checking is required and there is a wide literature of often
+ conflicting advice on how to construct models.
+ However, explicit modelling is the only way to deal with the heterogeneity
+ in spatial distribution of the study species.
+ In this section we give some some arguments about why HT estimation may
+ not be a good idea from a theoretical perspective.
 \end_layout
 
 \begin_layout Subsection
-Pooling robustness
+Appeals to pooling robustness
 \end_layout
 
 \begin_layout Standard
@@ -942,7 +1073,7 @@ key "Buckland:2004ts"
 
 \end_inset
 
- does not get around this issue.
+ does not get around heterogeneity in the spatial distribution of the population.
  Before explaining why, we first define and explain pooling robustness in
  a distance sampling context.
 
@@ -1028,14 +1159,15 @@ if only an overall abundance estimate is required, standard methods without
 \begin_inset Quotes erd
 \end_inset
 
- This is a statement about HT estimation in the presence of detection heterogene
-ity and does not say anything about the case where density varies within
- strata — in this case the effect of detectability and distribution are
- confounded, unless data on observation conditions (e.g., a weather covariate)
- and spatial distribution (e.g., location of transects) is recorded and modelled.
- A spatial model that includes data on the location of the observations
- and the sighting conditions will be able to tease apart these effects and
- attribute appropriate uncertainty.
+ This is a statement about HT estimation in the presence of (mild) detection
+ heterogeneity and does not address spatial variation in density within
+ strata.
+ If we knew the optimal 
+\begin_inset Formula $R$
+\end_inset
+
+ strata to chop our survey into, according to the density gradient we might
+ be onto something, but this is impossible in practice.
 \end_layout
 
 \begin_layout Standard
@@ -1061,7 +1193,7 @@ key "Buckland:2004ts"
 
 \end_inset
 
- say if the detection function includes covariates 
+ note that if the detection function includes covariates 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1072,8 +1204,104 @@ then the model robustness criterion fails, and we must model the heterogeneity
 
 .
  So, if we do expect that the probability of detection at zero distance
- is influenced by covariates (which it almost surely will be in a marine
+ is influenced by covariates (which it almost surely will be in a cetacean
  survey), pooling robustness does not apply.
+\end_layout
+
+\begin_layout Subsection
+Weather covariates
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Weather-covariates"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Following on from pooling robustness, we now think more about recording
+ a sighting conditions covariate, such as weather.
+ It is not enough to 
+\begin_inset Quotes eld
+\end_inset
+
+see
+\begin_inset Quotes erd
+\end_inset
+
+ that tracklines physically cover the entire study area in a seemingly even
+ way; if most of the survey effort in the West are in good sighting conditions
+ whereas most in the East are in poor conditions, then the actual effort
+ can be quite imbalanced.
+ (The tracklines on the West have higher sighting probabilities, so they
+ are in effect 
+\begin_inset Quotes eld
+\end_inset
+
+wider
+\begin_inset Quotes erd
+\end_inset
+
+ and cover a higher proportion of nearby areas, but the width difference
+ is not visible on the scale of a plot.) The average probability of detection
+ of a whale (across all whales in the region) is not the same as the average
+ detection probability averaged along the trackline.
+\end_layout
+
+\begin_layout Standard
+If density does vary within strata the effect of detectability and distribution
+ are confounded, unless data on observation conditions (e.g., a weather covariate)
+ and spatial distribution (e.g., location of transects) is recorded and modelled.
+ A spatial model that includes data on the location of the observations
+ and the sighting conditions will be able to tease apart these effects and
+ attribute appropriate uncertainty.
+ For example, say we saw many animals in the West of the study area and
+ fewer in the East.
+ Let us also say that there were good sighting conditions in the West and
+ poor sighting conditions in the East.
+ If we ignore the weather covariate, we have know way of knowing if there
+ truly were many animals in the West or whether it was just the effect of
+ having good sighting conditions.
+ 
+\end_layout
+
+\begin_layout Standard
+This is the reason for our stipulation that HT-acceptability (i.e., robustness
+ to animal density variations) can only be assessed when a weather covariate
+ is available.
+ For a full analysis of data, some care is usually given to the choice of
+ covariate (e.g., number of levels, if the covariate is a factor; use of several
+ covariates together), but for broad assessment of uniformity, we suspect
+ that the choice does not matter too much.
+ For example, splitting Beaufort into two levels such that the 
+\begin_inset Quotes eld
+\end_inset
+
+good
+\begin_inset Quotes erd
+\end_inset
+
+ level contains 1/3—2/3 of total sightings, and the 
+\begin_inset Quotes eld
+\end_inset
+
+poor
+\begin_inset Quotes erd
+\end_inset
+
+ level contains the rest, should be sufficient.
+ Using a simple classification of that type makes it easy to estimate a
+ separate detection probability by 
+\begin_inset Quotes eld
+\end_inset
+
+weather level
+\begin_inset Quotes erd
+\end_inset
+
+, simply by splitting the sightings according to weather before fitting
+ a separate detection function to each.
 \end_layout
 
 \begin_layout Subsection
@@ -1088,9 +1316,21 @@ reference "eq:HT"
 
 \end_inset
 
-) is the assumption that all animals are equally likely to be seen.
- With a truly randomised design, this is certainly the case, but it is often
- the case that designs are 
+) is the assumption that all locations in the study area are (at least approxima
+tely) equally likely to be sampled (e.g., IWC/65b/RMP11
+\begin_inset space ~
+\end_inset
+
+section 1; 
+\begin_inset CommandInset citation
+LatexCommand citealp
+key "Borchers:2004wr"
+
+\end_inset
+
+).
+ With a truly randomised (or systematic) design, this is certainly the case,
+ but it is often the case that designs are 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1108,20 +1348,7 @@ key "Thomas:2010cf"
 
 ).
  This can be for a variety of logistical reasons, but the lack of randomisation
- completely invalidates HT estimation of abundance.
-\end_layout
-
-\begin_layout Standard
-Pooling robustness is implicitly conditioned on having a 
-\begin_inset Quotes eld
-\end_inset
-
-reasonable
-\begin_inset Quotes erd
-\end_inset
-
- design, so appeals to it should only be made in the case where the realised
- design has (approximately) even coverage.
+ invalidates the design-based justification for HT estimation of abundance.
 \end_layout
 
 \begin_layout Standard
@@ -1161,6 +1388,13 @@ quick fix
 
 \begin_layout Section
 Simulation setup
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Simulation"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1232,7 +1466,7 @@ reference "fig:densities"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -1475,6 +1709,7 @@ contour(matrix(ddens, n_grid_x, n_grid_y),
 The proposed density surfaces.
  From left to right: flat, left-right gradient, right-left gradient, diagonal
  gradient.
+ Shorthand names are given as the title for each plot.
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:densities"
@@ -1522,7 +1757,7 @@ bad
 \begin_inset Quotes erd
 \end_inset
 
- by varying the parameters of a hazard rate detection function.
+ by varying the parameters of a hazard-rate detection function.
  We also simulated a two-level weather covariate that changed from left
  to right across the study area, on the left side the weather was 
 \begin_inset Quotes eld
@@ -1579,13 +1814,20 @@ rl
 \begin_inset Quotes erd
 \end_inset
 
- density gradients – this is eminently possible in survey data and is a
- strong reason to always collect some kind of weather-type covariate and
- include this in models.
-\end_layout
+ density gradients – this is eminently possible in survey data as discussion
+ in section
+\begin_inset space ~
+\end_inset
 
-\begin_layout Standard
-Plots of the detection functions used to simulate the data are shown in
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Weather-covariates"
+
+\end_inset
+
+.
+ Plots of the detection functions used to simulate the data are shown in
  Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1878,8 +2120,8 @@ reference "fig:designs"
 
 .
  In each case the box surrounding the design indicates the area used for
- prediction in the simulations, dashed lines indicate strata used for stratified
- HT estimates.
+ prediction in the simulations, dashed lines indicate divisions between
+ strata used for stratified HT estimates.
 \end_layout
 
 \begin_layout Subsubsection*
@@ -2583,7 +2825,8 @@ R=\begin{pmatrix}\cos(\pi/4) & -\sin(\pi/4)\\
 \end_layout
 
 \begin_layout Standard
-The models tested were (starting with their code used for plots later):
+The models tested were (starting with their shorthand code used for plots
+ later):
 \end_layout
 
 \begin_layout Itemize
@@ -2721,6 +2964,17 @@ Note that for the detection function part of each model we fit a model of
  models use a detection function with the covariate included, we include
  estimates for HT-based methods both including and not including the weather
  covariate.
+ The spatial models used are not 
+\emph on
+all
+\emph default
+ the ones that might be considered in practice for a full-on 
+\shape italic
+bona fide
+\shape default
+ spatial analysis (e.g., we did not consider soap-film smooths, because there
+ are more application-specific insights to set up appropriately), but we
+ expect that they should encompass a wide range of ways to respond to data.
 \end_layout
 
 \begin_layout Subsection
@@ -2790,8 +3044,9 @@ We can simply calculate the bias (
 \begin_inset Formula $\hat{N}-N_{\text{truth}}$
 \end_inset
 
-) and plot boxplots of these values, however this does not get to the uncertaint
-y, which is more interesting.
+) and plot boxplots of these values.
+ Bias may only be interesting in certain situations, for example when we
+ are very uncertain about abundance, the bias may not be our main concern.
 \end_layout
 
 \begin_layout Subsubsection
@@ -2818,13 +3073,19 @@ If we know the true abundance in our simulation (
 \end_inset
 
 , so use the usual formulae to find the resulting quantiles.
- This summary statistic gives some idea of both bias and variance.
-\end_layout
+ This summary 
+\begin_inset Quotes eld
+\end_inset
 
-\begin_layout Standard
-Obtaining the quantile for each simulation, if the distribution of the statistic
- is skewed to either end then we can infer under or over estimation of abundance
- for a particular estimator.
+self-confidence
+\begin_inset Quotes erd
+\end_inset
+
+ statistic gives some idea of both bias and variance.
+ If the model is working as it should, then the self-confidence quantile
+ should be uniformly distributed across simulations.
+ If the distribution of the statistic is skewed to either end then we can
+ infer under- or over- estimation of abundance for a particular estimator.
  Skew to both ends indicates overconfidence.
  A flat distribution shows good performance, whereas a 
 \begin_inset Quotes eld
@@ -2836,8 +3097,9 @@ dome
 
  in the middle indicates a conservative estimate in the sense that confidence
  intervals are slightly too wide.
- This more conservative behaviour seems desirable, since we probably have
- not accounted for all of the sources of uncertainty in our model.
+ This more conservative behaviour seems desirable, since in practice we
+ probably have not accounted for all of the sources of uncertainty in our
+ model.
  An example of plots of this statistic is given in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -2852,7 +3114,7 @@ reference "fig:self-confidence"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset ERT
@@ -3176,6 +3438,13 @@ name "fig:self-confidence"
 
 \begin_layout Section
 Results
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Results"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -3919,15 +4188,15 @@ Before looking at where particular models succeeded or failed, we first
  First we note that for any design, flat densities are easy to estimate
  for HT-type methods.
  We note that the rotated coordinate spatial models (TPTER) sometimes perform
- better than their non-rotated variants, we believe this is down to the
+ better than their non-rotated variants; we believe this is down to the
  non-rotated models having another direction of variability (in the 
 \begin_inset Formula $y$
 \end_inset
 
- direction) that is effectively unused (which we would like to be estimated
- as a zero effect) that may pick up on minor variations due to sampling
- variability.
- In the rotated models both coordinates are used so estimating an effect
+ direction) that is effectively unused (and which we would therefore like
+ to be estimated as a zero effect), but that may pick up on minor variations
+ due to sampling variability.
+ In the rotated models both coordinates are used, so estimating an effect
  of exactly zero for the 
 \begin_inset Formula $y$
 \end_inset
@@ -4011,14 +4280,14 @@ self-confidence
 \end_inset
 
  diagnostic plots also show a shift in all models, though again the HT-based
- methods perform worse than the spatial models in on the whole.
+ methods perform worse than the spatial models on the whole.
  If performance is poor with the correct stratification, then we can assume
  that things will be much worse when stratifications are decided 
 \shape italic
 a priori
 \shape default
- based on logistical constraints rather than information on true distribution
- when density is not as simple.
+ based on logistical constraints rather than information on true distribution.
+ This is likely amplified when density is not a simple gradient.
 \end_layout
 
 \begin_layout Standard
@@ -4116,7 +4385,14 @@ reference "fig:self-confidence"
 \end_layout
 
 \begin_layout Section
-Discussion 
+Discussion
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Discussion"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4137,14 +4413,14 @@ Simulations presented here highlight potential issues when HT estimators
 
 \begin_layout Standard
 In general we see that spatial models, even when applied in a very naïve
- way, provide a less biased, and more coherent way to think about modelling
- phenomena that are in their very nature spatial.
+ way, provide a coherent way to think about modelling phenomena that are,
+ by their very nature, spatial.
  Although formulating, fitting, checking and validating spatial models is
  more complex than simply using HT-type methods to obtain density, the added
  time and resources clearly leads to more reliable results.
  It is worth noting that here for the majority of the density surfaces tested
  (aside from diagonal case) the spatial models were all overparameterised,
- the 
+ in that the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -4166,10 +4442,12 @@ correct
 \end_inset
 
 .
- Even with this constraint, the spatial models performed well.
- Estimating a flat surface (equivalently estimating almost all of the coefficien
-ts of the bivariate smooths to be zero), with uneven sampling of the density
- surface is very difficult (not to mention an unrealistic situation).
+ Nevertheless, the spatial models performed well.
+ If the true density is flat, estimating that density surface (equivalently
+ estimating almost all of the coefficients of the bivariate smooths to be
+ zero), as would be assumed by HT, when sampling of the density surface
+ is not even, is very difficult (not to mention an unrealistic situation).
+ In these cases the spatial model performed almost as well as the HT estimator.
 \end_layout
 
 \begin_layout Standard
@@ -4179,13 +4457,113 @@ ltdesigntester
 \family default
  package developed for this paper is quite general and can be used for any
  design or density surface.
- Incorporating more complex detectability covariates is more complicated,
- but achievable.
- We encourage investigators to input their current designs and create some
+ We considered only a two-level 
+\begin_inset Quotes eld
+\end_inset
+
+weather
+\begin_inset Quotes erd
+\end_inset
+
+ covariate.
+ We encourage investigators to input their current designs and use the supplied
  simple density surfaces to test how well abundance can be estimated.
+ The software could potentially be adapted and extended in numerous ways,
+ perhaps linked to planned developments in the 
+\family typewriter
+dsm
+\family default
+ package such as allowance for spatial variation in group size.
+\end_layout
+
+\begin_layout Standard
+We envisage three possible outcomes from testing HT-acceptability, starting
+ with the approaches/software described here, but not necessarily finishing
+ there:
+\end_layout
+
+\begin_layout Enumerate
+An HT analysis should be OK;
+\end_layout
+
+\begin_layout Enumerate
+HT would be risky, but spatial modelling might deliver an acceptable point
+ estimate and variance estimate;
+\end_layout
+
+\begin_layout Enumerate
+The data are so imbalanced that spatial modelling is unlikely to deliver
+ a reliable estimate.
+\end_layout
+
+\begin_layout Standard
+Clearly, the analyses and software proposed here can only differentiate
+ directly between 1.
+ and 2./3.
+ If a spatial model is to be used instead of HT, then the appropriate model
+ — which will use the real locations of sightings, not just the total number
+ — may well be outside the range of simple models in our tests (e.g., if there
+ are edge effects requiring the use of, e.g., soap film smoothers).
+ It may of course also be necessary to enlarge the model to deal with group
+ size etc.
+ Selecting a preferred spatial model, and reporting appropriate diagnostics
+ for it, is beyond the scope of this particular document, but see 
+\begin_inset CommandInset citation
+LatexCommand citep
+before "IWC/65b/RMP11;"
+key "Chandler:2005hp,Wood:2006dc,Augustin:2009gv,Augustin:2012ck,Augustin:2013gf,Miller:2013fq,Winiarski:2014bc"
+
+\end_inset
+
+
+\series bold
+.
+ 
+\end_layout
+
+\begin_layout Standard
+It is worth pointing out that we have deliberately avoided using the actual
+ location of sightings.
+ Of course, the sighting-locations themselves could be used to directly
+ fit a spatial model, so why not use that as the point-of-comparison with
+ HT? Our motivation is twofold: first, actually picking a good spatial model
+ for a real dataset is not something that can be automated; second, especially
+ if there are not many sightings, the real density surface is very uncertain,
+ and it is 
+\begin_inset Quotes eld
+\end_inset
+
+putting the cart before the horse
+\begin_inset Quotes erd
+\end_inset
+
+ to assume that a spatial model fitted to limited data will actually pick
+ the truth accurately.
+ Instead, our approach is a robustness test to assess the survey tracks
+ against a range of density surface scenarios, and as such should be safer.
+ The possible downside is that, if animal density really is quite uniform,
+ then an uneven sampling design might fail our HT-acceptability checks even
+ though the actual estimate would be OK.
+ But this is hardly a disaster; all that would be needed to rescue the data,
+ is to proceed to fitting a spatial model 
+\begin_inset Quotes eld
+\end_inset
+
+for real
+\begin_inset Quotes erd
+\end_inset
+
+.
+ For many datasets, this is certainly not an overwhelming task with modern
+ software such as 
+\family typewriter
+dsm
+\family default
+.
 \end_layout
 
 \begin_layout Part*
+\start_of_appendix
 Appendices
 \end_layout
 
@@ -5887,7 +6265,7 @@ status open
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
 bibfiles "full,this"
-options "default"
+options "plainnat"
 
 \end_inset
 
