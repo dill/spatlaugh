@@ -655,10 +655,21 @@ Spatial modelling is not a panacea
 type:section
 
 
+Garbage in, garbage out
+=======================
+type:section
+title:none
+
+<img src="images/kitabet_2016-Nov-22.jpg" width="100%">
+
+[@kitabet](http://twitter.com/kitabet)
 
 Spatial modelling won't solve all yr problems
 =============================================
 
+<img src="images/design-zzl.png" width="100%">
+
+***
 - Design issues
   - Biased effort 
   - Effort parallel to density gradient
@@ -681,21 +692,16 @@ Spatial modelling won't solve all yr problems
   
 **Spatial models can't solve these issues**
 
-Garbage in, garbage out
-=======================
-type:section
-title:none
-
-<img src="images/kitabet_2016-Nov-22.jpg" width="100%">
-
-
-Weather, modelling and you
-==========================
+Weather or distribution?
+========================
 
 - Weather has a big effect on detectability
 - Need to record during survey
 - Disambiguate between distribution/detectability
 - Potential confounding can be *BAD*
+
+<img src="images/weather_or_density.png" width="100%">
+
 
 Visibility during POWER 2014
 =============================
@@ -704,21 +710,18 @@ Visibility during POWER 2014
 
 Thanks to Hiroto Murase and co for this data!
 
-Detectability during POWER 2014 (rudimentary analysis)
-======================================================
-title:none
-
-<img src="images/power_df.png" width="100%">
-
-Two models, two pictures
-========================
-
-<img src="images/covar-inout.png">
-
-This effect gets worse w/ confounding
+Covariates can make a big difference!
 =====================================
 
-DIAGRAM
+<img src="images/covar-inout.png" width="100%">
+
+
+Summary
+=======
+
+- Spatial models don't solve all problems
+- Complex models can lead to complex issues
+- Recording weather conditions is important
 
 blah
 =========
@@ -759,7 +762,7 @@ Setting up a survey simulation
 Density
 =======
 
-<img src="images/density-fig.png" width="100%">
+<img src="images/denstiy-fig.png" width="100%">
 
 ***
 
@@ -826,6 +829,35 @@ Important caveats
 - No group size model
 - No $g(0)$ or availability
 
+Quick example code
+==================
+
+```{r eval=FALSE, echo=TRUE}
+library(ltdesigntester)
+# setup a simulation
+my_sim <- build_sim(design_path="path/to/shp",
+                    dsurf=density_surface_matrix,
+                    n_grid_x=dsurf_dim_x,
+                    n_grid_y=dsurf_dim_y,
+                    n_pop=true_N,
+                    df=detection_function_specs,
+                    region="path/to/shp")
+# run it!
+res <- do_sim(nsim=number_of_sims,
+              scenario=my_sim,
+              pred_dat=prediction_data_frame, ...)
+```
+
+Summary
+=======
+
+- We can test multiple (simple) scenarios
+  - Assumption of simple gradients
+  - Models likely won't work for difficult stuff if they don't work for simple things
+- What will work/what won't
+- Simple summary plots
+- Better than the rest $\neq$ good
+
 
 blah
 =========
@@ -840,7 +872,6 @@ Model checking for DSMs
 type:section
 
 
-
 Model checking
 =============
 
@@ -848,6 +879,11 @@ Model checking
 - Model (term) selection
 - Sensitivity
 - Cross-validation (replicability)
+
+(Plus all the usual stuff for detection functions!)
+===================================================
+type:section
+
 
 Count distributions
 =====================
