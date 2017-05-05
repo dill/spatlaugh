@@ -73,7 +73,7 @@ transects <- list(iwc = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2,
 
 
 
-for(iii in 1:nrow(scenarios)){
+#for(iii in 1:nrow(scenarios)){
 
   # get this set of settings
   this_set <- scenarios[iii,,drop=FALSE]
@@ -95,13 +95,13 @@ for(iii in 1:nrow(scenarios)){
 
 
 
-  #check_sim_setup(ss)
-  big_res <- do_sim(nsim, ss, pred_dat1, stratification[[this_set$design]],
-                    transect_id=transects[[this_set$design]])
-
-  # write out the results
-  save(big_res, file=paste0(scenario_name, ".RData"))
-}
+  check_sim_setup(ss)
+#  big_res <- do_sim(nsim, ss, pred_dat1, stratification[[this_set$design]],
+#                    transect_id=transects[[this_set$design]])
+#
+#  # write out the results
+#  save(big_res, file=paste0(scenario_name, ".RData"))
+#}
 
 
 
