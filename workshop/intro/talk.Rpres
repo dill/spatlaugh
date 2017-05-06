@@ -1026,6 +1026,17 @@ res <- do_sim(nsim=number_of_sims,
               pred_dat=prediction_data_frame, ...)
 ```
 
+We made a big deal about weather earlier...
+===========================================
+
+- We can add covariates too (a wee bit unwieldy at the moment)
+- Build multiple detection functions/sims in `list()`
+- Covariates vary according to:
+  - logit function E-W (can set pars, 2 state)
+  - set values in segment data (already observed)
+
+
+
 I am going to stop talking very soon
 ================================================
 type:section
