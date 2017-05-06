@@ -50,10 +50,56 @@ us <- geom_polygon(aes(x=x, y=y), fill = "#1A9850",
                data=bnd)
 ```
 
+Why are we here/why did we do this?
+===================================
+
+- Stratified Horvitz-Thompson is workhorse of many abundance estimates
+- How is H-T going to fail?
+- When do we need to use spatial models?
+- What are "Bad surveys"?
+- Report [http://converged.yt/papers/iwc-2017-ht.pdf](http://converged.yt/papers/iwc-2017-ht.pdf)
+
+
+Overview
+========
+
+- Today:
+  1. what's wrong with H-T?
+  2. Spatial models overview
+  3. What can go wrong with spatial models?
+  4. Testing designs in R
+  5. Model checking for spatial models
+- Tomorrow:
+  1. What we missed, what is hard
+  2. Try out tester on your data
+  3. Other methods/software, future work
+  5. Guidelines
+
+Practicalities
+==============
+
+- Try not to talk for more than an hour without a break
+- We both have funny accents, yell if you don't understand!
+- There is maths -- don't worry
+
+This is not a distance sampling course!
+======================================
+
+- This material usually takes 4 days+ to teach
+- This will not prepare you to analyse spatial data
+- BUT you can do this in St Andrews this summer!
+- [creem2.st-andrews.ac.uk](http://creem2.st-andrews.ac.uk)
+
+<img src="images/observatory.jpg" width="45%"> <img src="images/creem.png" width="40%">
+
 Why are we interested in spatially-explicit estimation?
 ======================
 type:section
 
+Inferential aims
+================
+
+<img src="images/nvsmap.png" width="100%">
 
 blah
 =========
@@ -81,6 +127,16 @@ $$
 - $s_i$ are group/cluster sizes
 - $\hat{p}_i$ is the detection probability (from distance sampling)
 
+Variance of H-T
+===============
+
+- Multiple sources of randomness in H-T equation:
+  - $\hat{p}_i$ - detectability
+  - $n$ - dealt with as $n/L$, encounter rate
+  - $s$ - group size
+
+
+
 Hidden in this formula is a simple assumption
 =============================================
 
@@ -91,9 +147,9 @@ Hidden in this formula is a simple assumption
 Many faces of randomisation
 ===========================
 
-```{r randomisation, fig.width=10, fig.height=4}
+```{r randomisation, fig.width=14, fig.height=4.5, out.width='\\textwidth'}
 set.seed(12133)
-par(mfrow=c(1,3))
+par(mfrow=c(1,3), cex.main=2.5)
 
 # true random sample
 plot(c(0, 1), c(0, 1), type="n", xlab="", ylab="", axes=FALSE, asp=1, main="random placement")
@@ -185,6 +241,36 @@ H-T estimation again
 - "Deteriorate" pooling robustness property
 - What can we do?
 
+More on variance
+================
+
+- Encounter rate variance $\approx n_j/l_j - n/L$
+- Within-transect variation can be **bad**
+  - e.g., N-S transect, N-S density gradient
+
+Stratification
+==============
+
+- If we suspect density change can stratify!
+- Pre or post hoc (spatial and non-spatial)
+
+
+<img src="images/minke-strata.png" width="80%">
+
+
+
+I am going to stop talking very soon
+================================================
+type:section
+
+
+Summary
+=======
+
+- H-T is a spatial model (sort of)
+- Violated an assumption if no randomness
+  - Hard to assess how bad this is
+- Fewster et al (2009) and Fewster (2011) give variance approaches
 
 
 blah
@@ -208,7 +294,7 @@ Spatial models of distance sampling data
 - Go beyond stratified estimates
 - Relate environmental covariates to counts
 
-This is the rosey picture talk
+This is the rosy picture talk
 ==============================
 type:section
 
@@ -243,11 +329,13 @@ Example data
 Model formulation
 =================
 
-- Have some prior knowledge
-  - Biology
-  - Ecology
+- Pure spatial, pure environmental, mixed?
+- May have some prior knowledge
+  - Biology/ecology
 - What are drivers of distribution?
-
+- Inferential aim
+  - Abundance
+  - Ecology
 
 Density surface models
 ===============
@@ -262,6 +350,8 @@ DSM flow diagram
 title:false
 
 <img src="images/dsm-flow2.png" alt="DSM process flow diagram" width=120%>
+
+- Ignoring group size (more on that tomorrow)
 
 Data setup
 ================================================
@@ -316,7 +406,7 @@ print(p)
 ```
 
 
-f thingys
+s thingys
 ================================================
 title:false
 
@@ -325,12 +415,25 @@ dsm_env_tw <- dsm(count~s(Depth) + s(NPP) + s(SST),
                   ddf.obj=df_hr,
                 segment.data=segs, observation.data=obs,
                 family=tw(), method="REML")
-opar <- par(mar=c(4, 6, 4, 2) + 0.1, cex.lab=2.5, cex.axis=2.5)
-plot(dsm_env_tw, page=1, scale=0, lwd=3, shade=TRUE)
+opar <- par(mfrow=c(2,2), mar=c(4, 6, 4, 2) + 0.1, cex.lab=2.5, cex.axis=2.5)
+plot(dsm_env_tw, select=1, scale=0, lwd=3, shade=TRUE)
+plot(dsm_env_tw, select=2, scale=0, lwd=3, shade=TRUE)
+plot(dsm_env_tw, select=3, scale=0, lwd=3, shade=TRUE)
+plot(0:10,0:10, type="n", axes=FALSE)
+text(label="Look at the\ny-axis scale!", cex=5, x=5, y=5)
 par(opar)
 ```
 
+Modelling smooths
+==================
 
+- 1-dimension: not much difference
+- 2D more tricky
+  - edge effects
+  - tricky boundaries 
+  - more tomorrow
+- Now going to do some maths...
+  - (ignore at will)
 
 How do we build them?
 ========================
@@ -342,7 +445,7 @@ dat <- gamSim(1,n=400,dist="normal",scale=2)
 b <- gam(y~s(x0, k=5, bs="cr"),data=dat)
 
 # main plot
-plot(b, se=FALSE, ylim=c(-1, 1), lwd=2,asp=1/2)
+plot(b, se=FALSE, ylim=c(-1, 1), lwd=3, asp=1/2)
 
 # plot each basis
 cf <- coef(b)
@@ -469,6 +572,19 @@ points(dat$x2, dat$y-mean(dat$y), cex=1.5, pch=19)
 curve(f2,0,1, col="blue", add=TRUE, lwd=1.5)
 ```
 
+
+Sideline: GAMs are Bayesian models
+=================================
+
+- Generally:
+  - penalties are improper prior precision matrices
+  - (nullspace gives improper priors)
+- Using shrinkage smoothers:  
+  - *proper* priors
+  - empirical Bayes interpretation
+
+
+
 Beyond univariate smooths?
 ================================================
 left:60%
@@ -497,8 +613,9 @@ par(opar)
 - Take 2 or more univariate terms
 - Thin plate regression splines allow multivariate terms (*isotropic*)
 
-Traditional spatial smoothing
-=============================
+Spatial smoothing
+=================
+
 ```{r, out.width='\\textwidth', fig.width=10, fig.height=10}
 dsm_xy <- dsm(count~s(x,y),
                   ddf.obj=df_hr,
@@ -519,9 +636,10 @@ print(p)
 ***
 
 - Can just smooth in space
-- Often a good starting place
-- Does this give us much more information? (sometimes?)
-- Generally not good for extrapolations though
+- Valid abundance estimation technique
+- Useful for EDA for env. cov. models (**hard** day 2!)
+- Not good for extrapolations
+- Basis choice can matter!
 
 Why GAMs are cool...
 ================================================
@@ -573,8 +691,8 @@ More on model checking later...
 type:section
 
 
-Predictions over arbitrary areas
-===================================
+Predictions/abundance estimates
+===============================
 
 ```{r predplot, out.width='\\textwidth', fig.width=10, fig.height=10}
 predgrid$Nhat <- predict(dsm.tw.xy, predgrid)
@@ -595,6 +713,7 @@ print(p)
   - Extrapolate outside (with caution)
 - Working on a grid of cells
 - Plot is `s(x,y) + s(Depth)`
+- Add up to get abundance
 
 
 Estimating variance
@@ -640,6 +759,20 @@ Communicating uncertainty
 - $\boldsymbol{\beta} \sim N(\hat{\boldsymbol{\beta}}, \hat{\boldsymbol{\Sigma}})$
 - Some features (e.g. shelf, N-S gradient) stick out
 
+I am going to stop talking very soon
+================================================
+type:section
+
+Summary
+=======
+
+- Build models in stages (detection function + GAM)
+- Counts are functions of covariates
+  - Pure spatial models
+  - Environmental covariate models
+  - Mix?!
+- Fit/check using `dsm`
+- Most of the theory is resolved, applications are hard
 
 
 blah
@@ -650,47 +783,21 @@ title:none
 <p style="font-size:800%">Part III</p>
 
 
-Spatial modelling is not a panacea
-==================================
+H-T or spatial or give up?
+==========================
 type:section
 
 
-Garbage in, garbage out
+Spatial models can help
 =======================
-type:section
-title:none
 
-<img src="images/kitabet_2016-Nov-22.jpg" width="100%">
+- Spatial modelling can give ubiased abundance ests
+  - even with uneven coverage
+  - limits to extrapolation
+- V. even coverage => HT?
+- "Evenness" subtle, detectability effect
+  - e.g., weather bad in east
 
-[@kitabet](http://twitter.com/kitabet)
-
-Spatial modelling won't solve all yr problems
-=============================================
-
-<img src="images/design-zzl.png" width="100%">
-
-***
-- Design issues
-  - Biased effort 
-  - Effort parallel to density gradient
-  - Tracklines not robust to weather issues
-  
-**Spatial models can't solve these issues**
-
-Spatial modelling won't solve all yr problems
-=============================================
-
-<img src="images/ww-crap.png" width="100%">
-
-***
-
-- Violations of survey procedure
-  - Following animals
-  - Effort parallel to density gradient
-  - Responsive movement
-  - Guarding the trackline
-  
-**Spatial models can't solve these issues**
 
 Weather or distribution?
 ========================
@@ -716,12 +823,82 @@ Covariates can make a big difference!
 <img src="images/covar-inout.png" width="100%">
 
 
+Other stuff
+===========
+type:section
+
+
+Spatial modelling won't solve all yr problems
+=============================================
+
+<img src="images/design-zzl.png" width="100%">
+
+***
+- Design issues
+  - Ludicrous extrapolation
+  - Survey plan not robust to weather issues
+  - Non-uniform distribution wrt sampler
+  - Migration
+  
+**Spatial models alone can't solve these issues**
+
+Spatial modelling won't solve all yr problems
+=============================================
+
+<img src="images/ww-crap.png" width="100%">
+
+***
+
+- Violations of survey procedure
+  - Following animals
+  - Responsive movement
+  - Guarding the trackline
+  - Group size estimation
+  
+**Spatial models alone can't solve these issues**
+
+Spatial modelling won't solve all yr problems
+=============================================
+
+- Detection functions
+  - Not enough observations
+  - Uncertain species ID
+  - Group size
+
+**Spatial models alone can't solve these issues**
+
+
+Garbage in, garbage out
+=======================
+type:section
+title:none
+
+<img src="images/kitabet_2016-Nov-22.jpg" width="100%">
+
+[@kitabet](http://twitter.com/kitabet)
+
+
+Should everything be spatial?
+=============================
+
+- Do you have enough observations?
+- If they do look good (even coverage, etc)
+- Is it worth re-analysing from H-T?
+- Point estimates similar?
+- Variance may well be different?
+
+I am going to stop talking very soon
+================================================
+type:section
+
+
 Summary
 =======
 
 - Spatial models don't solve all problems
 - Complex models can lead to complex issues
 - Recording weather conditions is important
+- You can always give up!
 
 blah
 =========
@@ -732,7 +909,7 @@ title:none
 
 
 Testing designs
-==================================
+===============
 type:section
 
 
@@ -742,7 +919,7 @@ What can we do?
 - Take a survey and simulate
 - Is H-T robust?
 - How do different spatial models compare?
-- **if** the distribution is simple
+  - Only thinking about total abundance & CV
 
 Software
 ========
@@ -768,7 +945,7 @@ Density
 
 - Grid in polygon of study area
 - Either specify simple gradient or use other tools to make complex density
-- Modifying matrix of values
+- Density as grid
 
 Design
 ======
@@ -802,6 +979,7 @@ Specification to simulation
 
 - Generate multiple realizations
 - Analyse each with a many models
+  - Different spatial, H-T
 - Compare results
 
 Test models
@@ -848,6 +1026,10 @@ res <- do_sim(nsim=number_of_sims,
               pred_dat=prediction_data_frame, ...)
 ```
 
+I am going to stop talking very soon
+================================================
+type:section
+
 Summary
 =======
 
@@ -875,9 +1057,11 @@ type:section
 Model checking
 =============
 
-- Response distribution
+- Count distribution
+- Basis complexity
 - Model (term) selection
 - Sensitivity
+- Observed vs. expected
 - Cross-validation (replicability)
 
 (Plus all the usual stuff for detection functions!)
@@ -892,9 +1076,12 @@ Count distributions
 hist(dsm.nb.xy$data$count, xlab="Count", main="")
 ```
 ***
-- Response is a count (not not always integer)
-- Often, it's mostly zero (that's complicated)
+- Response is a count
+- Often, it's mostly zero
+- Aggregations occur at scales smaller than spatial model
 - Want response distribution that deals with that
+- Could mess-up variance if ignored
+- Linked to segmenting
 - Flexible mean-variance relationship
 
 Negative binomial
@@ -960,10 +1147,25 @@ for(i in 1:ncol(fymat)){
 - Common distributions are sub-cases:
   - $q=1 \Rightarrow$ Poisson
   - $q=2 \Rightarrow$ Gamma
-  - $q=3 \Rightarrow$ Normal
+  - $q=3 \Rightarrow$ inverse-Gaussian
 - We are interested in $1 < q < 2$ 
 - (here $q = 1.2, 1.3, \ldots, 1.9$)
 
+Basis complexity
+================
+
+- Before: $s(x) = \sum_{k=1}^K \beta_k b_k(x)$
+- How big should `k` be? "Big enough"
+- Penalty takes care of the rest
+- `?gam.check` gives useful output
+  - (also residual checks etc)
+
+gam.check text output
+=====================
+
+```{r gc, echo=TRUE, fig.keep="none"}
+gam.check(dsm_env_tw)
+```
 
 
 Tobler's first law of geography
@@ -986,7 +1188,7 @@ What can we do about this?
 
 - Careful inclusion of terms
 - Test for sensitivity (lots of models)
-- Fit models using robust criteria (REML/ML)
+- Fit models using robust criteria (REML)
 - Test for concurvity (`mgcv::concurvity`, `dsm::vis.concurvity`)
 
 <br/>
@@ -1003,16 +1205,26 @@ Term selection
   - *which* biomass measure?
   - include spatial smooth or not?
   
-Sideline: GAMs are Bayesian models
-=================================
+  
+Observed vs. expected
+=====================
 
-- Generally:
-  - penalties are improper prior precision matrices
-  - (nullspace gives improper priors)
-- Using shrinkage smoothers:  
-  - *proper* priors
-  - empirical Bayes interpretation
+- Diagnostic -- compare observed vs. expected counts
+  - Compare for different covariate/aggregations
+- In next `dsm`, `obs_exp()` does this
+- Going back to those rough POWER models...
 
+```
+> obs_exp(b, "beaufort")
+               1        2       34
+Observed 3.00000 10.00000 80.00000
+Expected 6.97715 12.42649 83.03773
+
+> obs_exp(b_nc, "beaufort")
+                1        2       34
+Observed 3.000000 10.00000 80.00000
+Expected 8.478759 17.00705 73.23535
+```
 
 Cross-validation
 ================
@@ -1079,9 +1291,9 @@ References
 ==========
 
 <div style="font-size:45%">
-Burt, M. L., Borchers, D. L., Jenkins, K. J., & Marques, T. A. (2014). Using mark-recapture distance sampling methods on line transect surveys. Methods in Ecology and Evolution, 5(11).
+Fewster, R.M., Buckland, S.T., Burnham, K.P., Borchers, D.L., Jupp, P.E., Laake, J.L., et al. (2009) Estimating the Encounter Rate Variance in Distance Sampling. Biometrics, 65, 225–236.
 <br/>
-Dunn, P. K., & Smyth, G. K. (1996). Randomized Quantile Residuals. Journal of Computational and Graphical Statistics, 5(3).
+Fewster, R. M. (2011), Variance Estimation for Systematic Designs in Spatial Surveys. Biometrics, 67: 1518–1531.
 <br/>
 Hedley, S. L., & Buckland, S. T. (2004). Spatial models for line transect sampling. Journal of Agricultural, Biological, and Environmental Statistics, 9(2).
 <br/>
