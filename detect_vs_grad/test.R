@@ -10,13 +10,13 @@ library(devtools)
 load_all("~/current/dsm")
 library(Distance)
 library(handy2)
-source("~/Dropbox/varprop/data/dsm.varprop.R")
+#source("~/Dropbox/varprop/data/dsm.varprop.R")
+library(ltdesigntester)
 
-
-source("../check.sim.setup.R")
-source("../plot_df.R")
-source("../test_dssim.R")
-source("../dsmify.R")
+#source("../check.sim.setup.R")
+#source("../plot_df.R")
+#source("../test_dssim.R")
+#source("../dsmify.R")
 
 
 n_grid <- 100
@@ -37,17 +37,17 @@ df_bad <- list(key        = "hr",
                shape      = 3,
                truncation = 0.05)
 
-ss_good <- test_dssim("../shapes/manyzigzags", density.surface, n_grid, 200,
-                      df_good, region="../shapes/region/data")
-ss_bad <- test_dssim("../shapes/manyzigzags", density.surface, n_grid, 200,
-                      df_bad, region="../shapes/region/data")
+ss_good <- build_sim("../shapes/manyzigzags", density.surface, n_grid, 200,
+                      df=df_good, region="../shapes/region/data")
+ss_bad <- build_sim("../shapes/manyzigzags", density.surface, n_grid, 200,
+                      df=df_bad, region="../shapes/region/data")
 
 # check that looks good
 #set.seed(3141)
 #check.sim.setup(ss_good)
 #dev.new()
 set.seed(3142)
-check.sim.setup(ss_bad)
+check_sim_setup(ss_bad)
 
 # okay now generate some data
 
